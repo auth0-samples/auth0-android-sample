@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Auth0LoginDemo</string>
+
+    <string name="auth0_client_id">YOUR CLIENTs DOMAIN</string>
+    <string name="auth0_domain">YOUR APPs DOMAIN</string>
+
+    <string name="welcome">Welcome To Your App</string>
+    <string name="please_login">Please Login with your email and password</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="login">Login</string>
+
+    <string name="login_success">Login was successful</string>
+
+
+
+</resources>
