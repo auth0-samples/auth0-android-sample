@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "inaka.auth0logindemo"
+        applicationId "auth0logindemo"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

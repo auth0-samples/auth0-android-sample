@@ -34,7 +34,7 @@
 
                 <data
                     android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/inaka/auth0logindemo/activities/callback"
+                    android:pathPrefix="/android/YOUR APP PACKAGE/callback"
                     android:scheme="https" />
             </intent-filter>
         </activity>
