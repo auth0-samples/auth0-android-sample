@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Auth0LoginDemo</string>
+
+    <string name="auth0_client_id">ADD YOUR APPs CLIENT ID</string>
+    <string name="auth0_domain">ADD YOU APPs DOMAIN</string>
+
+
+</resources>
