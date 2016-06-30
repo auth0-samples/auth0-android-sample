@@ -1,4 +1,4 @@
-package auth0customlogindemo.activities;
+package auth0.customlogindemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import com.auth0.authentication.AuthenticationAPIClient;
 import com.auth0.authentication.result.Credentials;
 import com.auth0.callback.BaseCallback;
 
-import auth0customlogindemo.R;
+import auth0.customlogindemo.R;
 
 
 /**
@@ -47,8 +47,10 @@ public class LoginActivity extends Activity{
         }
 
     private void login(String email, String password) {
+        // TODO  Modify the Strings.xml - Add your own client_id and auth0_domain
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
+
         client.login(email, password).start(new BaseCallback<Credentials>() {
             @Override
             public void onSuccess(Credentials payload) {

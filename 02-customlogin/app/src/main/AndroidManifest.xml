@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="auth0customlogindemo">
+    package="auth0.customlogindemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,26 +19,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Auth0 Lock -->
-        <activity
-            android:name="com.auth0.android.lock.LockActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/Lock.Theme">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/auth0customlogindemo/activities/callback"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <!-- Auth0 Lock End -->
 
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.MainActivity"></activity>

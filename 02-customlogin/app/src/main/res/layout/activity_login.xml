@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="auth0customlogindemo.activities.LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <LinearLayout
 
@@ -38,7 +38,7 @@
             android:layout_marginTop="100dp"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:minWidth="200dp" />
+            android:minWidth="250dp" />
 
         <EditText
             android:id="@+id/passwordEditext"
@@ -46,14 +46,14 @@
             android:inputType="textPassword"
             android:layout_height="wrap_content"
             android:hint="@string/password"
-            android:minWidth="200dp" />
+            android:minWidth="250dp" />
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:minWidth="200dp"
+            android:minWidth="250dp"
             android:text="@string/login" />
 
     </LinearLayout>

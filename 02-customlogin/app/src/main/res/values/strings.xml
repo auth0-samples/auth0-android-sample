@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Auth0LoginDemo</string>
+    <string name="app_name">Auth0CustomLoginDemo</string>
 
     <string name="auth0_client_id">YOUR CLIENTs DOMAIN</string>
     <string name="auth0_domain">YOUR APPs DOMAIN</string>

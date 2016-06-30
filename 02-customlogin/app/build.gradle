@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "auth0customlogindemo"
+        applicationId "auth0.customlogindemo"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
