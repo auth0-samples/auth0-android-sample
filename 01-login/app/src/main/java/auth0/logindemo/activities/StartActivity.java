@@ -1,10 +1,11 @@
-package auth0logindemo.activities;
+package auth0.logindemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0logindemo.R;
+import auth0.logindemo.R;
+
 
 public class StartActivity extends AppCompatActivity {
 

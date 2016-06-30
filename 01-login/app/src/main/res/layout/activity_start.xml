@@ -10,9 +10,4 @@
     android:gravity="center"
     tools:context=".activities.StartActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Auth0 - Demo App" />
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package auth0logindemo.activities;
+package auth0.logindemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
 import com.auth0.authentication.result.Credentials;
 
-import auth0logindemo.R;
+import auth0.logindemo.R;
 
 
 /**
@@ -48,6 +48,7 @@ public class LockActivity extends Activity{
             public void onAuthentication(Credentials credentials) {
                 Toast.makeText(getApplicationContext(), "Log In - Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             }
 
             @Override
