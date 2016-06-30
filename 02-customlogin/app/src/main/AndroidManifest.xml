@@ -22,8 +22,6 @@
 
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.MainActivity"></activity>
-        <activity
-            android:name="com.auth0.android.lock.provider.WebViewActivity"></activity>
     </application>
 
 </manifest>
