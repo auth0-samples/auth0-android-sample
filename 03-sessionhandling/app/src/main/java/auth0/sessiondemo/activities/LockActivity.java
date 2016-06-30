@@ -1,4 +1,4 @@
-package auth0sessiondemo.activities;
+package auth0.sessiondemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
 import com.auth0.authentication.result.Credentials;
 
-import auth0sessiondemo.R;
-import auth0sessiondemo.application.App;
+import auth0.sessiondemo.R;
+import auth0.sessiondemo.application.App;
 
 
 /**

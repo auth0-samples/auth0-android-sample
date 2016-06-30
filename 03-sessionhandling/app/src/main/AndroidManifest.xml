@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="auth0sessiondemo">
+    package="auth0.sessiondemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -43,8 +43,7 @@
         <!-- Auth0 Lock End -->
 
         <activity
-            android:name=".activities.LockActivity"
-            android:noHistory="true" />
+            android:name=".activities.LockActivity"/>
         <activity android:name=".activities.MainActivity"></activity>
         <activity android:name="com.auth0.android.lock.provider.WebViewActivity"></activity>
     </application>

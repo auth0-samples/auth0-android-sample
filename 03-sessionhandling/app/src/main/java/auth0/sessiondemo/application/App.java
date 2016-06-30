@@ -1,4 +1,4 @@
-package auth0sessiondemo.application;
+package auth0.sessiondemo.application;
 
 import android.app.Application;
 

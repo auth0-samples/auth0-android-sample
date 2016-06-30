@@ -1,11 +1,10 @@
-package auth0sessiondemo.activities;
+package auth0.sessiondemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0sessiondemo.R;
-
+import auth0.sessiondemo.R;
 
 public class StartActivity extends AppCompatActivity {
 

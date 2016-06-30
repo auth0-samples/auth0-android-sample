@@ -1,4 +1,4 @@
-package auth0sessiondemo.activities;
+package auth0.sessiondemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,9 @@ import com.auth0.authentication.AuthenticationAPIClient;
 import com.auth0.authentication.result.Delegation;
 import com.auth0.callback.BaseCallback;
 
-import auth0sessiondemo.R;
-import auth0sessiondemo.application.App;
+import auth0.sessiondemo.R;
+import auth0.sessiondemo.application.App;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,6 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         App.getInstance().setUserCredentials(null);
-        startActivity(new Intent(this, StartActivity.class));
+        startActivity(new Intent(this, auth0.sessiondemo.activities.StartActivity.class));
     }
 }
