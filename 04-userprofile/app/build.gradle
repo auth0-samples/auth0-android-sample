@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "userprofilequickstart"
+        applicationId "auth0.profiledemo"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

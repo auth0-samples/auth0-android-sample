@@ -1,4 +1,4 @@
-package auth0socialdemo.application;
+package auth0.profiledemo.application;
 
 import android.app.Application;
 

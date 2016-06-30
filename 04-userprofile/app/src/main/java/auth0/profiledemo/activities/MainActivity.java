@@ -1,4 +1,4 @@
-package auth0socialdemo.activities;
+package auth0.profiledemo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +12,8 @@ import com.auth0.authentication.result.UserProfile;
 import com.auth0.callback.BaseCallback;
 import com.squareup.picasso.Picasso;
 
-import auth0socialdemo.R;
-import auth0socialdemo.application.App;
+import auth0.profiledemo.R;
+import auth0.profiledemo.application.App;
 
 
 public class MainActivity extends AppCompatActivity {

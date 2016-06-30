@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="auth0socialdemo">
+    package="auth0.profiledemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -35,7 +35,7 @@
 
                 <data
                     android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/inaka/auth0socialndemo/activities/callback"
+                    android:pathPrefix="/android/YOURAPPPACKAGE/activities/callback"
                     android:scheme="https" />
             </intent-filter>
         </activity>
