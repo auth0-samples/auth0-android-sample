@@ -3,6 +3,8 @@
 
     <string name="auth0_client_id">ADD YOUR APPs CLIENT ID</string>
     <string name="auth0_domain">ADD YOU APPs DOMAIN</string>
+    
+    <string name="welcome_message">Welcome To Your App</string>
 
 
 </resources>
