@@ -6,7 +6,7 @@
     android:background="#FFF5F7F9"
     android:orientation="vertical"
     android:padding="@dimen/activity_general_margin"
-    tools:context="auth0socialdemo.activities.MainActivity">
+    tools:context=".activities.MainActivity">
 
     <LinearLayout
 
