@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.auth0.Auth0;
-import com.auth0.Auth0Exception;
-import com.auth0.authentication.AuthenticationAPIClient;
-import com.auth0.authentication.result.Credentials;
-import com.auth0.callback.BaseCallback;
+import com.auth0.android.Auth0;
+import com.auth0.android.authentication.AuthenticationAPIClient;
+import com.auth0.android.authentication.AuthenticationException;
+import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.result.Credentials;
 
 import auth0.customlogindemo.R;
 
@@ -51,14 +51,14 @@ public class LoginActivity extends Activity{
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
 
-        client.login(email, password).start(new BaseCallback<Credentials>() {
+        client.login(email, password).start(new BaseCallback<Credentials, AuthenticationException>() {
             @Override
             public void onSuccess(Credentials payload) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
 
             @Override
-            public void onFailure(Auth0Exception error) {
+            public void onFailure(AuthenticationException error) {
 
             }
         });
