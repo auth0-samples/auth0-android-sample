@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">07-Authorization</string>
+
+    <string name="auth0_client_id">${account.clientId}</string>
+    <string name="auth0_domain">${account.namespace}</string>
+
+    <string name="username">Username: </string>
+    <string name="useremail">Email: </string>
+    <string name="country">Country: </string>
+
+    <string name="app_settings">APP SETTINGS</string>
+    <string name="settings_message">If you reached this page, means that you\'re an admin.
+    </string>
+
+
+</resources>
