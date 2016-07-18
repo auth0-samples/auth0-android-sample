@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Auth0UserProfileDemo</string>
+    <string name="app_name">04-User Profile</string>
 
     <string name="auth0_client_id">YOUR APPs CLIENT ID</string>
     <string name="auth0_domain">YOUR APPs DOMAIN</string>
