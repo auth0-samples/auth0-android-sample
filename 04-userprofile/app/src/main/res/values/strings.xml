@@ -7,5 +7,10 @@
     <string name="username">Username: </string>
     <string name="useremail">Email: </string>
 
+    <string name="edit">Edit Profile</string>
+    <string name="save">Save Changes</string>
+    <string name="cancel">Cancel Changes</string>
+
+
 
 </resources>
