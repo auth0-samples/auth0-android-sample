@@ -18,8 +18,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import auth0.callyourapidemo.R;
 import auth0.callyourapidemo.application.App;
-import auth0.logindemo.R;
+
 
 
 public class MainActivity extends AppCompatActivity {

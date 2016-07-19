@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.logindemo.R;
+import auth0.callyourapidemo.R;
+
 
 public class StartActivity extends AppCompatActivity {
 

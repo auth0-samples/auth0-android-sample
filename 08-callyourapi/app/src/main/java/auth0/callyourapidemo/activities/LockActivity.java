@@ -12,8 +12,9 @@ import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
 import com.auth0.authentication.result.Credentials;
 
+import auth0.callyourapidemo.R;
 import auth0.callyourapidemo.application.App;
-import auth0.logindemo.R;
+
 
 
 /**
