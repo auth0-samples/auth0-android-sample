@@ -1,7 +1,22 @@
-# auth0-android-sample
+# Authorization 
 
-Auth0 Android examples
+- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/07-authorization)
 
-The example from the repo https://github.com/auth0/Mobile-Samples.Android needs to be moved to this one
+Most of the tutorial is explained in the docs, this demo app is aimed to check if the created authorization rule, works properly.
 
-Please remember to use the same structure as https://github.com/auth0-samples/auth0-angularjs-sample
+#### Important Snippets
+
+##### 1. Check the user role
+
+Look at `MainActivity.class`, if the user is an admin, we navigate it to the settings screen:
+
+```java
+private void toSettings() {
+        String role = mUserProfile.getAppMetadata().get("roles").toString();
+
+        if(role.contains("admin"))
+            startActivity(new Intent(this, SettingsActivity.class));
+        else
+            Toast.makeText(MainActivity.this, "You don't have access rights to visit this page", Toast.LENGTH_SHORT).show();
+    }
+```
