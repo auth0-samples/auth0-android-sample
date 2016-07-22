@@ -2,8 +2,10 @@ package auth0.callyourapidemo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
         mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authenticateWithTokenID();
+                authenticateWithTokenID(App.getInstance().getUserCredentials().getIdToken());
             }
         });
 
         mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authenticateWithoutTokenID();
+                authenticateWithTokenID("");
             }
         });
 
@@ -57,59 +59,30 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method request should work fine, if your server configuration is ok
+     * and if you send the proper tokenID
      */
 
-    private void authenticateWithTokenID() {
+    private void authenticateWithTokenID(String tokenID) {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "your api url"; // TODO Replace this
 
         AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
-                (Request.Method.GET, url, App.getInstance().getUserCredentials().getIdToken(),
+                (Request.Method.GET, url, tokenID,
                         null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Parse Response
+                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        Log.i("API CALL SUCCESSFUL", response.toString());
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        // Add the request to the RequestQueue.
-        queue.add(authorizationRequest);
-
-    }
-
-
-    /**
-     * This method request should fail, if your server configuration is ok
-     */
-
-    private void authenticateWithoutTokenID() {
-
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "your api url"; // TODO Replace this
-
-        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
-                (Request.Method.GET, url, "",
-                        null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Parse Response
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                        Log.i("API CALL FAILED", error.toString());
                     }
                 });
 
@@ -131,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Map getHeaders() throws AuthFailureError {
             Map headers = new HashMap();
-            headers.put("Bearer \\"+headerTokenID, "Authorization");
+            headers.put("Bearer{"+headerTokenID+"}", "Authorization");
             return headers;
         }
 
