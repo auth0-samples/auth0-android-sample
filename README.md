@@ -1,7 +1,8 @@
-# auth0-android-sample
+# MFA
 
-Auth0 Android examples
+- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/09-mfa)
 
-The example from the repo https://github.com/auth0/Mobile-Samples.Android needs to be moved to this one
+This demo project contains a basic template to test the [Multifactor Authorization](${uiURL}/#/multifactor).
 
-Please remember to use the same structure as https://github.com/auth0-samples/auth0-angularjs-sample
+Just pay attention, when you do Social Login, to see the Authenticator pop-up. Then, check that the login was succesful.
+
