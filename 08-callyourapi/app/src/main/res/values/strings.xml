@@ -5,6 +5,7 @@
     <string name="auth0_domain">${account.namespace}</string>
     
     <string name="authenticated_request">Authenticated Request</string>
+    <string name="non_authenticated_request">Non-Authenticated Request</string>
 
 
 </resources>

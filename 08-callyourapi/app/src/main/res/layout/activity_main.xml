@@ -25,14 +25,21 @@
 
 
     <Button
-        android:id="@+id/tokenIDButton"
+        android:id="@+id/authenticatedButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:color/white"
-
-
         android:text="@string/authenticated_request" />
+
+    <Button
+        android:id="@+id/nonAuthenticatedButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@android:color/white"
+        android:text="@string/non_authenticated_request" />
 
 
 </LinearLayout>

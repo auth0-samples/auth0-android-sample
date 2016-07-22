@@ -22,17 +22,19 @@ import auth0.callyourapidemo.R;
 import auth0.callyourapidemo.application.App;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     private Button mAuthenticatedRequestButton;
+    private Button mNonAuthenticatedRequestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuthenticatedRequestButton = (Button) findViewById(R.id.tokenIDButton);
+        mAuthenticatedRequestButton = (Button) findViewById(R.id.authenticatedButton);
+        mNonAuthenticatedRequestButton = (Button) findViewById(R.id.nonAuthenticatedButton);
+
 
         mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,17 +43,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authenticateWithoutTokenID();
+            }
+        });
+
+
+
 
     }
+
+    /**
+     * This method request should work fine, if your server configuration is ok
+     */
 
     private void authenticateWithTokenID() {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "your api url";
+        String url = "your api url"; // TODO Replace this
 
         AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
                 (Request.Method.GET, url, App.getInstance().getUserCredentials().getIdToken(),
+                        null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Parse Response
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        queue.add(authorizationRequest);
+
+    }
+
+
+    /**
+     * This method request should fail, if your server configuration is ok
+     */
+
+    private void authenticateWithoutTokenID() {
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "your api url"; // TODO Replace this
+
+        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
+                (Request.Method.GET, url, "",
                         null, new Response.Listener<JSONObject>() {
 
                     @Override
