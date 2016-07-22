@@ -104,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Map getHeaders() throws AuthFailureError {
             Map headers = new HashMap();
-            headers.put("Bearer{"+headerTokenID+"}", "Authorization");
+            
+            if(headerTokenID != null)
+            headers.put("Bearer "+headerTokenID, "Authorization");
+
             return headers;
         }
 
