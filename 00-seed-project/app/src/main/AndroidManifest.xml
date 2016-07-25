@@ -35,14 +35,12 @@
 
                 <data
                     android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/auth0/logindemo/callback"
+                    android:pathPrefix="/android/auth0/seedproject/callback"
                     android:scheme="https" />
             </intent-filter>
         </activity>
         <!-- Auth0 Lock End -->
 
-        <activity android:name=".activities.LockActivity" />
-        <activity android:name=".activities.MainActivity"></activity>
         <activity
             android:name="com.auth0.android.lock.provider.WebViewActivity"></activity>
     </application>
