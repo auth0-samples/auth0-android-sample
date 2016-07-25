@@ -1,7 +1,23 @@
-# auth0-android-sample
+# Seed Project 
 
-Auth0 Android examples
+- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/00-introduction)
 
-The example from the repo https://github.com/auth0/Mobile-Samples.Android needs to be moved to this one
+This is a Seed Project that you can use as the kick-off of any of your projects.
+It only includes an empty Start Activity and the basic Lock configuration to start working in any of the tutorials.
 
-Please remember to use the same structure as https://github.com/auth0-samples/auth0-angularjs-sample
+Remember to modify the `app_name`, `client_id` and `client_domain` inside `Strings.xml`.
+
+Also you can modify the package path. Remember to modify it in the folder path, the `android-manifest.xml` and the `app.gradle`.
+
+#### Important Snippets
+
+##### 1. Add Lock dependency
+Inside the `app.gradle` dependencies:
+
+
+```xml
+compile 'com.auth0.android:lock:2.0.0-beta.2'   
+```
+
+> From here on, try any of the quickstarts!
+> We suggest you starting with the [Login Quickstart](https://auth0.com/docs/quickstart/native/android)
