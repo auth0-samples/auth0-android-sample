@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "auth0.callyourapidemo"
+        applicationId "auth0.seedproject"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
@@ -29,5 +29,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.auth0.android:lock:2.0.0-beta.2'
-    compile 'com.android.volley:volley:1.0.0'
 }
