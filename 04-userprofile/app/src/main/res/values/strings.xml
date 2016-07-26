@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Auth0UserProfileDemo</string>
+
+    <string name="auth0_client_id">YOUR APPs CLIENT ID</string>
+    <string name="auth0_domain">YOUR APPs DOMAIN</string>
+
+    <string name="username">Username: </string>
+    <string name="useremail">Email: </string>
+
+
+</resources>
