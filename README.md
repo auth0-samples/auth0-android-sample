@@ -7,7 +7,7 @@ It only includes an empty Start Activity and the basic Lock configuration to sta
 
 Remember to modify the `app_name`, `client_id` and `client_domain` inside `Strings.xml`.
 
-Alson you can modify the package path. Remember to do it in the folder path, the `android-manifest.xml` and the `app.gradle`.
+Also, you can modify the package path. Remember to do it in the folder path, the `android-manifest.xml` and the `app.gradle`.
 
 #### Important Snippets
 
