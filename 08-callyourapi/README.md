@@ -18,23 +18,25 @@ Look at `MainActivity.java`:
 
 ```java
 RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "your api url"; 
+String url = "your api url"; 
         
-        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
-                (Request.Method.GET, url, App.getInstance().getUserCredentials().getIdToken(),
-                        null, new Response.Listener<JSONObject>() {
+AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
+                (Request.Method.GET, url, App.getInstance().getUserCredentials().getIdToken(), null, 
+new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Parse Response
-                    }
-                }, new Response.ErrorListener() {
+	@Override
+	public void onResponse(JSONObject response) {
+		// Parse Response
+	}
+}, 
+new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+	@Override
+	public void onErrorResponse(VolleyError error) {
 
-                    }
-                });```
+	}
+}); 
+```
 
 These are the specific lines of code that you have to configure:
 
@@ -42,15 +44,15 @@ First, set your API url here:
 
 ```java
 RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "your api url"; 
+String url = "your api url"; 
 ```
 
 Also, pay attention to the `AuthorizationRequestObject.class`, in which you add the header required to authenticate:
 
 ```java
  Map headers = new HashMap();
-            headers.put("Bearer \\"+headerTokenID, "Authorization");
-            return headers;
+headers.put("Bearer \\"+headerTokenID, "Authorization");
+return headers;
 ```
 
 That string interpolation might vary depending on the standards that your API follows. 
