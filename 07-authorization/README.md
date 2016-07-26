@@ -8,7 +8,7 @@ Most of the tutorial is explained in the docs, this demo app is aimed to check i
 
 ##### 1. Check the user role
 
-Look at `MainActivity.class`, if the user is an admin, we navigate it to the settings screen:
+Look at `MainActivity.java`, if the user is an admin, we navigate it to the settings screen:
 
 ```java
 private void toSettings() {
