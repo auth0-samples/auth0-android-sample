@@ -7,7 +7,7 @@ It only includes an empty Start Activity and the basic Lock configuration to sta
 
 Remember to modify the `app_name`, `client_id` and `client_domain` inside `Strings.xml`.
 
-Also you can modify the package path. Remember to modify it in the folder path, the `android-manifest.xml` and the `app.gradle`.
+Alson you can modify the package path. Remember to do it in the folder path, the `android-manifest.xml` and the `app.gradle`.
 
 #### Important Snippets
 
@@ -20,4 +20,4 @@ compile 'com.auth0.android:lock:2.0.0-beta.2'
 ```
 
 > From here on, try any of the quickstarts!
-> We suggest you starting with the [Login Quickstart](https://auth0.com/docs/quickstart/native/android)
+> We suggest you to start with the [Login Quickstart](https://auth0.com/docs/quickstart/native/android)
