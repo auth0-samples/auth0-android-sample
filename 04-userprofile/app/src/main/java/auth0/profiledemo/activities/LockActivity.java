@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.auth0.Auth0;
+import com.auth0.android.Auth0;
 import com.auth0.android.lock.AuthenticationCallback;
 import com.auth0.android.lock.Lock;
 import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
-import com.auth0.authentication.result.Credentials;
+import com.auth0.android.result.Credentials;
 
 import auth0.profiledemo.R;
 import auth0.profiledemo.application.App;

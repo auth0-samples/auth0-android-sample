@@ -44,7 +44,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/usernameTitle"
+                android:id="@+id/userNameTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -52,42 +52,39 @@
                 android:textColor="@android:color/black"
                 android:textSize="13sp" />
 
-            <EditText
-                android:id="@+id/usernameEditext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/usernameTitle"
-                android:background="@null"
-                android:enabled="false"
-                android:textColor="@drawable/editext_color"
-                android:paddingLeft="@dimen/activity_small_margin"
-                android:textSize="13sp" />
-
             <TextView
                 android:id="@+id/userEmailTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/usernameTitle"
+                android:layout_below="@id/userNameTitle"
                 android:layout_alignParentLeft="true"
                 android:text="@string/useremail"
                 android:textColor="@android:color/black"
                 android:textSize="13sp" />
 
-            <EditText
-                android:id="@+id/usermailEditext"
+            <TextView
+                android:id="@+id/userCountryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/usernameEditext"
-                android:layout_toRightOf="@id/userEmailTitle"
-                android:background="@null"
-                android:enabled="false"
-                android:textColor="@drawable/editext_color"
-                android:paddingLeft="@dimen/activity_small_margin"
+                android:layout_below="@id/userEmailTitle"
+                android:layout_alignParentLeft="true"
+                android:text="@string/userCountry"
+                android:visibility="gone"
+                android:textColor="@android:color/black"
                 android:textSize="13sp" />
 
         </RelativeLayout>
 
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/updateCountryEdittext"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_margin="@dimen/activity_general_margin"
+        android:hint="@string/edit_hint"/>
 
 
     <Button

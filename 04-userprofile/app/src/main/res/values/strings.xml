@@ -4,9 +4,11 @@
     <string name="auth0_client_id">YOUR APPs CLIENT ID</string>
     <string name="auth0_domain">YOUR APPs DOMAIN</string>
 
-    <string name="username">Username: </string>
+    <string name="username">Name: </string>
     <string name="useremail">Email: </string>
+    <string name="userCountry">Country: </string>
 
+    <string name="edit_hint">Add the country...</string>
     <string name="edit">Edit Profile</string>
     <string name="save">Save Changes</string>
     <string name="cancel">Cancel Changes</string>
