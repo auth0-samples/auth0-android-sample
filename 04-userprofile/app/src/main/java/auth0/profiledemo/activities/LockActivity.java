@@ -16,10 +16,6 @@ import auth0.profiledemo.R;
 import auth0.profiledemo.application.App;
 
 
-/**
- * Created by emi on 6/6/16.
- */
-
 public class LockActivity extends Activity{
 
         private Lock lock;
