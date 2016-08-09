@@ -9,6 +9,11 @@
     <string name="linked_accounts">Linked Accounts:</string>
 
     <string name="link_account">Add Account</string>
+    <string name="unlink_account">Unlink Account?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 
 
 

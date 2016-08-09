@@ -35,7 +35,7 @@
 
                 <data
                     android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/YOURAPPPACKAGE/activities/callback"
+                    android:pathPrefix="/android/auth0/linkingaccountsdemo/activities/callback"
                     android:scheme="https" />
             </intent-filter>
         </activity>
@@ -44,7 +44,7 @@
         <activity android:name=".activities.LockActivity" />
         <activity android:name=".activities.MainActivity"></activity>
         <activity
-            android:name="com.auth0.android.lock.provider.WebViewActivity"></activity>
+            android:name="com.auth0.android.provider.WebAuthActivity"></activity>
     </application>
 
 </manifest>

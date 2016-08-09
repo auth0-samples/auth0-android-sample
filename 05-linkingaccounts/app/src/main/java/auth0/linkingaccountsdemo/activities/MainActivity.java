@@ -1,8 +1,12 @@
 package auth0.linkingaccountsdemo.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,14 +18,17 @@ import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.android.result.UserProfile;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import auth0.linkingaccountsdemo.R;
 import auth0.linkingaccountsdemo.application.App;
+import auth0.linkingaccountsdemo.utils.Constants;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -65,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
         mUsermailTextView = (TextView) findViewById(R.id.userEmailTitle);
 
         mLinkAccountButton = (Button) findViewById(R.id.linkAccountButton);
@@ -77,8 +83,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mLinkedAccountList = (ListView) findViewById(R.id.linkedAccountsList);
+        mLinkedAccountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final String accountConnectionType = ((TextView) view).getText().toString();
+                if (isNotPrimaryID(accountConnectionType)) {
+                    AlertDialog.Builder unlinkAccountBuilder = new AlertDialog.Builder(MainActivity.this);
+                    unlinkAccountBuilder.setMessage(R.string.unlink_account)
+                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    unlink(getIdentityWith(accountConnectionType));
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
 
 
+                } else {
+                    Toast.makeText(MainActivity.this, "You cannot unlink primary account", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
+    }
+
+    private UserIdentity getIdentityWith(String accountConnectionType) {
+        for(UserIdentity identity : mUserProfile.getIdentities()){
+            if(identity.getConnection().equals(accountConnectionType))
+                return identity;
+        }
+        return null;
+    }
+
+    private boolean isNotPrimaryID(String accountType) {
+        return !accountType.equals(mUserProfile.getIdentities().get(0).getConnection());
     }
 
     private void refreshScreenInformation() {
@@ -92,14 +137,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayAdapter<String> createSimpleAdapterWith(List<UserIdentity> identities) {
-        String[] identitiesArray = new String[200];
-        return new ArrayAdapter<String>(getBaseContext(),
-                android.R.layout.simple_list_item_1, identities.toArray(identitiesArray));
-
+        List<String> identitiesTypes = new ArrayList<>();
+        for (UserIdentity identity : identities) {
+            identitiesTypes.add(identity.getConnection());
+        }
+        return new ArrayAdapter<>(getBaseContext(),
+                R.layout.connectionlist_item, identitiesTypes);
     }
 
     private void linkAccount() {
+        Intent lockToLinkAccounts = new Intent(this, LockActivity.class);
+        lockToLinkAccounts.putExtra(Constants.LINK_ACCOUNTS, true);
+        startActivity(lockToLinkAccounts);
+    }
 
+    private void unlink(UserIdentity secondaryAccountIdentity) {
+        UsersAPIClient client = new UsersAPIClient(mAuth0, App.getInstance().getUserCredentials().getIdToken());
+        client.unlink(mUserProfile.getIdentities().get(0).getId(), secondaryAccountIdentity.getId(), secondaryAccountIdentity.getProvider());
     }
 
 }
