@@ -44,7 +44,7 @@
         <activity android:name=".activities.LockActivity" />
         <activity android:name=".activities.MainActivity"></activity>
         <activity
-            android:name="com.auth0.android.lock.provider.WebViewActivity"></activity>
+            android:name="com.auth0.android.provider.WebAuthActivity"></activity>
     </application>
 
 </manifest>
