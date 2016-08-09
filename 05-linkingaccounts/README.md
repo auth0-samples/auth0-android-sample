@@ -1,44 +1,26 @@
 # User Profile
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/04-user-profile)
+- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/05-linking-accounts)
 
-The idea of this sample is to show how to use Lock v2 to get the user's profile data in your android apps with Auth0.
+The idea of this sample is to show how to use Lock v2 to to link two different accounts for the same user.
+
 
 #### Important Snippets
 
-##### 1. Get the user profile
+##### 1. Link an account
 
-Using an `AuthenticationApiClient` instance:
+After you make a succesful login, and save the credentials, you must make a login with a new account and merge the accounts using both `Credentials`.
 
 ```java
-client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
-                .start(new BaseCallback<UserProfile>() {
-	@Override
-	public void onSuccess(UserProfile payload){
-	}
-
-	@Override
-	public void onFailure(Auth0Exception error){
-	}
+UsersAPIClient client = new UsersAPIClient(auth0, credentials.getIdToken());                client.link(App.getInstance().getUserCredentials().getIdToken(), secondaryCredentials.getIdToken());
 ```
 
 
-##### 2. Update the user profile
+##### 2. Unlink an account
 
-Using an `UserApiClient` instance:
-
+Using an `UserApiClient` instance, you must add as parameters the main account ID and from the desired to be unliked account both ID and provider name.
 
 ```java
-userClient.updateMetadata(mUserProfile.getId(), userMetadata).start(new BaseCallback<UserProfile, ManagementException>() {
-	@Override
-	public void onSuccess(final UserProfile payload) {
-	// As receive the updated profile here
-	// You can react to this, and show the information to the user.
-	}
-
-	@Override
-	public void onFailure(ManagementException error) {
-
-	}
-        });
+UsersAPIClient client = new UsersAPIClient(mAuth0, App.getInstance().getUserCredentials().getIdToken());
+client.unlink(primaryUserId, secondaryUserId, secondaryProvider);
 ```
