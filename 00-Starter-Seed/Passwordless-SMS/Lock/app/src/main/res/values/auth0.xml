@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="auth0_client_id">{CLIENT_ID}</string>
-    <string name="auth0_domain">{DOMAIN}</string>
-    <string name="sample_api_base_url">http://localhost:3001</string>
-</resources>
