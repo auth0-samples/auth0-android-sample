@@ -2,7 +2,7 @@ package auth0.profiledemo.application;
 
 import android.app.Application;
 
-import com.auth0.authentication.result.Credentials;
+import com.auth0.android.result.Credentials;
 
 /**
  * Created by emi on 6/14/16.
