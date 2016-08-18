@@ -1,4 +1,4 @@
-package auth0.customlogindemo.activities;
+package com.auth0.customlogindemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,13 +12,8 @@ import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.result.Credentials;
+import com.auth0.customlogindemo.R;
 
-import auth0.customlogindemo.R;
-
-
-/**
- * Created by emi on 27/6/16.
- */
 
 public class LoginActivity extends Activity{
 
