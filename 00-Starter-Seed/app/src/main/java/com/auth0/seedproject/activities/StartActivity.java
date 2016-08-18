@@ -1,9 +1,9 @@
-package auth0.seedproject.activities;
+package com.auth0.seedproject.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.seedproject.R;
+import com.auth0.seedproject.R;
 
 
 public class StartActivity extends AppCompatActivity {

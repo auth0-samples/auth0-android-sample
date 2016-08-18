@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="auth0.seedproject">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.auth0.seedproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,8 +11,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activities.StartActivity"
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup">
+        <activity
+            android:name=".activities.StartActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +45,8 @@
         <!-- Auth0 Lock End -->
 
         <activity
-            android:name="com.auth0.android.lock.provider.WebViewActivity"></activity>
+            android:name="com.auth0.android.provider.WebAuthActivity"
+            android:theme="@style/Lock.Theme" />
     </application>
 
 </manifest>
