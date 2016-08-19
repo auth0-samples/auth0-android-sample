@@ -1,9 +1,9 @@
-package auth0.customizinglockdemo.activities;
+package com.auth0.customizinglockdemo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.customizinglockdemo.R;
+import com.auth0.customizinglockdemo.R;
 
 
 public class MainActivity extends AppCompatActivity {
