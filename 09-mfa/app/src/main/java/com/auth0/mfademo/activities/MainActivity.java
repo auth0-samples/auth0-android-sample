@@ -1,10 +1,9 @@
-package auth0.mfademo.activities;
+package com.auth0.mfademo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.mfademo.R;
-
+import com.auth0.mfademo.R;
 
 public class MainActivity extends AppCompatActivity {
 
