@@ -1,10 +1,11 @@
-package auth0.profiledemo.activities;
+package com.auth0.profiledemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.profiledemo.R;
+import com.auth0.profiledemo.R;
+
 
 public class StartActivity extends AppCompatActivity {
 

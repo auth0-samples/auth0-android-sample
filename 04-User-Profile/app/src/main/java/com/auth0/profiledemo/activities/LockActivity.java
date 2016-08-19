@@ -1,4 +1,4 @@
-package auth0.profiledemo.activities;
+package com.auth0.profiledemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,37 +11,36 @@ import com.auth0.android.lock.Lock;
 import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
 import com.auth0.android.result.Credentials;
-
-import auth0.profiledemo.R;
-import auth0.profiledemo.application.App;
+import com.auth0.profiledemo.R;
+import com.auth0.profiledemo.application.App;
 
 
 public class LockActivity extends Activity{
 
-        private Lock lock;
+        private Lock mLock;
 
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
 
             Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-            this.lock = Lock.newBuilder(auth0, callback)
+            this.mLock = Lock.newBuilder(auth0, mCallback)
                     //Add parameters to the build
                     .build();
-            lock.onCreate(this);
+            mLock.onCreate(this);
             auth0.getAuthorizeUrl();
-            startActivity(this.lock.newIntent(this));
+            startActivity(this.mLock.newIntent(this));
         }
 
         @Override
         protected void onDestroy() {
             super.onDestroy();
             // Your own Activity code
-            lock.onDestroy(this);
-            lock = null;
+            mLock.onDestroy(this);
+            mLock = null;
         }
 
-        private LockCallback callback = new AuthenticationCallback() {
+        private final LockCallback mCallback = new AuthenticationCallback() {
             @Override
             public void onAuthentication(Credentials credentials) {
                 Toast.makeText(getApplicationContext(), "Log In - Success", Toast.LENGTH_SHORT).show();

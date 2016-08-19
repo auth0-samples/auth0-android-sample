@@ -1,4 +1,4 @@
-package auth0.profiledemo.activities;
+package com.auth0.profiledemo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +16,12 @@ import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserProfile;
+import com.auth0.profiledemo.R;
+import com.auth0.profiledemo.application.App;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import auth0.profiledemo.R;
-import auth0.profiledemo.application.App;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -92,13 +91,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshScreenInformation() {
-        mUsernameTextView.setText(getString(R.string.username) + " " + mUserProfile.getName());
-        mUsermailTextView.setText(getString(R.string.useremail) + " " + mUserProfile.getEmail());
+        mUsernameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
+        mUsermailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
         Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);
         if (!mUserProfile.getUserMetadata().get("country").toString().isEmpty()) {
             mUserCountryTextView.setVisibility(View.VISIBLE);
-            mUserCountryTextView.setText(getString(R.string.userCountry) + " " + mUserProfile.getUserMetadata().get("country").toString());
+            mUserCountryTextView.setText(String.format(getString(R.string.userCountry), mUserProfile.getUserMetadata().get("country").toString()));
         }
     }
 
