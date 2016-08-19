@@ -1,18 +1,19 @@
-package auth0.linkingaccountsdemo.application;
+package com.auth0.linkingaccountsdemo.application;
 
 import android.app.Application;
 
 import com.auth0.android.result.Credentials;
 
-public class App extends Application{
+public class App extends Application {
 
-    Credentials userCredentials;
+    private Credentials mUserCredentials;
 
     private static App appSingleton;
 
-    public static App getInstance(){
+    public static App getInstance() {
         return appSingleton;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -21,10 +22,10 @@ public class App extends Application{
 
 
     public Credentials getUserCredentials() {
-        return userCredentials;
+        return mUserCredentials;
     }
 
     public void setUserCredentials(Credentials userCredentials) {
-        this.userCredentials = userCredentials;
+        this.mUserCredentials = userCredentials;
     }
 }

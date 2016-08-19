@@ -1,4 +1,4 @@
-package auth0.linkingaccountsdemo.activities;
+package com.auth0.linkingaccountsdemo.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,14 +21,14 @@ import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.android.result.UserProfile;
+import com.auth0.linkingaccountsdemo.R;
+import com.auth0.linkingaccountsdemo.application.App;
+import com.auth0.linkingaccountsdemo.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import auth0.linkingaccountsdemo.R;
-import auth0.linkingaccountsdemo.application.App;
-import auth0.linkingaccountsdemo.utils.Constants;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private UserIdentity getIdentityWith(String accountConnectionType) {
-        for(UserIdentity identity : mUserProfile.getIdentities()){
-            if(identity.getConnection().equals(accountConnectionType))
+        for (UserIdentity identity : mUserProfile.getIdentities()) {
+            if (identity.getConnection().equals(accountConnectionType))
                 return identity;
         }
         return null;
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshScreenInformation() {
-        mUsermailTextView.setText(getString(R.string.useremail) + " " + mUserProfile.getEmail());
+        mUsermailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
         Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);
 

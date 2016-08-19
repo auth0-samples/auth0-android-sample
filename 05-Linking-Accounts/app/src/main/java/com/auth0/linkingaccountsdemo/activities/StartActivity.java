@@ -1,10 +1,11 @@
-package auth0.linkingaccountsdemo.activities;
+package com.auth0.linkingaccountsdemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.linkingaccountsdemo.R;
+import com.auth0.linkingaccountsdemo.R;
+
 
 public class StartActivity extends AppCompatActivity {
 
