@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "auth0.seedproject"
+        applicationId "com.auth0.seedproject"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
