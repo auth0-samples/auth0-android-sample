@@ -17,7 +17,7 @@ Auth0 auth0 = new Auth0(${account.clientId}, ${account.namespace});
                     .build();
 ```
 
-Add to the lyfe cycle:
+Add to the life cycle:
 
 ```java
  protected void onDestroy() {

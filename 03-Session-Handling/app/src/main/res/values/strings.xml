@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Auth0SessionManagementDemo</string>
 
-    <string name="auth0_client_id">YOUR APPs CLIENT ID</string>
-    <string name="auth0_domain">YOUR APPs DOMAIN</string>
+    <string name="auth0_client_id">AUTH0_CLIENT_ID</string>
+    <string name="auth0_domain">AUTH0_DOMAIN</string>
 
     <string name="refresh">Get New ID With a RefreshTokenID</string>
     <string name="token">Get New ID With a TokenID</string>
