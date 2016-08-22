@@ -1,51 +1,44 @@
-package auth0.callyourapidemo.activities;
+package com.auth0.callyourapidemo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.auth0.Auth0;
+import com.auth0.android.Auth0;
 import com.auth0.android.lock.AuthenticationCallback;
 import com.auth0.android.lock.Lock;
 import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
-import com.auth0.authentication.result.Credentials;
-
-import auth0.callyourapidemo.R;
-import auth0.callyourapidemo.application.App;
-
-
-
-/**
- * Created by emi on 7/19/16.
- */
+import com.auth0.android.result.Credentials;
+import com.auth0.callyourapidemo.R;
+import com.auth0.callyourapidemo.application.App;
 
 public class LockActivity extends Activity {
 
-    private Lock lock;
+    private Lock mLock;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        this.lock = Lock.newBuilder(auth0, callback)
+        this.mLock = Lock.newBuilder(auth0, mCallback)
                 //Add parameters to the build
                 .build();
-        lock.onCreate(this);
-        startActivity(this.lock.newIntent(this));
+        mLock.onCreate(this);
+        startActivity(this.mLock.newIntent(this));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // Your own Activity code
-        lock.onDestroy(this);
-        lock = null;
+        mLock.onDestroy(this);
+        mLock = null;
     }
 
-    private LockCallback callback = new AuthenticationCallback() {
+    private final LockCallback mCallback = new AuthenticationCallback() {
         @Override
         public void onAuthentication(Credentials credentials) {
             Toast.makeText(getApplicationContext(), "Log In - Success", Toast.LENGTH_SHORT).show();

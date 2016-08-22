@@ -1,10 +1,10 @@
-package auth0.callyourapidemo.activities;
+package com.auth0.callyourapidemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import auth0.callyourapidemo.R;
+import com.auth0.callyourapidemo.R;
 
 
 public class StartActivity extends AppCompatActivity {

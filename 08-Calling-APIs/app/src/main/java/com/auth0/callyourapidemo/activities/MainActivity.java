@@ -1,4 +1,4 @@
-package auth0.callyourapidemo.activities;
+package com.auth0.callyourapidemo.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,14 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.auth0.callyourapidemo.R;
+import com.auth0.callyourapidemo.application.App;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import auth0.callyourapidemo.R;
-import auth0.callyourapidemo.application.App;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,35 +40,33 @@ public class MainActivity extends AppCompatActivity {
         mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authenticateWithTokenID(App.getInstance().getUserCredentials().getIdToken());
+                authenticateWithIdToken(App.getInstance().getUserCredentials().getIdToken());
             }
         });
 
-        mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
+        mNonAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authenticateWithTokenID("");
+                authenticateWithIdToken("");
             }
         });
-
-
 
 
     }
 
     /**
      * This method request should work fine, if your server configuration is ok
-     * and if you send the proper tokenID
+     * and if you send the proper idToken
      */
 
-    private void authenticateWithTokenID(String tokenID) {
+    private void authenticateWithIdToken(String idToken) {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "your api url"; // TODO Replace this
 
         AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
-                (Request.Method.GET, url, tokenID,
+                (Request.Method.GET, url, idToken,
                         null, new Response.Listener<JSONObject>() {
 
                     @Override
@@ -91,22 +88,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public class AuthorizationRequestObject extends JsonObjectRequest
-    {
-        private String headerTokenID = null;
+    public class AuthorizationRequestObject extends JsonObjectRequest {
+        private String mHeaderTokenID = null;
 
-        public AuthorizationRequestObject(int method, String url, String tokenID, JSONObject jsonRequest, Response.Listener listener, Response.ErrorListener errorListener)
-        {
+        public AuthorizationRequestObject(int method, String url, String tokenID, JSONObject jsonRequest, Response.Listener listener, Response.ErrorListener errorListener) {
             super(method, url, jsonRequest, listener, errorListener);
-            headerTokenID = tokenID;
+            mHeaderTokenID = tokenID;
         }
 
         @Override
         public Map getHeaders() throws AuthFailureError {
             Map headers = new HashMap();
-            
-            if(headerTokenID != null)
-            headers.put("Bearer "+headerTokenID, "Authorization");
+
+            if (mHeaderTokenID != null)
+                headers.put("Bearer " + mHeaderTokenID, "Authorization");
 
             return headers;
         }
