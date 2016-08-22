@@ -1,15 +1,12 @@
-package auth0.rulesdemo.application;
+package com.auth0.rulesdemo.application;
 
 import android.app.Application;
 
-import com.auth0.authentication.result.Credentials;
+import com.auth0.android.result.Credentials;
 
-/**
- * Created by emi on 6/14/16.
- */
 public class App extends Application{
 
-    Credentials userCredentials;
+    private Credentials mUserCredentials;
 
     private static App appSingleton;
 
@@ -24,10 +21,10 @@ public class App extends Application{
 
 
     public Credentials getUserCredentials() {
-        return userCredentials;
+        return mUserCredentials;
     }
 
     public void setUserCredentials(Credentials userCredentials) {
-        this.userCredentials = userCredentials;
+        this.mUserCredentials = userCredentials;
     }
 }
