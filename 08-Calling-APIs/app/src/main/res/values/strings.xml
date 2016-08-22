@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">08-Call Your Api</string>
 
-    <string name="auth0_client_id">AUTH0_CLIENT_ID</string>
-    <string name="auth0_domain">AUTH0_DOMAIN</string>
+    <string name="auth0_client_id">{CLIENT_ID}</string>
+    <string name="auth0_domain">{DOMAIN}</string>
 
     <string name="authenticated_request">Authenticated Request</string>
     <string name="non_authenticated_request">Non-Authenticated Request</string>
