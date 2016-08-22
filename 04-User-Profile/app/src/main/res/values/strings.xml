@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">04-User Profile</string>
 
-    <string name="auth0_client_id">{AUTH0_CLIENT_ID}</string>
-    <string name="auth0_domain">{AUTH0_DOMAIN}</string>
+    <string name="auth0_client_id">AUTH0_CLIENT_ID</string>
+    <string name="auth0_domain">AUTH0_DOMAIN</string>
 
-    <string name="username">Name: </string>
-    <string name="useremail">Email: </string>
-    <string name="userCountry">Country: </string>
+    <string name="username">Name: %1$s</string>
+    <string name="useremail">Email: %1$s</string>
+    <string name="userCountry">Country: %1$s</string>
 
-    <string name="edit_hint">Add the country...</string>
+    <string name="edit_hint">Add the country…</string>
     <string name="edit">Edit Profile</string>
     <string name="save">Save Changes</string>
     <string name="cancel">Cancel Changes</string>
