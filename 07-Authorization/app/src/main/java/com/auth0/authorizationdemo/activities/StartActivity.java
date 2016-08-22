@@ -1,10 +1,8 @@
-package auth0.authorizationdemo.activities;
+package com.auth0.authorizationdemo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import auth0.authorizationdemo.R;
 
 
 public class StartActivity extends AppCompatActivity {
