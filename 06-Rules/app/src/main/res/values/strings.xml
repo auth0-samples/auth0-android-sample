@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">06-Rules</string>
 
-    <string name="auth0_client_id">${account.clientId}</string>
-    <string name="auth0_domain">${account.namespace}</string>
+    <string name="auth0_client_id">AUTH0_CLIENT_ID</string>
+    <string name="auth0_domain">AUTH0_DOMAIN</string>
 
     <string name="username">Username: </string>
     <string name="useremail">Email: </string>
