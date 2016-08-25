@@ -8,5 +8,7 @@
     <string name="token">Get New ID With a TokenID</string>
     <string name="logout">Logout</string>
 
+    <string name="auth0_preferences">AUTH0_SHARED_PREFERENCES_KEY</string>
+
 
 </resources>
