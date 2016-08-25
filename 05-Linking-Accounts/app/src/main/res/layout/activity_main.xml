@@ -35,7 +35,8 @@
             android:id="@+id/userPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_small_margin" />
+            android:padding="@dimen/activity_small_margin"
+            tools:ignore="ContentDescription" />
 
         <RelativeLayout
             android:layout_width="wrap_content"

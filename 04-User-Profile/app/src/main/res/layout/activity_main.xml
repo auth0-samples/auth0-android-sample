@@ -19,7 +19,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
@@ -35,7 +36,8 @@
             android:id="@+id/userPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_small_margin" />
+            android:padding="@dimen/activity_small_margin"
+            tools:ignore="ContentDescription" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -108,7 +110,7 @@
         android:padding="@dimen/activity_general_margin"
         android:text="@string/cancel"
         android:visibility="gone" />
-    >
+
 
 
 </LinearLayout>

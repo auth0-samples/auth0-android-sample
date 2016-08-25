@@ -10,25 +10,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="30dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
-
         <TextView
+            android:drawableTop="@drawable/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
             android:text="@string/welcome"
-            android:textSize="20dp" />
-
-    </LinearLayout>
+            android:textSize="20sp" />
 
 </RelativeLayout>
