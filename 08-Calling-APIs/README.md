@@ -20,8 +20,7 @@ Look at `MainActivity.java`:
 RequestQueue queue = Volley.newRequestQueue(this);
 String url = "your api url"; 
         
-AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
-                (Request.Method.GET, url, App.getInstance().getUserCredentials().getIdToken(), null, 
+AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject(Request.Method.GET, url, App.getInstance().getUserCredentials().getIdToken(), null, 
 new Response.Listener<JSONObject>() {
 
 	@Override
@@ -50,7 +49,7 @@ String url = "your api url";
 Also, pay attention to the `AuthorizationRequestObject.class`, in which you add the header required to authenticate:
 
 ```java
- Map headers = new HashMap();
+Map headers = new HashMap();
 headers.put("Bearer \\"+headerTokenID, "Authorization");
 return headers;
 ```

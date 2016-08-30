@@ -13,10 +13,8 @@ Here is important to take note on the `activity_login.xml`, which contains the d
 First, in your customized login method, instantiate the Authentication API:
 
 ```java
-// TODO  Modify the Strings.xml - Add your own client_id and auth0_domain
-
-		Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));       
-		AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);        
+Auth0 auth0 = new Auth0(AUTH0_CLIENT_ID, AUTH0_DOMAIN); 
+AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);        
         }      
 ```
 
@@ -25,15 +23,15 @@ First, in your customized login method, instantiate the Authentication API:
 In `LoginActivity.class`:
 
 ```java   
-        client.login(email, password).start(new BaseCallback<Credentials>() {
-            @Override
-            public void onSuccess(Credentials payload) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
+client.login(email, password).start(new BaseCallback<Credentials>() {
+	@Override
+	public void onSuccess(Credentials payload) {
+		startActivity(new Intent(getApplicationContext(), MainActivity.class));
+	}
 
-            @Override
-            public void onFailure(Auth0Exception error) {
-
-            }
-        });
+	@Override
+	public void onFailure(Auth0Exception error) {
+	// Manage Login failure
+	}
+});
 ```
