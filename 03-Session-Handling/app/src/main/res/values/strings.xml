@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Auth0SessionManagementDemo</string>
+    <string name="app_name">03 - Session Management</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>
@@ -7,6 +7,8 @@
     <string name="refresh">Get New ID With a RefreshTokenID</string>
     <string name="token">Get New ID With a TokenID</string>
     <string name="logout">Logout</string>
+
+    <string name="auth0_preferences">AUTH0_SHARED_PREFERENCES_KEY</string>
 
 
 </resources>
