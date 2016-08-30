@@ -12,11 +12,12 @@ Look at `MainActivity.java`, if the user is an admin, we navigate it to the sett
 
 ```java
 private void toSettings() {
-        String role = mUserProfile.getAppMetadata().get("roles").toString();
+	String role = mUserProfile.getAppMetadata().get("roles").toString();
 
-        if(role.contains("admin"))
-            startActivity(new Intent(this, SettingsActivity.class));
-        else
-            Toast.makeText(MainActivity.this, "You don't have access rights to visit this page", Toast.LENGTH_SHORT).show();
+	if(role.contains("admin"))
+		startActivity(new Intent(this, SettingsActivity.class));
+	else
+		Toast.makeText(MainActivity.this, "You don't have access rights to visit this page", Toast.LENGTH_SHORT).show();
     }
+}
 ```

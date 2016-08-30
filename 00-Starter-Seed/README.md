@@ -16,8 +16,8 @@ Inside the `app.gradle` dependencies:
 
 
 ```xml
-compile 'com.auth0.android:lock:2.0.0-beta.2'   
+compile 'com.auth0.android:lock:2.0.0-beta.3'   
 ```
 
 > From here on, try any of the quickstarts!
-> We suggest you to start with the [Login Quickstart](https://auth0.com/docs/quickstart/native/android)
+> We suggest you to start with the [Login Quickstart](/quickstart/native/android)

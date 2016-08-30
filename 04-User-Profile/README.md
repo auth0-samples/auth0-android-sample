@@ -11,14 +11,14 @@ The idea of this sample is to show how to use Lock v2 to get the user's profile 
 Using an `AuthenticationApiClient` instance:
 
 ```java
-client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
-                .start(new BaseCallback<UserProfile>() {
+ client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
+                .start(new BaseCallback<UserProfile, AuthenticationException>()  {
 	@Override
 	public void onSuccess(UserProfile payload){
 	}
 
 	@Override
-	public void onFailure(Auth0Exception error){
+	public void onFailure(AuthenticationException error){
 	}
 ```
 
@@ -26,7 +26,6 @@ client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
 ##### 2. Update the user profile
 
 Using an `UserApiClient` instance:
-
 
 ```java
 userClient.updateMetadata(mUserProfile.getId(), userMetadata).start(new BaseCallback<UserProfile, ManagementException>() {
@@ -40,5 +39,5 @@ userClient.updateMetadata(mUserProfile.getId(), userMetadata).start(new BaseCall
 	public void onFailure(ManagementException error) {
 
 	}
-        });
+});
 ```
