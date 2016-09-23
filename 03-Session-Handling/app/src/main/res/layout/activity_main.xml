@@ -6,10 +6,9 @@
     android:background="#FFF5F7F9"
     android:orientation="vertical"
     android:padding="@dimen/activity_general_margin"
-    tools:context=".activities.MainActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"

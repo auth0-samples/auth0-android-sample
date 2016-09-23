@@ -1,4 +1,4 @@
-package com.auth0.sessiondemo.activities;
+package com.auth0.sessiondemo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +12,11 @@ import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.result.Delegation;
-import com.auth0.sessiondemo.R;
 import com.auth0.sessiondemo.utils.CredentialsManager;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mNewIDRefreshButton;
-    private Button mNewIDTokenButton;
-    private Button mLogoutButton;
     private AuthenticationAPIClient mAuthenticationClient;
 
     @Override
@@ -30,33 +26,28 @@ public class MainActivity extends AppCompatActivity {
 
         mAuthenticationClient = new AuthenticationAPIClient(new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain)));
 
+        Button refreshTokenButton = (Button) findViewById(R.id.refreshTokenButton);
+        Button idTokenButton = (Button) findViewById(R.id.tokenIDButton);
+        Button logoutButton = (Button) findViewById(R.id.logout);
 
-        mNewIDRefreshButton = (Button) findViewById(R.id.refreshTokenButton);
-        mNewIDTokenButton = (Button) findViewById(R.id.tokenIDButton);
-
-        mLogoutButton = (Button) findViewById(R.id.logout);
-
-        mNewIDRefreshButton.setOnClickListener(new View.OnClickListener() {
+        refreshTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getNewIDWithRefreshToken();
             }
         });
-        mNewIDTokenButton.setOnClickListener(new View.OnClickListener() {
+        idTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getNewIDWithOldIDToken();
             }
         });
-
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logout();
             }
         });
-
-
     }
 
     private void getNewIDWithOldIDToken() {
@@ -64,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
         mAuthenticationClient.delegationWithIdToken(idToken).start(new BaseCallback<Delegation, AuthenticationException>() {
             @Override
             public void onSuccess(final Delegation payload) {
-                payload.getIdToken(); // New ID Token
-                payload.getExpiresIn(); // New ID Token Expire Date
                 MainActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(MainActivity.this, "New idToken: " + payload.getIdToken(), Toast.LENGTH_SHORT).show();
@@ -95,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "New idToken: " + payload.getIdToken(), Toast.LENGTH_SHORT).show();
                     }
                 });
-                payload.getIdToken(); // New ID Token
-                payload.getExpiresIn(); // New ID Token Expire Date
             }
 
             @Override
@@ -113,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         CredentialsManager.deleteCredentials(this);
-        startActivity(new Intent(this, StartActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }
