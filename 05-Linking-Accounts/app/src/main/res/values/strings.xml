@@ -1,21 +1,12 @@
 <resources>
     <string name="app_name">05-Linking Accounts</string>
-
-    <string name="auth0_client_id">{CLIENT_ID}</string>
-    <string name="auth0_domain">{DOMAIN}</string>
-
-
     <string name="useremail">Email: %1$s</string>
-
     <string name="linked_accounts">Linked Accounts:</string>
-
     <string name="link_account">Add Account</string>
     <string name="unlink_account">Unlink Account?</string>
-
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-
-
-
+    <string name="auth0_client_id">{CLIENT_ID}</string>
+    <string name="auth0_domain">{DOMAIN}</string>
 </resources>

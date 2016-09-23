@@ -18,6 +18,7 @@ import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.android.result.UserProfile;
@@ -33,7 +34,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mLinkAccountButton;
     private TextView mUsermailTextView;
     private UserProfile mUserProfile;
     private Auth0 mAuth0;
@@ -46,36 +46,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        // The process to reclaim an UserProfile is preceded by an Authentication call.
-        AuthenticationAPIClient aClient = new AuthenticationAPIClient(mAuth0);
-        aClient.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
-                .start(new BaseCallback<UserProfile, AuthenticationException>() {
-                    @Override
-                    public void onSuccess(final UserProfile payload) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            public void run() {
-                                mUserProfile = payload;
-                                refreshScreenInformation();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onFailure(AuthenticationException error) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-
 
         mUsermailTextView = (TextView) findViewById(R.id.userEmailTitle);
 
-        mLinkAccountButton = (Button) findViewById(R.id.linkAccountButton);
-        mLinkAccountButton.setOnClickListener(new View.OnClickListener() {
+        Button linkAccountButton = (Button) findViewById(R.id.linkAccountButton);
+        linkAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 linkAccount();
@@ -104,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }).show();
 
-
                 } else {
                     Toast.makeText(MainActivity.this, "You cannot unlink primary account", Toast.LENGTH_SHORT).show();
                 }
@@ -112,6 +86,38 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchProfileInfo();
+    }
+
+    private void fetchProfileInfo() {
+        // The process to reclaim an UserProfile is preceded by an Authentication call.
+        AuthenticationAPIClient aClient = new AuthenticationAPIClient(mAuth0);
+        aClient.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
+                .start(new BaseCallback<UserProfile, AuthenticationException>() {
+                    @Override
+                    public void onSuccess(final UserProfile payload) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                mUserProfile = payload;
+                                refreshScreenInformation();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(AuthenticationException error) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
     }
 
     private UserIdentity getIdentityWith(String accountConnectionType) {
@@ -131,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
         Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);
 
-
         ArrayAdapter<String> adapter = createSimpleAdapterWith(mUserProfile.getIdentities());
         mLinkedAccountList.setAdapter(adapter);
     }
@@ -146,14 +151,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void linkAccount() {
-        Intent lockToLinkAccounts = new Intent(this, LockActivity.class);
+        Intent lockToLinkAccounts = new Intent(this, LoginActivity.class);
         lockToLinkAccounts.putExtra(Constants.LINK_ACCOUNTS, true);
+        lockToLinkAccounts.putExtra(Constants.PRIMARY_USER_ID, mUserProfile.getId());
         startActivity(lockToLinkAccounts);
     }
 
     private void unlink(UserIdentity secondaryAccountIdentity) {
         UsersAPIClient client = new UsersAPIClient(mAuth0, App.getInstance().getUserCredentials().getIdToken());
-        client.unlink(mUserProfile.getIdentities().get(0).getId(), secondaryAccountIdentity.getId(), secondaryAccountIdentity.getProvider());
+        client.unlink(mUserProfile.getId(), secondaryAccountIdentity.getId(), secondaryAccountIdentity.getProvider())
+        .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
+            @Override
+            public void onSuccess(List<UserIdentity> payload) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Account unlinked!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                fetchProfileInfo();
+            }
+
+            @Override
+            public void onFailure(final ManagementException error) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Account unlink failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
 }
