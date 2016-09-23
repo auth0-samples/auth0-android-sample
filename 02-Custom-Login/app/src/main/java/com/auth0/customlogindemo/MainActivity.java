@@ -1,10 +1,8 @@
-package com.auth0.customlogindemo.activities;
+package com.auth0.customlogindemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
-import com.auth0.customlogindemo.R;
 
 public class MainActivity extends AppCompatActivity {
 
