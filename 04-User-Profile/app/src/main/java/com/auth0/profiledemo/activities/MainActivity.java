@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                                 refreshScreenInformation();
                             }
                         });
-
                     }
 
                     @Override
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
-
 
         mEditProfileButton = (Button) findViewById(R.id.editButton);
         mCancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 editModeOn(false);
             }
         });
-
     }
 
     private void refreshScreenInformation() {
