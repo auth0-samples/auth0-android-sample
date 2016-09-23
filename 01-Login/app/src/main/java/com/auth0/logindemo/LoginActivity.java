@@ -1,4 +1,4 @@
-package com.auth0.logindemo.activities;
+package com.auth0.logindemo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import com.auth0.android.lock.Lock;
 import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
 import com.auth0.android.result.Credentials;
-import com.auth0.logindemo.R;
 
 
 public class LoginActivity extends Activity {
@@ -20,14 +19,11 @@ public class LoginActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        this.mLock = Lock.newBuilder(auth0, mCallback)
-                //Add parameters to the build
-                .build();
-        mLock.onCreate(this);
-        startActivity(this.mLock.newIntent(this));
+        mLock = Lock.newBuilder(auth0, mCallback)
+                //Add parameters to the builder
+                .build(this);
+        startActivity(mLock.newIntent(this));
     }
 
     @Override

@@ -1,10 +1,8 @@
-package com.auth0.logindemo.activities;
+package com.auth0.logindemo;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import com.auth0.logindemo.R;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -15,8 +13,5 @@ public class StartActivity extends AppCompatActivity {
 
         Intent lockIntent = new Intent(this, LoginActivity.class);
         startActivity(lockIntent);
-
     }
-
-
 }
