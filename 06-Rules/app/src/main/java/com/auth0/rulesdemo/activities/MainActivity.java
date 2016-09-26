@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
@@ -22,26 +23,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final TextView username = (TextView) findViewById(R.id.username);
+        final TextView email = (TextView) findViewById(R.id.email);
+        final TextView country = (TextView) findViewById(R.id.country);
+        final ImageView picture = (ImageView) findViewById(R.id.userPicture);
+
         AuthenticationAPIClient client = new AuthenticationAPIClient(new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain)));
         client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
                     public void onSuccess(final UserProfile payload) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             public void run() {
-                                ((TextView) findViewById(R.id.username)).setText(payload.getName());
-                                ((TextView) findViewById(R.id.usermail)).setText(payload.getEmail());
-                                ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-                                Picasso.with(getApplicationContext()).load(payload.getPictureURL()).into(userPicture);
+                                username.setText(payload.getName());
+                                email.setText(payload.getEmail());
+                                Picasso.with(getApplicationContext()).load(payload.getPictureURL()).into(picture);
 
                                 // Get the country from the user profile
                                 // This is included in the extra info... and must be enabled in the Auth0 rules web.
-                                try {
-                                    ((TextView) findViewById(R.id.userCountry)).setText(payload.getExtraInfo().get("country").toString());
-                                } catch (Exception e) {
+                                if (!payload.getExtraInfo().containsKey("country")) {
+                                    Toast.makeText(MainActivity.this, "Country not available. Check your Rules in the dashboard.", Toast.LENGTH_LONG).show();
                                     Log.e("AUTH0", "Failed assigning country info... check if country rule is enabled in Auth0 web");
+                                    return;
                                 }
-
+                                country.setText(payload.getExtraInfo().get("country").toString());
                             }
                         });
 
@@ -51,6 +56,5 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(AuthenticationException error) {
                     }
                 });
-
     }
 }
