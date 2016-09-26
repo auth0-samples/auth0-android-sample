@@ -14,20 +14,18 @@ import com.auth0.android.result.Credentials;
 import com.auth0.callyourapidemo.R;
 import com.auth0.callyourapidemo.application.App;
 
-public class LockActivity extends Activity {
+public class LoginActivity extends Activity {
 
     private Lock mLock;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        this.mLock = Lock.newBuilder(auth0, mCallback)
+        mLock = Lock.newBuilder(auth0, mCallback)
                 //Add parameters to the build
-                .build();
-        mLock.onCreate(this);
-        startActivity(this.mLock.newIntent(this));
+                .build(this);
+        startActivity(mLock.newIntent(this));
     }
 
     @Override
@@ -41,19 +39,19 @@ public class LockActivity extends Activity {
     private final LockCallback mCallback = new AuthenticationCallback() {
         @Override
         public void onAuthentication(Credentials credentials) {
-            Toast.makeText(getApplicationContext(), "Log In - Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
             App.getInstance().setUserCredentials(credentials);
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
 
         @Override
         public void onCanceled() {
-            Toast.makeText(getApplicationContext(), "Log In - Cancelled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Log In - Cancelled", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(LockException error) {
-            Toast.makeText(getApplicationContext(), "Log In - Error Occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Log In - Error Occurred", Toast.LENGTH_SHORT).show();
         }
     };
 
