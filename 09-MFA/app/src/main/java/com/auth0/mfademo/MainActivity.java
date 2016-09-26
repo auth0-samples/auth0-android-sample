@@ -1,4 +1,4 @@
-package com.auth0.mfademo.activities;
+package com.auth0.mfademo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
