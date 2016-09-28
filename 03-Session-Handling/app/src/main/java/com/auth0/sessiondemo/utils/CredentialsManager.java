@@ -18,11 +18,9 @@ public class CredentialsManager {
                 .putString(Constants.ACCESS_TOKEN, credentials.getAccessToken())
                 .putString(Constants.CREDENTIAL_TYPE, credentials.getType())
                 .commit();
-
     }
 
     public static Credentials getCredentials(Context context){
-
         SharedPreferences sharedPref = context.getSharedPreferences(
                 context.getString(R.string.auth0_preferences), Context.MODE_PRIVATE);
 
@@ -33,8 +31,6 @@ public class CredentialsManager {
                 sharedPref.getString(Constants.REFRESH_TOKEN, null));
 
         return credentials;
-
-
     }
 
     public static void deleteCredentials(Context context){
@@ -47,7 +43,6 @@ public class CredentialsManager {
                 .putString(Constants.ACCESS_TOKEN, null)
                 .putString(Constants.CREDENTIAL_TYPE, null)
                 .commit();
-
     }
 
 

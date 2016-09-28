@@ -24,7 +24,7 @@ public class App extends Application{
         return mUserCredentials;
     }
 
-    public void setmUserCredentials(Credentials mUserCredentials) {
+    public void setUserCredentials(Credentials mUserCredentials) {
         this.mUserCredentials = mUserCredentials;
     }
 }

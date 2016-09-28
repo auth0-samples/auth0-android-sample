@@ -56,20 +56,20 @@
             tools:ignore="RtlSymmetry" />
 
         <TextView
-            android:id="@+id/userEmailTitle"
+            android:id="@+id/emailTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/usernameTitle"
             android:layout_toRightOf="@id/userPicture"
-            android:text="@string/useremail"
+            android:text="@string/email"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/usermail"
+            android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/username"
-            android:layout_toRightOf="@id/userEmailTitle"
+            android:layout_toRightOf="@id/emailTitle"
             android:paddingLeft="@dimen/activity_small_margin"
             tools:ignore="RtlSymmetry" />
 
@@ -77,16 +77,16 @@
             android:id="@+id/userCountryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/userEmailTitle"
+            android:layout_below="@id/emailTitle"
             android:layout_toRightOf="@id/userPicture"
             android:text="@string/country"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/userCountry"
+            android:id="@+id/country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/usermail"
+            android:layout_below="@id/email"
             android:layout_toRightOf="@id/userCountryTitle"
             android:paddingLeft="@dimen/activity_small_margin"
             tools:ignore="RtlSymmetry" />

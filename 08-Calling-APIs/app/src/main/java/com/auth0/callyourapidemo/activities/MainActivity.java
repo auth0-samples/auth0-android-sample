@@ -25,45 +25,37 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mAuthenticatedRequestButton;
-    private Button mNonAuthenticatedRequestButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuthenticatedRequestButton = (Button) findViewById(R.id.authenticatedButton);
-        mNonAuthenticatedRequestButton = (Button) findViewById(R.id.nonAuthenticatedButton);
+        Button authenticatedRequestButton = (Button) findViewById(R.id.authenticatedButton);
+        Button nonAuthenticatedRequestButton = (Button) findViewById(R.id.nonAuthenticatedButton);
 
-
-        mAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
+        authenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 authenticateWithIdToken(App.getInstance().getUserCredentials().getIdToken());
             }
         });
 
-        mNonAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
+        nonAuthenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 authenticateWithIdToken("");
             }
         });
-
-
     }
 
     /**
      * This method request should work fine, if your server configuration is ok
      * and if you send the proper idToken
      */
-
     private void authenticateWithIdToken(String idToken) {
-
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "your api url"; // TODO Replace this
+        String url = "YOUR API URL"; // TODO Replace this
 
         AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
                 (Request.Method.GET, url, idToken,
@@ -85,13 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(authorizationRequest);
-
     }
 
     public class AuthorizationRequestObject extends JsonObjectRequest {
         private String mHeaderTokenID = null;
 
-        public AuthorizationRequestObject(int method, String url, String tokenID, JSONObject jsonRequest, Response.Listener listener, Response.ErrorListener errorListener) {
+        AuthorizationRequestObject(int method, String url, String tokenID, JSONObject jsonRequest, Response.Listener listener, Response.ErrorListener errorListener) {
             super(method, url, jsonRequest, listener, errorListener);
             mHeaderTokenID = tokenID;
         }
@@ -99,13 +90,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Map getHeaders() throws AuthFailureError {
             Map headers = new HashMap();
-
-            if (mHeaderTokenID != null)
+            if (mHeaderTokenID != null) {
                 headers.put("Bearer " + mHeaderTokenID, "Authorization");
-
+            }
             return headers;
         }
-
     }
 
 }
