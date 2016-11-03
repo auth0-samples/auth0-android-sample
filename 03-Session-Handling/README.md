@@ -1,10 +1,12 @@
 # Session Handling 
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/ios-swift/03-session-handling)
+[Full Tutorial](https://auth0.com/docs/quickstart/native/ios-swift/03-session-handling)
 
 The idea of this sample is to show how to achieve session handling on your application, meaning, how to manage the authenticaion credentials to maintain the user logged in.
 
 There are many approaches on how you can save the users credentials, with their pros and cons. In this sample project, it's saved dinamically trough the `CredentialsManager.class`. Other means of preserving the data are excluded from the demo.
+
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 

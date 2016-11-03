@@ -1,12 +1,14 @@
 # Calling APIs 
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/08-calling-apis)
+[Full Tutorial](https://auth0.com/docs/quickstart/native/android/08-calling-apis)
 
 The idea of this project is to perform authenticated requests by attaching the `idToken`, obtained upon login, into an authorization header.
 
 This sample can be seen as a template where you'll have to set your own stuff in order to get it working. Pay attention to the snippets where you have to do that.
 
 Also, you will need a server that accepts authenticated APIs with an endpoint capable of checking whether or not a request has been properly authenticated. You can use your own or [this nodeJS one](https://github.com/auth0-samples/auth0-angularjs2-systemjs-sample/tree/master/Server), whose setup is quite simple.
+
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 

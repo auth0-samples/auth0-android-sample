@@ -1,8 +1,10 @@
 # User Profile
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/04-user-profile)
+[Full Tutorial](https://auth0.com/docs/quickstart/native/android/04-user-profile)
 
 The idea of this sample is to show how to use Lock v2 to get the user's profile data in your android apps with Auth0.
+
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 

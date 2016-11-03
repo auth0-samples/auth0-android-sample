@@ -1,10 +1,12 @@
 # Custom Login 
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/02-custom-login)
+[Full Tutorial](https://auth0.com/docs/quickstart/native/android/02-custom-login)
 
 This sample project shows how to make up a login and a sign up with a customized screen, created by you, using  [Auth0 for Android](https://github.com/auth0/auth0.android) library.
 
 Here is important to take note on the `activity_login.xml`, which contains the design of the login, including the buttons and editexts required to perform it.
+
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 

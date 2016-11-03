@@ -1,9 +1,10 @@
 # User Profile
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/05-linking-accounts)
+[Full Tutorial](https://auth0.com/docs/quickstart/native/android/05-linking-accounts)
 
 The idea of this sample is to show how to use Lock v2 to to link two different accounts for the same user.
 
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 

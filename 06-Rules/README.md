@@ -1,8 +1,10 @@
 # Rules 
 
-The guts of this topic is actually found in the [full tutorial](https://auth0.com/docs/quickstart/native/android/06-rules), where it's exposed how to configure a rule from the Auth0 management website.
+[Full Tutorial](https://auth0.com/docs/quickstart/native/android/06-rules)
 
 This sample on itself does not contain really valuable content; however, the only piece of code that we can stand out is how to get the information added by the rule in the example from the tutorial.
+
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 

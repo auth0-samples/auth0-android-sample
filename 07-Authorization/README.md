@@ -1,8 +1,10 @@
 # Authorization 
 
-- [Full Tutorial](https://auth0.com/docs/quickstart/native/android/07-authorization)
+[Full Tutorial](https://auth0.com/docs/quickstart/native/android/07-authorization)
 
 Most of the tutorial is explained in the docs, this demo app is aimed to check if the created authorization rule, works properly.
+
+Start by renaming the `strings.xml.example` file in `app/src/main/res/values` to `strings.xml` and provide your `app_name`, `client_id` and `client_domain`.
 
 #### Important Snippets
 
