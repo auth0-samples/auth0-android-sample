@@ -1,5 +1,6 @@
 package com.auth0.callyourapidemo.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button authenticatedRequestButton = (Button) findViewById(R.id.authenticatedButton);
         Button nonAuthenticatedRequestButton = (Button) findViewById(R.id.nonAuthenticatedButton);
+        Button logoutButton = (Button) findViewById(R.id.logout);
 
         authenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 authenticateWithIdToken("");
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
             }
         });
     }
@@ -97,4 +106,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void logout() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
 }

@@ -8,24 +8,14 @@
     android:padding="@dimen/activity_general_margin"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
-
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo" />
-
-    </LinearLayout>
+        android:src="@drawable/logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="341dp"
         android:background="@android:color/white"
         android:orientation="horizontal"
         android:gravity="center_vertical"
@@ -64,7 +54,7 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:textSize="13sp" />
-            
+
             <ListView
                 android:id="@+id/linkedAccountsList"
                 android:layout_below="@+id/linkedAccountsTitle"
@@ -73,8 +63,18 @@
 
             </ListView>
 
-            
+
         </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
     </LinearLayout>
 
@@ -85,6 +85,17 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/activity_general_margin"
         android:text="@string/link_account"/>
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_general_margin"
+        android:background="@android:color/white"
+        android:padding="@dimen/activity_general_margin"
+        android:textColor="@color/blue_text"
+        android:text="@string/logout" />
 
 
 </LinearLayout>

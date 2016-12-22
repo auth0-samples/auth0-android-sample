@@ -10,14 +10,29 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:padding="@dimen/activity_general_margin"
+            android:textColor="@color/blue_text"
+            android:text="@string/logout"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="125dp" />
+
         <TextView
             android:drawableTop="@drawable/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="39dp"
             android:gravity="center"
             android:orientation="vertical"
             android:text="@string/welcome_message"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -57,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button logoutButton = (Button) findViewById(R.id.logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
         mLinkedAccountList = (ListView) findViewById(R.id.linkedAccountsList);
         mLinkedAccountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -180,6 +188,11 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void logout() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
 }

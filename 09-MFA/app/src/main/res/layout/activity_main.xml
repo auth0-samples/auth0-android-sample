@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,6 +18,17 @@
         android:drawableTop="@drawable/logo"
         android:text="@string/welcome_message"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:padding="@dimen/activity_general_margin"
+        android:textColor="@color/blue_text"
+        android:text="@string/logout" />
 
 
 </LinearLayout>

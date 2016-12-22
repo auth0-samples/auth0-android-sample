@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">01-Auth0LoginDemo</string>
     <string name="welcome_message">Welcome To Your App</string>
+    <string name="logout">Logout</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>
