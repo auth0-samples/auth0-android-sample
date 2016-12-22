@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
         mUsernameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
         mUsermailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);
-        if (!mUserProfile.getUserMetadata().get("country").toString().isEmpty()) {
+        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);;
+        if (mUserProfile.getUserMetadata().get("country") != null && !mUserProfile.getUserMetadata().get("country").toString().isEmpty()) {
             mUserCountryTextView.setVisibility(View.VISIBLE);
             mUserCountryTextView.setText(String.format(getString(R.string.userCountry), mUserProfile.getUserMetadata().get("country").toString()));
         }
