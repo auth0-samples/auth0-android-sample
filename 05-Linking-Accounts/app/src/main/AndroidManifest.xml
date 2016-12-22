@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.auth0.linkingaccountsdemo">
+    package="com.auth0.linkingaccounts">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -30,7 +30,7 @@
 
                 <data
                     android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/com.auth0.linkingaccountsdemo/callback"
+                    android:pathPrefix="/android/com.auth0.linkingaccounts/callback"
                     android:scheme="https" />
             </intent-filter>
         </activity>

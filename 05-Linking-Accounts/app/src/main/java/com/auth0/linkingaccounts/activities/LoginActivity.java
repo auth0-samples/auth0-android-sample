@@ -1,4 +1,4 @@
-package com.auth0.linkingaccountsdemo.activities;
+package com.auth0.linkingaccounts.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,9 +15,9 @@ import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserIdentity;
-import com.auth0.linkingaccountsdemo.R;
-import com.auth0.linkingaccountsdemo.application.App;
-import com.auth0.linkingaccountsdemo.utils.Constants;
+import com.auth0.linkingaccounts.R;
+import com.auth0.linkingaccounts.application.App;
+import com.auth0.linkingaccounts.utils.Constants;
 
 import java.util.List;
 
