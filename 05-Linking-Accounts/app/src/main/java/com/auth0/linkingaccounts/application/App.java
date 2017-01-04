@@ -1,4 +1,4 @@
-package com.auth0.linkingaccounts.application;
+package com.auth0.linkingaccountsdemo.application;
 
 import android.app.Application;
 

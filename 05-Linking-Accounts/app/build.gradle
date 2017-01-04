@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.auth0.linkingaccounts"
+        applicationId "com.auth0.linkingaccountsdemo"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

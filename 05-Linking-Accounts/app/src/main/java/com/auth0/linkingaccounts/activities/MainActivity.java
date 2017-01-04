@@ -1,4 +1,4 @@
-package com.auth0.linkingaccounts.activities;
+package com.auth0.linkingaccountsdemo.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,9 +22,9 @@ import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.android.result.UserProfile;
-import com.auth0.linkingaccounts.R;
-import com.auth0.linkingaccounts.application.App;
-import com.auth0.linkingaccounts.utils.Constants;
+import com.auth0.linkingaccountsdemo.R;
+import com.auth0.linkingaccountsdemo.application.App;
+import com.auth0.linkingaccountsdemo.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
