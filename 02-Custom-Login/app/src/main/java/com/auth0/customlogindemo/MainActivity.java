@@ -14,18 +14,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button logoutButton = (Button) findViewById(R.id.logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                loginAgain();
             }
         });
 
         Toast.makeText(MainActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
     }
 
-    private void logout() {
+    private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

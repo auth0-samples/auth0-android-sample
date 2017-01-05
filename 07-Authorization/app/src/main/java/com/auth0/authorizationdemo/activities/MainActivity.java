@@ -30,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button logoutButton = (Button) findViewById(R.id.logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                loginAgain();
             }
         });
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "You don't have access rights to visit this page", Toast.LENGTH_SHORT).show();
     }
 
-    private void logout() {
+    private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

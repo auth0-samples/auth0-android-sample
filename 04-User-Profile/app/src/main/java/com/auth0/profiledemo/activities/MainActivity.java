@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mEditProfileButton;
     private Button mCancelEditionButton;
-    private Button mLogoutButton;
+    private Button mLoginAgainButton;
     private TextView mUsernameTextView;
     private TextView mUsermailTextView;
     private TextView mUserCountryTextView;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         mEditProfileButton = (Button) findViewById(R.id.editButton);
         mCancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
-        mLogoutButton = (Button) findViewById(R.id.logout);
+        mLoginAgainButton = (Button) findViewById(R.id.login_again);
         mUsernameTextView = (TextView) findViewById(R.id.userNameTitle);
         mUsermailTextView = (TextView) findViewById(R.id.userEmailTitle);
         mUserCountryTextView = (TextView) findViewById(R.id.userCountryTitle);
@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
                 editModeOn(false);
             }
         });
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        mLoginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                loginAgain();
             }
         });
     }
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void logout() {
+    private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         final TextView country = (TextView) findViewById(R.id.country);
         final ImageView picture = (ImageView) findViewById(R.id.userPicture);
 
-        Button logoutButton = (Button) findViewById(R.id.logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                loginAgain();
             }
         });
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void logout() {
+    private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

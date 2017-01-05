@@ -101,7 +101,7 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/login_again"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -109,6 +109,6 @@
         android:background="@android:color/white"
         android:padding="@dimen/activity_general_margin"
         android:textColor="@color/blue_text"
-        android:text="@string/logout" />
+        android:text="@string/login_again" />
 
 </LinearLayout>

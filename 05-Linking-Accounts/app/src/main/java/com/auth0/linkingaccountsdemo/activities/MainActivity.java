@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button logoutButton = (Button) findViewById(R.id.logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        Button loginAgainButton = (Button) findViewById(R.id.logout);
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                loginAgain();
             }
         });
 
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void logout() {
+    private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

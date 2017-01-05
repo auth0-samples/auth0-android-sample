@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button authenticatedRequestButton = (Button) findViewById(R.id.authenticatedButton);
         Button nonAuthenticatedRequestButton = (Button) findViewById(R.id.nonAuthenticatedButton);
-        Button logoutButton = (Button) findViewById(R.id.logout);
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
 
         authenticatedRequestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                loginAgain();
             }
         });
     }
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void logout() {
+    private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

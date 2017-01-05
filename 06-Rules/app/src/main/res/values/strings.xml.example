@@ -3,7 +3,7 @@
     <string name="username">Username: </string>
     <string name="email">Email: </string>
     <string name="country">Country: </string>
-    <string name="logout">Logout</string>
+    <string name="login_again">Log In Again</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>
