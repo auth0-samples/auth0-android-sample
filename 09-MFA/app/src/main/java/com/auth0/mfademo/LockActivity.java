@@ -16,6 +16,7 @@ public class LockActivity extends Activity {
 
     private Lock mLock;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

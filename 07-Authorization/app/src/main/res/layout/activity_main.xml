@@ -8,21 +8,13 @@
     android:padding="@dimen/activity_general_margin"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
-
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="30dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
+        android:src="@drawable/logo"
+        tools:ignore="ContentDescription" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,7 +39,7 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_small_margin"
@@ -64,41 +56,24 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/usermail"
+            android:id="@+id/userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/username"
+            android:layout_below="@id/userName"
             android:layout_toRightOf="@id/userEmailTitle"
-            android:paddingLeft="@dimen/activity_small_margin" />
-
-        <TextView
-            android:id="@+id/userCountryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/userEmailTitle"
-            android:layout_toRightOf="@id/userPicture"
-            android:text="@string/country"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/userCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/usermail"
-            android:layout_toRightOf="@id/userCountryTitle"
             android:paddingLeft="@dimen/activity_small_margin" />
 
     </RelativeLayout>
 
     <Button
-        android:layout_marginTop="100dp"
+        android:id="@+id/toSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_settings"
-        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:background="@android:color/white"
-        android:id="@+id/toSettingsButton"
-        android:layout_gravity="center_horizontal" />
+        android:padding="10dp"
+        android:text="@string/app_settings" />
 
     <Button
         android:id="@+id/login_again"
@@ -108,7 +83,7 @@
         android:layout_marginTop="@dimen/activity_general_margin"
         android:background="@android:color/white"
         android:padding="@dimen/activity_general_margin"
-        android:textColor="@color/blue_text"
-        android:text="@string/login_again" />
+        android:text="@string/login_again"
+        android:textColor="@color/blue_text" />
 
 </LinearLayout>

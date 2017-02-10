@@ -1,4 +1,4 @@
-package com.auth0.sessiondemo.utils;
+package com.auth0.rulesdemo.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

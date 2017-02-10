@@ -25,10 +25,12 @@ public class LoginActivity extends Activity {
 
     private Lock mLock;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        //Request a refresh token along with the id token.
+
+        //Request a refresh token along with the access token.
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("scope", "openid offline_access");
         mLock = Lock.newBuilder(auth0, mCallback)
@@ -36,33 +38,33 @@ public class LoginActivity extends Activity {
                 //Add parameters to the build
                 .build(this);
 
-        if (CredentialsManager.getCredentials(this).getIdToken() == null) {
+        if (CredentialsManager.getCredentials(this).getAccessToken() == null) {
             startActivity(mLock.newIntent(this));
             return;
         }
 
         AuthenticationAPIClient aClient = new AuthenticationAPIClient(auth0);
-        aClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
+        aClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
                     public void onSuccess(final UserProfile payload) {
-                        LoginActivity.this.runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(LoginActivity.this, "Automatic Login Success", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
                     }
 
                     @Override
                     public void onFailure(AuthenticationException error) {
-                        LoginActivity.this.runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(LoginActivity.this, "Session Expired, please Log In", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        CredentialsManager.deleteCredentials(getApplicationContext());
+                        CredentialsManager.deleteCredentials(LoginActivity.this);
                         startActivity(mLock.newIntent(LoginActivity.this));
                     }
                 });
@@ -79,20 +81,20 @@ public class LoginActivity extends Activity {
     private final LockCallback mCallback = new AuthenticationCallback() {
         @Override
         public void onAuthentication(Credentials credentials) {
-            Toast.makeText(getApplicationContext(), "Log In - Success", Toast.LENGTH_SHORT).show();
-            CredentialsManager.saveCredentials(getApplicationContext(), credentials);
+            Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
+            CredentialsManager.saveCredentials(LoginActivity.this, credentials);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
 
         @Override
         public void onCanceled() {
-            Toast.makeText(getApplicationContext(), "Log In - Cancelled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Log In - Cancelled", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(LockException error) {
-            Toast.makeText(getApplicationContext(), "Log In - Error Occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Log In - Error Occurred", Toast.LENGTH_SHORT).show();
         }
     };
 

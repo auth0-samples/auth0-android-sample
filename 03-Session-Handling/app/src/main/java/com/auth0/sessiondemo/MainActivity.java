@@ -11,7 +11,7 @@ import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
-import com.auth0.android.result.Delegation;
+import com.auth0.android.result.Credentials;
 import com.auth0.sessiondemo.utils.CredentialsManager;
 
 
@@ -24,22 +24,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuthenticationClient = new AuthenticationAPIClient(new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain)));
+        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        mAuthenticationClient = new AuthenticationAPIClient(auth0);
 
         Button refreshTokenButton = (Button) findViewById(R.id.refreshTokenButton);
-        Button idTokenButton = (Button) findViewById(R.id.tokenIDButton);
         Button logoutButton = (Button) findViewById(R.id.logout);
 
         refreshTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNewIDWithRefreshToken();
-            }
-        });
-        idTokenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getNewIDWithOldIDToken();
+                renewAuthentication();
             }
         });
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -50,38 +44,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getNewIDWithOldIDToken() {
-        String idToken = CredentialsManager.getCredentials(this).getIdToken();
-        mAuthenticationClient.delegationWithIdToken(idToken).start(new BaseCallback<Delegation, AuthenticationException>() {
-            @Override
-            public void onSuccess(final Delegation payload) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "New idToken: " + payload.getIdToken(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(AuthenticationException error) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Failed to get the new idToken", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-    }
-
-    private void getNewIDWithRefreshToken() {
+    private void renewAuthentication() {
         String refreshToken = CredentialsManager.getCredentials(this).getRefreshToken();
-        mAuthenticationClient.delegationWithRefreshToken(refreshToken).start(new BaseCallback<Delegation, AuthenticationException>() {
+        mAuthenticationClient.renewAuth(refreshToken).start(new BaseCallback<Credentials, AuthenticationException>() {
             @Override
-            public void onSuccess(final Delegation payload) {
+            public void onSuccess(final Credentials payload) {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(MainActivity.this, "New idToken: " + payload.getIdToken(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "New access_token: " + payload.getAccessToken(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -90,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(AuthenticationException error) {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Failed to get the new idToken", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Failed to get the new access_token", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

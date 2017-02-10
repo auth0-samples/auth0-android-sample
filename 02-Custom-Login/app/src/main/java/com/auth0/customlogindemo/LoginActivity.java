@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
@@ -21,6 +22,7 @@ import com.auth0.android.result.Credentials;
 public class LoginActivity extends Activity {
 
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -67,11 +69,18 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(Credentials payload) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
 
             @Override
-            public void onFailure(AuthenticationException error) {
+            public void onFailure(final AuthenticationException error) {
                 //Show error to the user
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -87,8 +96,14 @@ public class LoginActivity extends Activity {
                     }
 
                     @Override
-                    public void onFailure(AuthenticationException exception) {
+                    public void onFailure(final AuthenticationException exception) {
                         //Show error to the user
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override

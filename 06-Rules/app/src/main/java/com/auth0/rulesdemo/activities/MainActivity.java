@@ -16,7 +16,7 @@ import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.result.UserProfile;
 import com.auth0.rulesdemo.R;
-import com.auth0.rulesdemo.application.App;
+import com.auth0.rulesdemo.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,28 +39,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        AuthenticationAPIClient client = new AuthenticationAPIClient(new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain)));
-        client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
+        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
+        authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
-                    public void onSuccess(final UserProfile payload) {
+                    public void onSuccess(final UserProfile profile) {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                username.setText(payload.getName());
-                                email.setText(payload.getEmail());
-                                Picasso.with(getApplicationContext()).load(payload.getPictureURL()).into(picture);
+                                username.setText(profile.getName());
+                                email.setText(profile.getEmail());
+                                Picasso.with(getApplicationContext()).load(profile.getPictureURL()).into(picture);
 
                                 // Get the country from the user profile
                                 // This is included in the extra info... and must be enabled in the Auth0 rules web.
-                                if (!payload.getExtraInfo().containsKey("country")) {
+                                if (!profile.getExtraInfo().containsKey("country")) {
                                     Toast.makeText(MainActivity.this, "Country not available. Check your Rules in the dashboard.", Toast.LENGTH_LONG).show();
                                     Log.e("AUTH0", "Failed assigning country info... check if country rule is enabled in Auth0 web");
                                     return;
                                 }
-                                country.setText(payload.getExtraInfo().get("country").toString());
+                                country.setText(profile.getExtraInfo().get("country").toString());
                             }
                         });
-
                     }
 
                     @Override
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
+        CredentialsManager.deleteCredentials(this);
         finish();
     }
 }
