@@ -64,25 +64,26 @@ public class MainActivity extends AppCompatActivity {
     private void authenticateWithAccessToken(boolean sendToken) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        //Replace the url with your own API endpoint
-        String url = "YOUR API URL";
+        String url = "YOUR API URL"; // TODO Replace this
 
         String accessToken = sendToken ? CredentialsManager.getCredentials(this).getAccessToken() : null;
-        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject(Request.Method.GET, url, accessToken, null, new Response.Listener<JSONObject>() {
+        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
+                (Request.Method.GET, url, accessToken,
+                        null, new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                Log.i("API CALL SUCCESSFUL", response.toString());
-            }
-        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        Log.i("API CALL SUCCESSFUL", response.toString());
+                    }
+                }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                Log.i("API CALL FAILED", error.toString());
-            }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                        Log.i("API CALL FAILED", error.toString());
+                    }
+                });
 
         // Add the request to the RequestQueue.
         queue.add(authorizationRequest);

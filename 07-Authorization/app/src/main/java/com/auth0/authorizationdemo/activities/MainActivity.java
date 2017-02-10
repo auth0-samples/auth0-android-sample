@@ -13,6 +13,8 @@ import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.management.ManagementException;
+import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserProfile;
 import com.auth0.authorizationdemo.R;
 import com.auth0.authorizationdemo.utils.CredentialsManager;
@@ -39,18 +41,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
         AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
-        authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
+        authenticationClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
-                    public void onSuccess(UserProfile profile) {
-                        mUserProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                ((TextView) findViewById(R.id.userName)).setText(mUserProfile.getName());
-                                ((TextView) findViewById(R.id.userEmail)).setText(mUserProfile.getEmail());
-                                ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-                                Picasso.with(MainActivity.this).load(mUserProfile.getPictureURL()).into(userPicture);
+                    public void onSuccess(final UserProfile info) {
+                        String userId = (String) info.getExtraInfo().get("sub");
+                        UsersAPIClient usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
+                        usersClient.getProfile(userId).start(new BaseCallback<UserProfile, ManagementException>() {
+                            @Override
+                            public void onSuccess(final UserProfile profile) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        mUserProfile = profile;
+                                        ((TextView) findViewById(R.id.userName)).setText(mUserProfile.getName());
+                                        ((TextView) findViewById(R.id.userEmail)).setText(mUserProfile.getEmail());
+                                        ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
+                                        Picasso.with(MainActivity.this).load(mUserProfile.getPictureURL()).into(userPicture);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(ManagementException error) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Failed to load the user profile", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                loginAgain();
                             }
                         });
                     }
@@ -59,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(AuthenticationException error) {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Failed to load the profile", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Failed to load the user information", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        finish();
+                        loginAgain();
                     }
                 });
 

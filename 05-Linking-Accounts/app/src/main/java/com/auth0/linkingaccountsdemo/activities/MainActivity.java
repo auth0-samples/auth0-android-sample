@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        mAuth0.setOIDCConformant(true);
         mUsersClient = new UsersAPIClient(mAuth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
 
         mUserEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
@@ -100,14 +101,29 @@ public class MainActivity extends AppCompatActivity {
     private void fetchProfileInfo() {
         // The process to reclaim User Information is preceded by an Authentication call.
         AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(mAuth0);
-        authenticationClient.tokenInfo(CredentialsManager.getCredentials(MainActivity.this).getIdToken())
+        authenticationClient.userInfo(CredentialsManager.getCredentials(MainActivity.this).getAccessToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
-                    public void onSuccess(UserProfile profile) {
-                        mUserProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
+                    public void onSuccess(UserProfile information) {
+                        String userId = (String) information.getExtraInfo().get("sub");
+                        mUsersClient.getProfile(userId).start(new BaseCallback<UserProfile, ManagementException>() {
+                            @Override
+                            public void onSuccess(final UserProfile profile) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        mUserProfile = profile;
+                                        refreshScreenInformation();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(ManagementException error) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
                     }

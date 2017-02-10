@@ -33,36 +33,55 @@ public class MainActivity extends AppCompatActivity {
     private TextView mUserEmailTextView;
     private TextView mUserCountryTextView;
     private EditText mUpdateCountryEditText;
-    private Auth0 mAccount;
-    public UserProfile mUserProfile;
+
+    private UsersAPIClient mUsersClient;
+    private String mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAccount = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
+
+        mUsersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
 
         // The process to reclaim the User Information is preceded by an Authentication call.
-        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(mAccount);
-        authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
+        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
+        authenticationClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
 
                     @Override
-                    public void onSuccess(final UserProfile profile) {
-                        mUserProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
-                            }
-                        });
+                    public void onSuccess(final UserProfile info) {
+                        mUserId = (String) info.getExtraInfo().get("sub");
+                        mUsersClient.getProfile(mUserId)
+                                .start(new BaseCallback<UserProfile, ManagementException>() {
+                                    @Override
+                                    public void onSuccess(final UserProfile profile) {
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                refreshScreenInformation(profile);
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(ManagementException error) {
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(MainActivity.this, "User Information Request Failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
                     }
 
                     @Override
                     public void onFailure(AuthenticationException error) {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(MainActivity.this, "User Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "User Information Request Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -96,17 +115,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void refreshScreenInformation() {
-        mUserNameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
-        mUserEmailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
+    private void refreshScreenInformation(UserProfile profile) {
+        mUserNameTextView.setText(String.format(getString(R.string.username), profile.getName()));
+        mUserEmailTextView.setText(String.format(getString(R.string.useremail), profile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        if (mUserProfile.getPictureURL() != null) {
+        if (profile.getPictureURL() != null) {
             Picasso.with(this)
-                    .load(mUserProfile.getPictureURL())
+                    .load(profile.getPictureURL())
                     .into(userPicture);
         }
 
-        String country = (String) mUserProfile.getUserMetadata().get("country");
+        String country = (String) profile.getUserMetadata().get("country");
         if (country != null && !country.isEmpty()) {
             mUserCountryTextView.setVisibility(View.VISIBLE);
             mUserCountryTextView.setText(String.format(getString(R.string.userCountry), country));
@@ -114,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void editProfile() {
-        if (mUserProfile == null) {
+        if (mUserId == null) {
             return;
         }
         if (mCancelEditionButton.getVisibility() == View.GONE) {
@@ -129,15 +148,13 @@ public class MainActivity extends AppCompatActivity {
     private void updateInformation(String countryUpdate) {
         Map<String, Object> userMetadata = new HashMap<>();
         userMetadata.put("country", countryUpdate);
-        final UsersAPIClient usersClient = new UsersAPIClient(mAccount, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
-        usersClient.updateMetadata(mUserProfile.getId(), userMetadata)
+        mUsersClient.updateMetadata(mUserId, userMetadata)
                 .start(new BaseCallback<UserProfile, ManagementException>() {
                     @Override
                     public void onSuccess(final UserProfile profile) {
-                        mUserProfile = profile;
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                refreshScreenInformation();
+                                refreshScreenInformation(profile);
                             }
                         });
                     }

@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
         mAuthenticationClient = new AuthenticationAPIClient(auth0);
 
         Button refreshTokenButton = (Button) findViewById(R.id.refreshTokenButton);
