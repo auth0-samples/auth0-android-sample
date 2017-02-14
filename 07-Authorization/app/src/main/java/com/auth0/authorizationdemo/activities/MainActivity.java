@@ -30,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginAgain();
+            }
+        });
+
         AuthenticationAPIClient client = new AuthenticationAPIClient(new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain)));
         client.tokenInfo(App.getInstance().getmUserCredentials().getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
@@ -80,5 +88,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SettingsActivity.class));
         else
             Toast.makeText(MainActivity.this, "You don't have access rights to visit this page", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loginAgain() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

@@ -6,6 +6,7 @@
     <string name="password">Password</string>
     <string name="login_success">Login was successful</string>
     <string name="login">Login</string>
+    <string name="login_again">Log In Again</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>

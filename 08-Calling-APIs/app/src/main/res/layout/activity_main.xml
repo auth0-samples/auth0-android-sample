@@ -6,7 +6,8 @@
     android:background="#FFF5F7F9"
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.MainActivity"
+    android:weightSum="1">
 
     <LinearLayout
 
@@ -41,6 +42,17 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@android:color/white"
         android:text="@string/non_authenticated_request" />
+
+    <Button
+        android:id="@+id/login_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:padding="@dimen/activity_general_margin"
+        android:textColor="@color/blue_text"
+        android:text="@string/login_again" />
 
 
 </LinearLayout>

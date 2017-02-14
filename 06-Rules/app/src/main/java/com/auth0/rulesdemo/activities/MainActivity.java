@@ -1,8 +1,11 @@
 package com.auth0.rulesdemo.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
         final TextView email = (TextView) findViewById(R.id.email);
         final TextView country = (TextView) findViewById(R.id.country);
         final ImageView picture = (ImageView) findViewById(R.id.userPicture);
+
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginAgain();
+            }
+        });
 
         AuthenticationAPIClient client = new AuthenticationAPIClient(new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain)));
         client.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
@@ -56,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(AuthenticationException error) {
                     }
                 });
+    }
+
+    private void loginAgain() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

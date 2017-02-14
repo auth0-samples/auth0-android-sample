@@ -104,5 +104,16 @@
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/login_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_general_margin"
+        android:background="@android:color/white"
+        android:padding="@dimen/activity_general_margin"
+        android:textColor="@color/blue_text"
+        android:text="@string/login_again" />
+
 
 </LinearLayout>

@@ -6,6 +6,7 @@
     <string name="unlink_account">Unlink Account?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="login_again">Log In Again</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>

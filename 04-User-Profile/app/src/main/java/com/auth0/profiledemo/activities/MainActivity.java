@@ -1,5 +1,6 @@
 package com.auth0.profiledemo.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mEditProfileButton;
     private Button mCancelEditionButton;
+    private Button mLoginAgainButton;
     private TextView mUsernameTextView;
     private TextView mUsermailTextView;
     private TextView mUserCountryTextView;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         mEditProfileButton = (Button) findViewById(R.id.editButton);
         mCancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
+        mLoginAgainButton = (Button) findViewById(R.id.login_again);
         mUsernameTextView = (TextView) findViewById(R.id.userNameTitle);
         mUsermailTextView = (TextView) findViewById(R.id.userEmailTitle);
         mUserCountryTextView = (TextView) findViewById(R.id.userCountryTitle);
@@ -85,14 +88,20 @@ public class MainActivity extends AppCompatActivity {
                 editModeOn(false);
             }
         });
+        mLoginAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginAgain();
+            }
+        });
     }
 
     private void refreshScreenInformation() {
         mUsernameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
         mUsermailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);
-        if (!mUserProfile.getUserMetadata().get("country").toString().isEmpty()) {
+        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);;
+        if (mUserProfile.getUserMetadata().get("country") != null && !mUserProfile.getUserMetadata().get("country").toString().isEmpty()) {
             mUserCountryTextView.setVisibility(View.VISIBLE);
             mUserCountryTextView.setText(String.format(getString(R.string.userCountry), mUserProfile.getUserMetadata().get("country").toString()));
         }
@@ -145,5 +154,10 @@ public class MainActivity extends AppCompatActivity {
             mUpdateCountryEditext.setVisibility(View.GONE);
             mCancelEditionButton.setVisibility(View.GONE);
         }
+    }
+
+    private void loginAgain() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }
