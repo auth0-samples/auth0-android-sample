@@ -2,6 +2,7 @@ package com.auth0.customlogindemo;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.auth0.android.result.Credentials;
 
 public class LoginActivity extends Activity {
 
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +66,21 @@ public class LoginActivity extends Activity {
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
 
+        progress = ProgressDialog.show(this, null, "Logging in..", true, false);
+        progress.show();
+
         String connectionName = "Username-Password-Authentication";
         client.login(email, password, connectionName).start(new BaseCallback<Credentials, AuthenticationException>() {
             @Override
             public void onSuccess(Credentials payload) {
+                progress.dismiss();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
 
             @Override
             public void onFailure(final AuthenticationException error) {
+                progress.dismiss();
                 //Show error to the user
                 runOnUiThread(new Runnable() {
                     @Override
