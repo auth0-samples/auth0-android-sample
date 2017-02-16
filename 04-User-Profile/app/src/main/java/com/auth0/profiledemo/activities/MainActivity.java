@@ -16,6 +16,7 @@ import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
+import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserProfile;
 import com.auth0.profiledemo.R;
 import com.auth0.profiledemo.utils.CredentialsManager;

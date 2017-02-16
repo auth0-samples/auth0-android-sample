@@ -67,41 +67,39 @@ public class MainActivity extends AppCompatActivity {
         String url = "YOUR API URL"; // TODO Replace this
 
         String accessToken = sendToken ? CredentialsManager.getCredentials(this).getAccessToken() : null;
-        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject
-                (Request.Method.GET, url, accessToken,
-                        null, new Response.Listener<JSONObject>() {
+        AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject(Request.Method.GET, url, accessToken, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        Log.i("API CALL SUCCESSFUL", response.toString());
-                    }
-                }, new Response.ErrorListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Log.i("API CALL SUCCESSFUL", response.toString());
+            }
+        }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                        Log.i("API CALL FAILED", error.toString());
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                Log.i("API CALL FAILED", error.toString());
+            }
+        });
 
         // Add the request to the RequestQueue.
         queue.add(authorizationRequest);
     }
 
     public class AuthorizationRequestObject extends JsonObjectRequest {
-        private String mHeaderTokenID = null;
+        private String accessToken;
 
-        AuthorizationRequestObject(int method, String url, String tokenID, JSONObject jsonRequest, Response.Listener listener, Response.ErrorListener errorListener) {
+        AuthorizationRequestObject(int method, String url, String accessToken, JSONObject jsonRequest, Response.Listener listener, Response.ErrorListener errorListener) {
             super(method, url, jsonRequest, listener, errorListener);
-            mHeaderTokenID = tokenID;
+            this.accessToken = accessToken;
         }
 
         @Override
         public Map getHeaders() throws AuthFailureError {
             Map headers = new HashMap();
-            if (mHeaderTokenID != null) {
-                headers.put("Bearer " + mHeaderTokenID, "Authorization");
+            if (accessToken != null) {
+                headers.put("Bearer " + accessToken, "Authorization");
             }
             return headers;
         }

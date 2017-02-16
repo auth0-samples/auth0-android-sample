@@ -59,29 +59,7 @@ public class LoginActivity extends Activity {
             Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
 
             if (mLinkSessions) {
-                UsersAPIClient client = new UsersAPIClient(mAuth0, CredentialsManager.getCredentials(LoginActivity.this).getIdToken());
-                client.link(mPrimaryUserId, credentials.getIdToken())
-                        .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
-                            @Override
-                            public void onSuccess(List<UserIdentity> payload) {
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(LoginActivity.this, "Accounts linked!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                finish();
-                            }
-
-                            @Override
-                            public void onFailure(ManagementException error) {
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(LoginActivity.this, "Account linking failed!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                finish();
-                            }
-                        });
+                performLink(credentials.getIdToken());
             } else {
                 CredentialsManager.saveCredentials(LoginActivity.this, credentials);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -105,6 +83,32 @@ public class LoginActivity extends Activity {
             }
         }
     };
+
+    private void performLink(String secondaryIdToken) {
+        UsersAPIClient client = new UsersAPIClient(mAuth0, CredentialsManager.getCredentials(LoginActivity.this).getIdToken());
+        client.link(mPrimaryUserId, secondaryIdToken)
+                .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
+                    @Override
+                    public void onSuccess(List<UserIdentity> payload) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Accounts linked!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(ManagementException error) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "Account linking failed!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        finish();
+                    }
+                });
+    }
 
 }
 
