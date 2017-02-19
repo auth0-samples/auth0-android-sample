@@ -24,91 +24,102 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="@dimen/activity_general_margin">
-
-        <ImageView
-            android:id="@+id/userPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/activity_small_margin"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/usernameTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_small_margin"
-            android:layout_toRightOf="@id/userPicture"
-            android:text="@string/username"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_small_margin"
-            android:layout_toRightOf="@id/usernameTitle"
-            android:paddingLeft="@dimen/activity_small_margin" />
-
-        <TextView
-            android:id="@+id/userEmailTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/usernameTitle"
-            android:layout_toRightOf="@id/userPicture"
-            android:text="@string/useremail"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/usermail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/username"
-            android:layout_toRightOf="@id/userEmailTitle"
-            android:paddingLeft="@dimen/activity_small_margin" />
-
-        <TextView
-            android:id="@+id/userCountryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/userEmailTitle"
-            android:layout_toRightOf="@id/userPicture"
-            android:text="@string/country"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/userCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/usermail"
-            android:layout_toRightOf="@id/userCountryTitle"
-            android:paddingLeft="@dimen/activity_small_margin" />
-
-    </RelativeLayout>
-
-    <Button
-        android:layout_marginTop="100dp"
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_settings"
-        android:padding="10dp"
-        android:background="@android:color/white"
-        android:id="@+id/toSettingsButton"
-        android:layout_gravity="center_horizontal" />
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/login_again"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/activity_general_margin"
-        android:background="@android:color/white"
-        android:padding="@dimen/activity_general_margin"
-        android:textColor="@color/blue_text"
-        android:text="@string/login_again" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:padding="@dimen/activity_general_margin">
+
+            <ImageView
+                android:id="@+id/userPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_small_margin"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/usernameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_small_margin"
+                android:layout_toRightOf="@id/userPicture"
+                android:text="@string/username"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_small_margin"
+                android:layout_toRightOf="@id/usernameTitle"
+                android:paddingLeft="@dimen/activity_small_margin" />
+
+            <TextView
+                android:id="@+id/userEmailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usernameTitle"
+                android:layout_toRightOf="@id/userPicture"
+                android:text="@string/useremail"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/usermail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/username"
+                android:layout_toRightOf="@id/userEmailTitle"
+                android:paddingLeft="@dimen/activity_small_margin" />
+
+            <TextView
+                android:id="@+id/userCountryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/userEmailTitle"
+                android:layout_toRightOf="@id/userPicture"
+                android:text="@string/country"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/userCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usermail"
+                android:layout_toRightOf="@id/userCountryTitle"
+                android:paddingLeft="@dimen/activity_small_margin" />
+
+            <Button
+                android:layout_below="@+id/userCountry"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_settings"
+                android:padding="10dp"
+                android:background="@android:color/white"
+                android:id="@+id/toSettingsButton"
+                android:layout_gravity="left" />
+
+            <Button
+                android:id="@+id/login_again"
+                android:layout_below="@+id/userCountry"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="100dp"
+                android:layout_toRightOf="@+id/toSettingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="@dimen/activity_general_margin"
+                android:textColor="@color/blue_text"
+                android:text="@string/login_again" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </LinearLayout>
