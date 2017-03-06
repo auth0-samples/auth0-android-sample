@@ -70,26 +70,27 @@ public class LoginActivity extends Activity {
         progress.show();
 
         String connectionName = "Username-Password-Authentication";
-        client.login(email, password, connectionName).start(new BaseCallback<Credentials, AuthenticationException>() {
-            @Override
-            public void onSuccess(Credentials payload) {
-                progress.dismiss();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onFailure(final AuthenticationException error) {
-                progress.dismiss();
-                //Show error to the user
-                runOnUiThread(new Runnable() {
+        client.login(email, password, connectionName)
+                .start(new BaseCallback<Credentials, AuthenticationException>() {
                     @Override
-                    public void run() {
-                        Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Credentials payload) {
+                        progress.dismiss();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(final AuthenticationException error) {
+                        progress.dismiss();
+                        //Show error to the user
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     private void login() {

@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7F9"
     android:orientation="vertical"
-    android:padding="@dimen/activity_general_margin"
+    android:padding="@dimen/activity_small_margin"
     tools:context=".activities.MainActivity">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="30dp"
+        android:layout_margin="10dp"
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 

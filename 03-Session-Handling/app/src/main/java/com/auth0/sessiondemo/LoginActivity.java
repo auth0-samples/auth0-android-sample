@@ -17,9 +17,6 @@ import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserProfile;
 import com.auth0.sessiondemo.utils.CredentialsManager;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class LoginActivity extends Activity {
 
@@ -31,20 +28,19 @@ public class LoginActivity extends Activity {
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
 
         //Request a refresh token along with the access token.
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("scope", "openid offline_access");
         mLock = Lock.newBuilder(auth0, mCallback)
-                .withAuthenticationParameters(parameters)
+                .withScope("openid offline_access")
                 //Add parameters to the build
                 .build(this);
 
-        if (CredentialsManager.getCredentials(this).getAccessToken() == null) {
+        String accessToken = CredentialsManager.getCredentials(this).getAccessToken();
+        if (accessToken == null) {
             startActivity(mLock.newIntent(this));
             return;
         }
 
         AuthenticationAPIClient aClient = new AuthenticationAPIClient(auth0);
-        aClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
+        aClient.userInfo(accessToken)
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
                     public void onSuccess(final UserProfile payload) {

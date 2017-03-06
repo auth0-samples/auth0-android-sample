@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private void authenticateWithAccessToken(boolean sendToken) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "YOUR API URL"; // TODO Replace this
+        //Replace the url with your own API endpoint
+        String url = "YOUR API URL";
 
         String accessToken = sendToken ? CredentialsManager.getCredentials(this).getAccessToken() : null;
         AuthorizationRequestObject authorizationRequest = new AuthorizationRequestObject(Request.Method.GET, url, accessToken, null, new Response.Listener<JSONObject>() {
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         public Map getHeaders() throws AuthFailureError {
             Map headers = new HashMap();
             if (accessToken != null) {
-                headers.put("Bearer " + accessToken, "Authorization");
+                headers.put("Authorization", "Bearer " + accessToken);
             }
             return headers;
         }

@@ -16,7 +16,6 @@ import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
-import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserProfile;
 import com.auth0.profiledemo.R;
 import com.auth0.profiledemo.utils.CredentialsManager;
@@ -101,9 +100,11 @@ public class MainActivity extends AppCompatActivity {
         mUserNameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
         mUserEmailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        Picasso.with(this)
-                .load(mUserProfile.getPictureURL())
-                .into(userPicture);
+        if (mUserProfile.getPictureURL() != null) {
+            Picasso.with(this)
+                    .load(mUserProfile.getPictureURL())
+                    .into(userPicture);
+        }
 
         String country = (String) mUserProfile.getUserMetadata().get("country");
         if (country != null && !country.isEmpty()) {
