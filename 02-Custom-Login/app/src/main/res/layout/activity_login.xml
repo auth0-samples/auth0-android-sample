@@ -17,10 +17,22 @@
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 
+    <Button
+        android:id="@+id/webLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:minWidth="250dp"
+        android:text="@string/webLogin" />
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/please_login"
         android:textAlignment="center"
         android:textSize="20sp" />
@@ -29,7 +41,6 @@
         android:id="@+id/emailEditext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:minWidth="250dp" />
@@ -43,12 +54,12 @@
         android:minWidth="250dp" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/dbLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:minWidth="250dp"
-        android:text="@string/login" />
+        android:text="@string/dbLogin" />
 
 
 </LinearLayout>

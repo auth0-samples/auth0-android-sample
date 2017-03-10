@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">02-Custom Login</string>
     <string name="welcome">Welcome To Your App</string>
-    <string name="please_login">Please Login with your email and password</string>
+    <string name="please_login">or.. \nuse your email and password</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login_success">Login was successful</string>
-    <string name="login">Login</string>
+    <string name="webLogin">Login with Twitter</string>
+    <string name="dbLogin">Login with Database</string>
     <string name="login_again">Log In Again</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
