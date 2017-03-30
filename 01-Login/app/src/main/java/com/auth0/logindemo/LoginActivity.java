@@ -17,6 +17,7 @@ public class LoginActivity extends Activity {
 
     private Lock mLock;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));

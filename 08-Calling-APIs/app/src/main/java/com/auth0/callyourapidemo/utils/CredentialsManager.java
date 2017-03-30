@@ -1,4 +1,4 @@
-package com.auth0.sessiondemo.utils;
+package com.auth0.callyourapidemo.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,7 +12,6 @@ public class CredentialsManager {
     private final static String ACCESS_TOKEN = "access_token";
     private final static String ID_TOKEN = "id_token";
     private final static String TOKEN_TYPE = "token_type";
-    private final static String EXPIRES_IN = "expires_in";
 
     public static void saveCredentials(Context context, Credentials credentials) {
         SharedPreferences sp = context.getSharedPreferences(
@@ -23,7 +22,6 @@ public class CredentialsManager {
                 .putString(REFRESH_TOKEN, credentials.getRefreshToken())
                 .putString(ACCESS_TOKEN, credentials.getAccessToken())
                 .putString(TOKEN_TYPE, credentials.getType())
-                .putLong(EXPIRES_IN, credentials.getExpiresIn())
                 .apply();
     }
 
@@ -35,8 +33,7 @@ public class CredentialsManager {
                 sp.getString(ID_TOKEN, null),
                 sp.getString(ACCESS_TOKEN, null),
                 sp.getString(TOKEN_TYPE, null),
-                sp.getString(REFRESH_TOKEN, null),
-                sp.getLong(EXPIRES_IN, 0));
+                sp.getString(REFRESH_TOKEN, null));
     }
 
     public static void deleteCredentials(Context context) {
@@ -48,7 +45,6 @@ public class CredentialsManager {
                 .putString(REFRESH_TOKEN, null)
                 .putString(ACCESS_TOKEN, null)
                 .putString(TOKEN_TYPE, null)
-                .putLong(EXPIRES_IN, 0)
                 .apply();
     }
 

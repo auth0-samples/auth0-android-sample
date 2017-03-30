@@ -12,13 +12,14 @@ import com.auth0.android.lock.LockCallback;
 import com.auth0.android.lock.utils.LockException;
 import com.auth0.android.result.Credentials;
 import com.auth0.profiledemo.R;
-import com.auth0.profiledemo.application.App;
+import com.auth0.profiledemo.utils.CredentialsManager;
 
 
 public class LoginActivity extends Activity {
 
     private Lock mLock;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -41,7 +42,7 @@ public class LoginActivity extends Activity {
         @Override
         public void onAuthentication(Credentials credentials) {
             Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
-            App.getInstance().setUserCredentials(credentials);
+            CredentialsManager.saveCredentials(LoginActivity.this, credentials);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }

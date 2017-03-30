@@ -25,16 +25,6 @@
 
 
     <Button
-        android:id="@+id/tokenIDButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:textColor="@color/blue_text"
-        android:padding="@dimen/activity_general_margin"
-        android:text="@string/token"/>
-
-    <Button
         android:id="@+id/refreshTokenButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"

@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
                 loginAgain();
             }
         });
-
     }
+
     private void loginAgain() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();

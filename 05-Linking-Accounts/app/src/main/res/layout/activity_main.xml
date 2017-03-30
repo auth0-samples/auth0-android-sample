@@ -5,97 +5,80 @@
     android:layout_height="match_parent"
     android:background="#FFF5F7F9"
     android:orientation="vertical"
-    android:padding="@dimen/activity_general_margin"
+    android:padding="@dimen/activity_small_margin"
     tools:context=".activities.MainActivity">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo" />
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:src="@drawable/logo"
+        tools:ignore="ContentDescription" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="341dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="vertical"
         android:padding="@dimen/activity_general_margin">
+
+        <TextView
+            android:id="@+id/userEmailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="@string/userEmail"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
 
         <ImageView
             android:id="@+id/userPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/userEmailTitle"
             android:padding="@dimen/activity_small_margin"
             tools:ignore="ContentDescription" />
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/linkedAccountsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_below="@id/userEmailTitle"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/userPicture"
+            android:text="@string/linked_accounts"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/userEmailTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="@string/useremail"
-                android:textColor="@android:color/black"
-                android:textSize="13sp" />
+        <ListView
+            android:id="@+id/linkedAccountsList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linkedAccountsTitle"
+            android:layout_toRightOf="@id/userPicture" />
 
-            <TextView
-                android:id="@+id/linkedAccountsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/userEmailTitle"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="10dp"
-                android:text="@string/linked_accounts"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="13sp" />
-
-            <ListView
-                android:id="@+id/linkedAccountsList"
-                android:layout_below="@+id/linkedAccountsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </ListView>
-
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/linkAccountButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/activity_general_margin"
-        android:text="@string/link_account"/>
-
-    <Button
-        android:id="@+id/login_again"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/activity_general_margin"
+        android:layout_margin="@dimen/activity_small_margin"
+        android:text="@string/link_account" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_small_margin"
         android:background="@android:color/white"
         android:padding="@dimen/activity_general_margin"
-        android:textColor="@color/blue_text"
-        android:text="@string/login_again" />
-
+        android:text="@string/login_again"
+        android:textColor="@color/blue_text" />
 
 </LinearLayout>

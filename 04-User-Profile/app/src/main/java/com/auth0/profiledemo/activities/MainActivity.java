@@ -18,7 +18,7 @@ import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserProfile;
 import com.auth0.profiledemo.R;
-import com.auth0.profiledemo.application.App;
+import com.auth0.profiledemo.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -29,30 +29,30 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mEditProfileButton;
     private Button mCancelEditionButton;
-    private Button mLoginAgainButton;
-    private TextView mUsernameTextView;
-    private TextView mUsermailTextView;
+    private TextView mUserNameTextView;
+    private TextView mUserEmailTextView;
     private TextView mUserCountryTextView;
-    private EditText mUpdateCountryEditext;
-    private UserProfile mUserProfile;
-    private Auth0 mAuth0;
-
+    private EditText mUpdateCountryEditText;
+    private Auth0 mAccount;
+    public UserProfile mUserProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
-        // The process to reclaim an UserProfile is preceded by an Authentication call.
-        AuthenticationAPIClient aClient = new AuthenticationAPIClient(mAuth0);
-        aClient.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
+        mAccount = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+
+        // The process to reclaim the User Information is preceded by an Authentication call.
+        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(mAccount);
+        authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
+
                     @Override
-                    public void onSuccess(final UserProfile payload) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
+                    public void onSuccess(final UserProfile profile) {
+                        mUserProfile = profile;
+                        runOnUiThread(new Runnable() {
                             public void run() {
-                                mUserProfile = payload;
                                 refreshScreenInformation();
                             }
                         });
@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(AuthenticationException error) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "User Profile Request Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
         mEditProfileButton = (Button) findViewById(R.id.editButton);
         mCancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
-        mLoginAgainButton = (Button) findViewById(R.id.login_again);
-        mUsernameTextView = (TextView) findViewById(R.id.userNameTitle);
-        mUsermailTextView = (TextView) findViewById(R.id.userEmailTitle);
+        mUserNameTextView = (TextView) findViewById(R.id.userNameTitle);
+        mUserEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
         mUserCountryTextView = (TextView) findViewById(R.id.userCountryTitle);
-        mUpdateCountryEditext = (EditText) findViewById(R.id.updateCountryEdittext);
+        mUpdateCountryEditText = (EditText) findViewById(R.id.updateCountryEdittext);
+        Button loginAgainButton = (Button) findViewById(R.id.login_again);
 
         mEditProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 editModeOn(false);
             }
         });
-        mLoginAgainButton.setOnClickListener(new View.OnClickListener() {
+        loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginAgain();
@@ -97,66 +97,78 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshScreenInformation() {
-        mUsernameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
-        mUsermailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
+        mUserNameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
+        mUserEmailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);;
-        if (mUserProfile.getUserMetadata().get("country") != null && !mUserProfile.getUserMetadata().get("country").toString().isEmpty()) {
+        if (mUserProfile.getPictureURL() != null) {
+            Picasso.with(this)
+                    .load(mUserProfile.getPictureURL())
+                    .into(userPicture);
+        }
+
+        String country = (String) mUserProfile.getUserMetadata().get("country");
+        if (country != null && !country.isEmpty()) {
             mUserCountryTextView.setVisibility(View.VISIBLE);
-            mUserCountryTextView.setText(String.format(getString(R.string.userCountry), mUserProfile.getUserMetadata().get("country").toString()));
+            mUserCountryTextView.setText(String.format(getString(R.string.userCountry), country));
         }
     }
 
     private void editProfile() {
+        if (mUserProfile == null) {
+            return;
+        }
         if (mCancelEditionButton.getVisibility() == View.GONE) {
             editModeOn(true);
         } else {
-            updateProfile(mUpdateCountryEditext.getText().toString());
+            String country = mUpdateCountryEditText.getText().toString();
+            updateInformation(country);
             editModeOn(false);
         }
     }
 
-    private void updateProfile(String countryUpdate) {
-        UsersAPIClient userClient = new UsersAPIClient(mAuth0, App.getInstance().getUserCredentials().getIdToken());
+    private void updateInformation(String countryUpdate) {
         Map<String, Object> userMetadata = new HashMap<>();
         userMetadata.put("country", countryUpdate);
-        userClient.updateMetadata(mUserProfile.getId(), userMetadata).start(new BaseCallback<UserProfile, ManagementException>() {
-            @Override
-            public void onSuccess(final UserProfile payload) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        mUserProfile = payload;
-                        refreshScreenInformation();
+        final UsersAPIClient usersClient = new UsersAPIClient(mAccount, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
+        usersClient.updateMetadata(mUserProfile.getId(), userMetadata)
+                .start(new BaseCallback<UserProfile, ManagementException>() {
+                    @Override
+                    public void onSuccess(final UserProfile profile) {
+                        mUserProfile = profile;
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                refreshScreenInformation();
+                            }
+                        });
                     }
-                });
-            }
 
-            @Override
-            public void onFailure(ManagementException error) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Profile Update Failed", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(ManagementException error) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "Profile Update Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
-            }
-        });
 
     }
 
     private void editModeOn(boolean editModeOn) {
         if (editModeOn) {
-            mUpdateCountryEditext.setVisibility(View.VISIBLE);
+            mUpdateCountryEditText.setVisibility(View.VISIBLE);
             mEditProfileButton.setText(getString(R.string.save));
             mCancelEditionButton.setVisibility(View.VISIBLE);
         } else {
             mEditProfileButton.setText(getString(R.string.edit));
-            mUpdateCountryEditext.setText("");
-            mUpdateCountryEditext.setVisibility(View.GONE);
+            mUpdateCountryEditText.setText("");
+            mUpdateCountryEditText.setVisibility(View.GONE);
             mCancelEditionButton.setVisibility(View.GONE);
         }
     }
 
     private void loginAgain() {
+        CredentialsManager.deleteCredentials(MainActivity.this);
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

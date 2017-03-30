@@ -23,20 +23,21 @@ import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.android.result.UserProfile;
 import com.auth0.linkingaccountsdemo.R;
-import com.auth0.linkingaccountsdemo.application.App;
 import com.auth0.linkingaccountsdemo.utils.Constants;
+import com.auth0.linkingaccountsdemo.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mUsermailTextView;
+    private TextView mUserEmailTextView;
+    private ImageView mUserPicture;
     private UserProfile mUserProfile;
     private Auth0 mAuth0;
+    private UsersAPIClient mUsersClient;
     private ListView mLinkedAccountList;
 
 
@@ -46,8 +47,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        mUsersClient = new UsersAPIClient(mAuth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
 
-        mUsermailTextView = (TextView) findViewById(R.id.userEmailTitle);
+        mUserEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
+        mUserPicture = (ImageView) findViewById(R.id.userPicture);
 
         Button linkAccountButton = (Button) findViewById(R.id.linkAccountButton);
         linkAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -69,31 +72,23 @@ public class MainActivity extends AppCompatActivity {
         mLinkedAccountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String accountConnectionType = ((TextView) view).getText().toString();
-                if (isNotPrimaryID(accountConnectionType)) {
-                    AlertDialog.Builder unlinkAccountBuilder = new AlertDialog.Builder(MainActivity.this);
-                    unlinkAccountBuilder.setMessage(R.string.unlink_account)
-                            .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    unlink(getIdentityWith(accountConnectionType));
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            }).show();
-
-                } else {
+                final UserIdentity identity = mUserProfile.getIdentities().get(position);
+                if (isPrimaryIdentity(identity)) {
                     Toast.makeText(MainActivity.this, "You cannot unlink primary account", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage(R.string.unlink_account)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                unlink(identity);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), null)
+                        .show();
             }
-
         });
-
     }
 
     @Override
@@ -103,15 +98,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchProfileInfo() {
-        // The process to reclaim an UserProfile is preceded by an Authentication call.
-        AuthenticationAPIClient aClient = new AuthenticationAPIClient(mAuth0);
-        aClient.tokenInfo(App.getInstance().getUserCredentials().getIdToken())
+        // The process to reclaim User Information is preceded by an Authentication call.
+        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(mAuth0);
+        authenticationClient.tokenInfo(CredentialsManager.getCredentials(MainActivity.this).getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
-                    public void onSuccess(final UserProfile payload) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
+                    public void onSuccess(UserProfile profile) {
+                        mUserProfile = profile;
+                        runOnUiThread(new Runnable() {
                             public void run() {
-                                mUserProfile = payload;
                                 refreshScreenInformation();
                             }
                         });
@@ -119,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(AuthenticationException error) {
-                        MainActivity.this.runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
                             }
@@ -128,34 +123,24 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private UserIdentity getIdentityWith(String accountConnectionType) {
-        for (UserIdentity identity : mUserProfile.getIdentities()) {
-            if (identity.getConnection().equals(accountConnectionType))
-                return identity;
-        }
-        return null;
-    }
-
-    private boolean isNotPrimaryID(String accountType) {
-        return !accountType.equals(mUserProfile.getIdentities().get(0).getConnection());
+    private boolean isPrimaryIdentity(UserIdentity identity) {
+        return identity.equals(mUserProfile.getIdentities().get(0));
     }
 
     private void refreshScreenInformation() {
-        mUsermailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
-        ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(userPicture);
+        mUserEmailTextView.setText(String.format(getString(R.string.userEmail), mUserProfile.getEmail()));
+        Picasso.with(getApplicationContext()).load(mUserProfile.getPictureURL()).into(mUserPicture);
 
-        ArrayAdapter<String> adapter = createSimpleAdapterWith(mUserProfile.getIdentities());
-        mLinkedAccountList.setAdapter(adapter);
-    }
+        if (mUserProfile.getIdentities() == null) {
+            return;
+        }
 
-    private ArrayAdapter<String> createSimpleAdapterWith(List<UserIdentity> identities) {
         List<String> identitiesTypes = new ArrayList<>();
-        for (UserIdentity identity : identities) {
+        for (UserIdentity identity : mUserProfile.getIdentities()) {
             identitiesTypes.add(identity.getConnection());
         }
-        return new ArrayAdapter<>(getBaseContext(),
-                R.layout.connectionlist_item, identitiesTypes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, identitiesTypes);
+        mLinkedAccountList.setAdapter(adapter);
     }
 
     private void linkAccount() {
@@ -166,28 +151,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void unlink(UserIdentity secondaryAccountIdentity) {
-        UsersAPIClient client = new UsersAPIClient(mAuth0, App.getInstance().getUserCredentials().getIdToken());
-        client.unlink(mUserProfile.getId(), secondaryAccountIdentity.getId(), secondaryAccountIdentity.getProvider())
-        .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
-            @Override
-            public void onSuccess(List<UserIdentity> payload) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Account unlinked!", Toast.LENGTH_SHORT).show();
+        mUsersClient.unlink(mUserProfile.getId(), secondaryAccountIdentity.getId(), secondaryAccountIdentity.getProvider())
+                .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
+                    @Override
+                    public void onSuccess(List<UserIdentity> payload) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "Account unlinked!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        fetchProfileInfo();
                     }
-                });
-                fetchProfileInfo();
-            }
 
-            @Override
-            public void onFailure(final ManagementException error) {
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Account unlink failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(final ManagementException error) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "Account unlink failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     private void loginAgain() {

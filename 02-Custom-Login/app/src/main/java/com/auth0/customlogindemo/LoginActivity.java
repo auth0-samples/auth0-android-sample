@@ -2,12 +2,14 @@ package com.auth0.customlogindemo;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
@@ -20,7 +22,9 @@ import com.auth0.android.result.Credentials;
 
 public class LoginActivity extends Activity {
 
+    private ProgressDialog progress;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -62,18 +66,31 @@ public class LoginActivity extends Activity {
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
 
-        String connectionName = "Username-Password-Authentication";
-        client.login(email, password, connectionName).start(new BaseCallback<Credentials, AuthenticationException>() {
-            @Override
-            public void onSuccess(Credentials payload) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            }
+        progress = ProgressDialog.show(this, null, "Logging in..", true, false);
+        progress.show();
 
-            @Override
-            public void onFailure(AuthenticationException error) {
-                //Show error to the user
-            }
-        });
+        String connectionName = "Username-Password-Authentication";
+        client.login(email, password, connectionName)
+                .start(new BaseCallback<Credentials, AuthenticationException>() {
+                    @Override
+                    public void onSuccess(Credentials payload) {
+                        progress.dismiss();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(final AuthenticationException error) {
+                        progress.dismiss();
+                        //Show error to the user
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
     }
 
     private void login() {
@@ -87,8 +104,14 @@ public class LoginActivity extends Activity {
                     }
 
                     @Override
-                    public void onFailure(AuthenticationException exception) {
+                    public void onFailure(final AuthenticationException exception) {
                         //Show error to the user
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
