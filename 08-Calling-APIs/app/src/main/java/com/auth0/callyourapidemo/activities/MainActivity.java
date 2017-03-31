@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public Map getHeaders() throws AuthFailureError {
-            Map headers = new HashMap();
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> headers = new HashMap<>();
             if (accessToken != null) {
                 headers.put("Authorization", "Bearer " + accessToken);
             }
