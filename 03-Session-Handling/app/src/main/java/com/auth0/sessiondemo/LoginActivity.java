@@ -26,6 +26,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
 
         //Request a refresh token along with the access token.
         mLock = Lock.newBuilder(auth0, mCallback)

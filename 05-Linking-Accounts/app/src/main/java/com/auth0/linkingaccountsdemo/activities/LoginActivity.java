@@ -38,6 +38,7 @@ public class LoginActivity extends Activity {
             mPrimaryUserId = getIntent().getExtras().getString(Constants.PRIMARY_USER_ID);
         }
         mAuth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        mAuth0.setOIDCConformant(true);
         mLock = Lock.newBuilder(mAuth0, mCallback)
                 .closable(mLinkSessions)
                 //Add parameters to the build

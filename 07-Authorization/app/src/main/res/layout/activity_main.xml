@@ -16,54 +16,15 @@
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 
-    <RelativeLayout
+
+    <TextView
+        android:id="@+id/userRole"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="@dimen/activity_general_margin">
-
-        <ImageView
-            android:id="@+id/userPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/activity_small_margin"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/usernameTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_small_margin"
-            android:layout_toRightOf="@id/userPicture"
-            android:text="@string/username"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_small_margin"
-            android:layout_toRightOf="@id/usernameTitle"
-            android:paddingLeft="@dimen/activity_small_margin" />
-
-        <TextView
-            android:id="@+id/userEmailTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/usernameTitle"
-            android:layout_toRightOf="@id/userPicture"
-            android:text="@string/useremail"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/userName"
-            android:layout_toRightOf="@id/userEmailTitle"
-            android:paddingLeft="@dimen/activity_small_margin" />
-
-    </RelativeLayout>
+        android:layout_margin="@dimen/activity_general_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        tools:text="Your role: admin"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/toSettingsButton"
