@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Centralized Login</string>
 
-    <string name="auth0_client_id">{CLIENT_ID}</string>
-    <string name="auth0_domain">{DOMAIN}</string>
+    <string name="auth0_client_id">Owu62gnGsRYhk1v9SfB3c6IUbIJcRIze</string>
+    <string name="auth0_domain">lbalmaceda.auth0.com</string>
 </resources>
