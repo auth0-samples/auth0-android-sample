@@ -1,4 +1,4 @@
-package com.auth0.centralizedlogin;
+package com.auth0.samples;
 
 import org.junit.Test;
 

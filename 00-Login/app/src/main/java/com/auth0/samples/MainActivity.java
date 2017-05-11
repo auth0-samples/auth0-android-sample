@@ -1,4 +1,4 @@
-package com.auth0.centralizedlogin;
+package com.auth0.samples;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                token.setText("Not logged in");
                 login();
             }
         });
@@ -50,7 +49,9 @@ public class MainActivity extends Activity {
 
     private void login() {
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
+                .withScheme("demo")
                 .start(MainActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull final Dialog dialog) {
@@ -82,5 +83,6 @@ public class MainActivity extends Activity {
                         });
                     }
                 });
+        token.setText("Not logged in");
     }
 }
