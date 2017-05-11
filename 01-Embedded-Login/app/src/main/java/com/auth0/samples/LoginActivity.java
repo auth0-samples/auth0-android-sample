@@ -1,4 +1,4 @@
-package com.auth0.logindemo;
+package com.auth0.samples;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +22,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
         mLock = Lock.newBuilder(auth0, mCallback)
+                .withScheme("demo")
                 //Add parameters to the builder
                 .build(this);
         startActivity(mLock.newIntent(this));
