@@ -1,4 +1,4 @@
-package com.auth0.linkingaccountsdemo.utils;
+package com.auth0.samples.utils;
 
 public class Constants {
 

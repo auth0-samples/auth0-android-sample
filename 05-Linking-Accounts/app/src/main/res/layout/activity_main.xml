@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:gravity="center_vertical"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="@dimen/activity_general_margin">
 
@@ -46,7 +47,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/userEmailTitle"
-            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/userPicture"
             android:text="@string/linked_accounts"
             android:textColor="@android:color/black"
@@ -67,8 +67,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/activity_small_margin"
-        android:text="@string/link_account" />
+        android:layout_marginBottom="@dimen/activity_small_margin"
+        android:layout_marginTop="@dimen/activity_small_margin"
+        android:background="@android:color/white"
+        android:padding="@dimen/activity_general_margin"
+        android:text="@string/link_account"
+        android:textColor="@color/blue_text" />
 
     <Button
         android:id="@+id/logout"
