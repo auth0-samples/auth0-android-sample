@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Calling APIs</string>
+    <string name="login">Log in</string>
+    <string name="callAPIWithToken">Call API with Token</string>
+    <string name="callAPIWithoutToken">Call API without Token</string>
+
+    <string name="auth0_client_id">Owu62gnGsRYhk1v9SfB3c6IUbIJcRIze</string>
+    <string name="auth0_domain">lbalmaceda.auth0.com</string>
+</resources>
