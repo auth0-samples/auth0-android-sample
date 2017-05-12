@@ -27,14 +27,14 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mEditProfileButton;
-    private Button mCancelEditionButton;
-    private TextView mUserNameTextView;
-    private TextView mUserEmailTextView;
-    private TextView mUserCountryTextView;
-    private EditText mUpdateCountryEditText;
     private Auth0 auth0;
-    public UserProfile mUserProfile;
+    private UserProfile userProfile;
+    private Button editProfileButton;
+    private Button cancelEditionButton;
+    private TextView userNameTextView;
+    private TextView userEmailTextView;
+    private TextView userCountryTextView;
+    private EditText updateCountryEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
         // The process to reclaim the User Information is preceded by an Authentication call.
         AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
-        authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
+        authenticationClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
 
                     @Override
                     public void onSuccess(final UserProfile profile) {
-                        mUserProfile = profile;
+                        userProfile = profile;
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 refreshScreenInformation();
@@ -69,21 +69,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        mEditProfileButton = (Button) findViewById(R.id.editButton);
-        mCancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
-        mUserNameTextView = (TextView) findViewById(R.id.userNameTitle);
-        mUserEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
-        mUserCountryTextView = (TextView) findViewById(R.id.userCountryTitle);
-        mUpdateCountryEditText = (EditText) findViewById(R.id.updateCountryEdittext);
+        editProfileButton = (Button) findViewById(R.id.editButton);
+        cancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
+        userNameTextView = (TextView) findViewById(R.id.userNameTitle);
+        userEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
+        userCountryTextView = (TextView) findViewById(R.id.userCountryTitle);
+        updateCountryEditText = (EditText) findViewById(R.id.updateCountryEdittext);
         Button loginAgainButton = (Button) findViewById(R.id.login_again);
 
-        mEditProfileButton.setOnClickListener(new View.OnClickListener() {
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editProfile();
             }
         });
-        mCancelEditionButton.setOnClickListener(new View.OnClickListener() {
+        cancelEditionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editModeOn(false);
@@ -98,30 +98,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshScreenInformation() {
-        mUserNameTextView.setText(String.format(getString(R.string.username), mUserProfile.getName()));
-        mUserEmailTextView.setText(String.format(getString(R.string.useremail), mUserProfile.getEmail()));
+        userNameTextView.setText(String.format(getString(R.string.username), userProfile.getName()));
+        userEmailTextView.setText(String.format(getString(R.string.useremail), userProfile.getEmail()));
         ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-        if (mUserProfile.getPictureURL() != null) {
+        if (userProfile.getPictureURL() != null) {
             Picasso.with(this)
-                    .load(mUserProfile.getPictureURL())
+                    .load(userProfile.getPictureURL())
                     .into(userPicture);
         }
 
-        String country = (String) mUserProfile.getUserMetadata().get("country");
+        String country = (String) userProfile.getUserMetadata().get("country");
         if (country != null && !country.isEmpty()) {
-            mUserCountryTextView.setVisibility(View.VISIBLE);
-            mUserCountryTextView.setText(String.format(getString(R.string.userCountry), country));
+            userCountryTextView.setVisibility(View.VISIBLE);
+            userCountryTextView.setText(String.format(getString(R.string.userCountry), country));
         }
     }
 
     private void editProfile() {
-        if (mUserProfile == null) {
+        if (userProfile == null) {
             return;
         }
-        if (mCancelEditionButton.getVisibility() == View.GONE) {
+        if (cancelEditionButton.getVisibility() == View.GONE) {
             editModeOn(true);
         } else {
-            String country = mUpdateCountryEditText.getText().toString();
+            String country = updateCountryEditText.getText().toString();
             updateInformation(country);
             editModeOn(false);
         }
@@ -131,11 +131,11 @@ public class MainActivity extends AppCompatActivity {
         Map<String, Object> userMetadata = new HashMap<>();
         userMetadata.put("country", countryUpdate);
         final UsersAPIClient usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
-        usersClient.updateMetadata(mUserProfile.getId(), userMetadata)
+        usersClient.updateMetadata(userProfile.getId(), userMetadata)
                 .start(new BaseCallback<UserProfile, ManagementException>() {
                     @Override
                     public void onSuccess(final UserProfile profile) {
-                        mUserProfile = profile;
+                        userProfile = profile;
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 refreshScreenInformation();
@@ -157,14 +157,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void editModeOn(boolean editModeOn) {
         if (editModeOn) {
-            mUpdateCountryEditText.setVisibility(View.VISIBLE);
-            mEditProfileButton.setText(getString(R.string.save));
-            mCancelEditionButton.setVisibility(View.VISIBLE);
+            updateCountryEditText.setVisibility(View.VISIBLE);
+            editProfileButton.setText(getString(R.string.save));
+            cancelEditionButton.setVisibility(View.VISIBLE);
         } else {
-            mEditProfileButton.setText(getString(R.string.edit));
-            mUpdateCountryEditText.setText("");
-            mUpdateCountryEditText.setVisibility(View.GONE);
-            mCancelEditionButton.setVisibility(View.GONE);
+            editProfileButton.setText(getString(R.string.edit));
+            updateCountryEditText.setText("");
+            updateCountryEditText.setVisibility(View.GONE);
+            cancelEditionButton.setVisibility(View.GONE);
         }
     }
 

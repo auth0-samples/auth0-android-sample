@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setLoggingEnabled(true);
         auth0.setOIDCConformant(true);
         authenticationClient = new AuthenticationAPIClient(auth0);
 
