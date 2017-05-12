@@ -1,4 +1,4 @@
-package com.auth0.profiledemo.activities;
+package com.auth0.samples.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserProfile;
-import com.auth0.profiledemo.R;
-import com.auth0.profiledemo.utils.CredentialsManager;
+import com.auth0.samples.R;
+import com.auth0.samples.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mUserEmailTextView;
     private TextView mUserCountryTextView;
     private EditText mUpdateCountryEditText;
-    private Auth0 mAccount;
+    private Auth0 auth0;
     public UserProfile mUserProfile;
 
     @Override
@@ -41,10 +41,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAccount = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
 
         // The process to reclaim the User Information is preceded by an Authentication call.
-        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(mAccount);
+        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
         authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
 
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateInformation(String countryUpdate) {
         Map<String, Object> userMetadata = new HashMap<>();
         userMetadata.put("country", countryUpdate);
-        final UsersAPIClient usersClient = new UsersAPIClient(mAccount, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
+        final UsersAPIClient usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
         usersClient.updateMetadata(mUserProfile.getId(), userMetadata)
                 .start(new BaseCallback<UserProfile, ManagementException>() {
                     @Override
