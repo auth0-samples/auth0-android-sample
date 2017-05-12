@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">03 - Session Management</string>
-    <string name="refresh">Get New ID With a RefreshToken</string>
+    <string name="app_name">Session Management</string>
+    <string name="refresh">Refresh the access_token</string>
+    <string name="login">Log in</string>
     <string name="logout">Logout</string>
 
-    <string name="auth0_client_id">{CLIENT_ID}</string>
-    <string name="auth0_domain">{DOMAIN}</string>
+    <string name="auth0_client_id">Owu62gnGsRYhk1v9SfB3c6IUbIJcRIze</string>
+    <string name="auth0_domain">lbalmaceda.auth0.com</string>
 </resources>

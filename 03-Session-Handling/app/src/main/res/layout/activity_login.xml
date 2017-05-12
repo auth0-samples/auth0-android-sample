@@ -13,24 +13,13 @@
         android:src="@drawable/logo" />
 
     <Button
-        android:id="@+id/refreshTokenButton"
+        android:id="@+id/loginButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:color/white"
         android:padding="@dimen/activity_general_margin"
-        android:text="@string/refresh"
-        android:textColor="@color/blue_text" />
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/activity_general_margin"
-        android:background="@android:color/white"
-        android:padding="@dimen/activity_general_margin"
-        android:text="@string/logout"
+        android:text="@string/login"
         android:textColor="@color/blue_text" />
 
 </LinearLayout>
