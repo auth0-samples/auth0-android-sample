@@ -20,14 +20,12 @@ import com.auth0.samples.utils.CredentialsManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Auth0 auth0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        final Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
         auth0.setOIDCConformant(true);
 
         final Button loginButton = (Button) findViewById(R.id.loginButton);
