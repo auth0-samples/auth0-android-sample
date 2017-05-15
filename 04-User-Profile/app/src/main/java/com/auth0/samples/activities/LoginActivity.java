@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 WebAuthProvider.init(auth0)
                         .withScheme("demo")
-                        .withScope("openid offline_access")
                         .start(LoginActivity.this, callback);
             }
         });

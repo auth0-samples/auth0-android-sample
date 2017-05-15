@@ -1,9 +1,9 @@
-package com.auth0.authorizationdemo.activities;
+package com.auth0.samples.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.auth0.authorizationdemo.R;
+import com.auth0.samples.R;
 
 
 public class SettingsActivity extends AppCompatActivity {

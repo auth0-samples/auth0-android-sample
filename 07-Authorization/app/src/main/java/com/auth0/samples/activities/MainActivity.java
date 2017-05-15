@@ -1,4 +1,4 @@
-package com.auth0.authorizationdemo.activities;
+package com.auth0.samples.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.result.UserProfile;
-import com.auth0.authorizationdemo.R;
-import com.auth0.authorizationdemo.utils.CredentialsManager;
+import com.auth0.samples.R;
+import com.auth0.samples.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UserProfile mUserProfile;
+    private UserProfile userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +39,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
         AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
         authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
                     public void onSuccess(UserProfile profile) {
-                        mUserProfile = profile;
+                        userProfile = profile;
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                ((TextView) findViewById(R.id.userName)).setText(mUserProfile.getName());
-                                ((TextView) findViewById(R.id.userEmail)).setText(mUserProfile.getEmail());
+                                ((TextView) findViewById(R.id.userName)).setText(userProfile.getName());
+                                ((TextView) findViewById(R.id.userEmail)).setText(userProfile.getEmail());
                                 ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
-                                Picasso.with(MainActivity.this).load(mUserProfile.getPictureURL()).into(userPicture);
+                                Picasso.with(MainActivity.this).load(userProfile.getPictureURL()).into(userPicture);
                             }
                         });
                     }
@@ -77,15 +78,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSettings() {
-        if (mUserProfile == null) {
+        if (userProfile == null) {
             return;
         }
-        if (!mUserProfile.getAppMetadata().containsKey("roles")) {
+        if (!userProfile.getAppMetadata().containsKey("roles")) {
             Toast.makeText(MainActivity.this, "Missing roles from the Profile. Check the rules in the dashboard.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        List<String> roles = (List<String>) mUserProfile.getAppMetadata().get("roles");
+        List<String> roles = (List<String>) userProfile.getAppMetadata().get("roles");
         if (!roles.contains("admin")) {
             Toast.makeText(MainActivity.this, "You don't have access rights to visit this page", Toast.LENGTH_SHORT).show();
             return;
