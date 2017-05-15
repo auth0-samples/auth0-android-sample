@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="lbalmaceda.auth0.com"
+                    android:host="@string/auth0_domain"
                     android:pathPrefix="/android/com.auth0.samples/callback"
                     android:scheme="demo" />
             </intent-filter>
