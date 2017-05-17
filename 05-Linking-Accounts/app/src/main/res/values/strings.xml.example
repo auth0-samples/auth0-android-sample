@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">05-Linking Accounts</string>
+    <string name="app_name">Linking Accounts</string>
     <string name="userEmail">Email: %1$s</string>
     <string name="linked_accounts">Linked Accounts:</string>
     <string name="link_account">Add Account</string>
@@ -7,6 +7,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="login_again">Log In Again</string>
+    <string name="login">Log In</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>

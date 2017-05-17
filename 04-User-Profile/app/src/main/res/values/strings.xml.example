@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">04-User Profile</string>
+    <string name="app_name">User Profile</string>
     <string name="username">Name: %1$s</string>
     <string name="useremail">Email: %1$s</string>
     <string name="userCountry">Country: %1$s</string>
@@ -8,6 +8,7 @@
     <string name="save">Save Changes</string>
     <string name="cancel">Cancel Changes</string>
     <string name="login_again">Log In Again</string>
+    <string name="login">Log In</string>
 
     <string name="auth0_client_id">{CLIENT_ID}</string>
     <string name="auth0_domain">{DOMAIN}</string>

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.auth0.centralizedlogin">
+    package="com.auth0.samples">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.auth0.centralizedlogin.MainActivity"
+            android:name="com.auth0.samples.MainActivity"
             android:launchMode="singleTask">
 
             <intent-filter>
@@ -20,16 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="lbalmaceda.auth0.com"
-                    android:pathPrefix="/android/com.auth0.centralizedlogin/callback"
-                    android:scheme="https" />
+                    android:host="@string/auth0_domain"
+                    android:pathPrefix="/android/com.auth0.samples/callback"
+                    android:scheme="demo" />
             </intent-filter>
 
         </activity>
