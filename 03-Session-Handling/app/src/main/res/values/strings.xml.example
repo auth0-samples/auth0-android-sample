@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Session Management</string>
+    <string name="refresh">Refresh the access_token</string>
+    <string name="login">Log in</string>
+    <string name="logout">Logout</string>
+
+    <string name="auth0_client_id">{CLIENT_ID}</string>
+    <string name="auth0_domain">{DOMAIN}</string>
+</resources>
