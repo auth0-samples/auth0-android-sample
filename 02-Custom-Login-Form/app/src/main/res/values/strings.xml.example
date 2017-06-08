@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">02-Custom-Login-Form</string>
+    <string name="welcome_message">Welcome To Your App</string>
+    <string name="login_success">Logged in!!</string>
+    <string name="login_again">Log In Again</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="db_login_title">Use your credentials</string>
+    <string name="social_login_title">or \n your Social provider</string>
+    <string name="log_in_with_db">Log in with Database</string>
+    <string name="log_in_with_twitter">Log in with Twitter</string>
+
+    <string name="auth0_client_id">{CLIENT_ID}</string>
+    <string name="auth0_domain">{DOMAIN}</string>
+</resources>

@@ -30,10 +30,10 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         // Bind your views
-        final EditText emailEditText = (EditText) findViewById(R.id.emailEditext);
-        final EditText passwordEditText = (EditText) findViewById(R.id.passwordEditext);
+        final EditText emailEditText = (EditText) findViewById(R.id.emailInput);
+        final EditText passwordEditText = (EditText) findViewById(R.id.passwordInput);
         Button dbLoginButton = (Button) findViewById(R.id.dbLoginButton);
-        Button webLoginButton = (Button) findViewById(R.id.webLoginButton);
+        Button socialLoginButton = (Button) findViewById(R.id.socialLoginButton);
 
         // Add the onClick listener to the database login
         dbLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
             }
         });
         // Add the onClick listener to the web auth login
-        webLoginButton.setOnClickListener(new View.OnClickListener() {
+        socialLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Show a progress dialog to block the UI while the request is being made.
@@ -64,6 +64,7 @@ public class LoginActivity extends Activity {
 
     private void login(String email, String password) {
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
 
         progress = ProgressDialog.show(this, null, "Logging in..", true, false);
@@ -95,6 +96,7 @@ public class LoginActivity extends Activity {
 
     private void login() {
         Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
                 .withConnection("twitter")
                 .withScheme("demo")
