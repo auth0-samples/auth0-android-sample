@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 WebAuthProvider.init(auth0)
                         .withScheme("demo")
+                        .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                         .start(LoginActivity.this, callback);
             }
         });

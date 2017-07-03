@@ -57,6 +57,7 @@ public class LoginActivity extends Activity {
     private void doLogin() {
         WebAuthProvider.init(auth0)
                 .withScheme("demo")
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                 .start(this, callback);
     }
 
