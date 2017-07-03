@@ -72,6 +72,7 @@ public class LoginActivity extends Activity {
 
         String connectionName = "Username-Password-Authentication";
         client.login(email, password, connectionName)
+                .setAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                 .start(new BaseCallback<Credentials, AuthenticationException>() {
                     @Override
                     public void onSuccess(Credentials payload) {
@@ -100,6 +101,7 @@ public class LoginActivity extends Activity {
         WebAuthProvider.init(auth0)
                 .withConnection("twitter")
                 .withScheme("demo")
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                 .start(LoginActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull Dialog dialog) {
