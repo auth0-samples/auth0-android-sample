@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
                 .withScheme("demo")
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                 .start(MainActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull final Dialog dialog) {
