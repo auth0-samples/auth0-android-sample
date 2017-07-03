@@ -24,6 +24,7 @@ public class LoginActivity extends Activity {
         auth0.setOIDCConformant(true);
         mLock = Lock.newBuilder(auth0, mCallback)
                 .withScheme("demo")
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                 //Add parameters to the builder
                 .build(this);
         startActivity(mLock.newIntent(this));
