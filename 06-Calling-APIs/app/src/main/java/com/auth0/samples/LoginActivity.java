@@ -96,20 +96,11 @@ public class LoginActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (WebAuthProvider.resume(intent)) {
-            return;
-        }
-        super.onNewIntent(intent);
-    }
-
     private void login() {
-        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
-                .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(LoginActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull final Dialog dialog) {

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
         // The process to reclaim the User Information is preceded by an Authentication call.
