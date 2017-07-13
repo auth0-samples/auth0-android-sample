@@ -34,7 +34,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
         if (getIntent().getExtras() != null) {
@@ -56,17 +56,9 @@ public class LoginActivity extends Activity {
 
     private void doLogin() {
         WebAuthProvider.init(auth0)
-                .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
+                .withScope("openid profile email")
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(this, callback);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (WebAuthProvider.resume(intent)) {
-            return;
-        }
-        super.onNewIntent(intent);
     }
 
     private final AuthCallback callback = new AuthCallback() {

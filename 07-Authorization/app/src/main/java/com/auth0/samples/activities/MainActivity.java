@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        final Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
         authenticationClient.tokenInfo(CredentialsManager.getCredentials(this).getIdToken())

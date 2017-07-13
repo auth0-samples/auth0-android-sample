@@ -33,12 +33,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Auth0 auth0;
     private UsersAPIClient usersClient;
     private TextView userEmailTextView;
     private ImageView userPicture;
     private UserProfile userProfile;
     private ListView linkedAccountList;
+    private AuthenticationAPIClient authenticationClient;
 
 
     @Override
@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
+        authenticationClient = new AuthenticationAPIClient(auth0);
         usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
 
         userEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
@@ -95,22 +96,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fetchProfileInfo();
+        fetchFullProfile();
     }
 
-    private void fetchProfileInfo() {
+    private void fetchFullProfile() {
         // The process to reclaim User Information is preceded by an Authentication call.
-        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
         authenticationClient.userInfo(CredentialsManager.getCredentials(MainActivity.this).getAccessToken())
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
-                    public void onSuccess(UserProfile profile) {
-                        userProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
-                            }
-                        });
+                    public void onSuccess(UserProfile userInfo) {
+                        //The User Info response doesn't contain the identities array we need.
+                        //Use the UsersAPIClient to fetch the full profile given the user id
+                        usersClient.getProfile(userInfo.getId())
+                                .start(new BaseCallback<UserProfile, ManagementException>() {
+                                    @Override
+                                    public void onSuccess(UserProfile fullProfile) {
+                                        userProfile = fullProfile;
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                refreshScreenInformation();
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(ManagementException error) {
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
                     }
 
                     @Override
@@ -161,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Account unlinked!", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        fetchProfileInfo();
+                        fetchFullProfile();
                     }
 
                     @Override

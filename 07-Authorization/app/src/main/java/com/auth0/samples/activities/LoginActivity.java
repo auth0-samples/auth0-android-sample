@@ -16,6 +16,7 @@ import com.auth0.android.provider.AuthCallback;
 import com.auth0.android.provider.WebAuthProvider;
 import com.auth0.android.result.Credentials;
 import com.auth0.samples.R;
+import com.auth0.samples.utils.CredentialsManager;
 
 public class LoginActivity extends Activity {
 
@@ -32,20 +33,10 @@ public class LoginActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (WebAuthProvider.resume(intent)) {
-            return;
-        }
-        super.onNewIntent(intent);
-    }
-
     private void login() {
-        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
-                .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
                 .start(LoginActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull final Dialog dialog) {
@@ -69,6 +60,7 @@ public class LoginActivity extends Activity {
 
                     @Override
                     public void onSuccess(@NonNull final Credentials credentials) {
+                        CredentialsManager.saveCredentials(LoginActivity.this, credentials);
                         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();

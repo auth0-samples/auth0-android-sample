@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
         final Button loginButton = (Button) findViewById(R.id.loginButton);
@@ -64,9 +64,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(AuthenticationException error) {
-                        loginButton.setEnabled(true);
                         runOnUiThread(new Runnable() {
+
                             public void run() {
+                                loginButton.setEnabled(true);
                                 Toast.makeText(LoginActivity.this, "Session Expired, please Log In", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -77,18 +78,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void doLogin() {
         WebAuthProvider.init(auth0)
-                .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .withScope("openid offline_access")
                 .start(this, callback);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (WebAuthProvider.resume(intent)) {
-            return;
-        }
-        super.onNewIntent(intent);
     }
 
     private final AuthCallback callback = new AuthCallback() {
