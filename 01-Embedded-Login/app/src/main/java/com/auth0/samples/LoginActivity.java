@@ -20,11 +20,10 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         mLock = Lock.newBuilder(auth0, mCallback)
-                .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 //Add parameters to the builder
                 .build(this);
         startActivity(mLock.newIntent(this));

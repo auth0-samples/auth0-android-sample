@@ -11,6 +11,6 @@
     <string name="log_in_with_db">Log in with Database</string>
     <string name="log_in_with_twitter">Log in with Twitter</string>
 
-    <string name="auth0_client_id">{CLIENT_ID}</string>
-    <string name="auth0_domain">{DOMAIN}</string>
+    <string name="com_auth0_client_id">{CLIENT_ID}</string>
+    <string name="com_auth0_domain">{DOMAIN}</string>
 </resources>

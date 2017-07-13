@@ -12,27 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity
-            android:name="com.auth0.samples.LoginActivity"
-            android:launchMode="singleTask">
-
+        <activity android:name="com.auth0.samples.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="@string/auth0_domain"
-                    android:pathPrefix="/android/com.auth0.samples/callback"
-                    android:scheme="demo" />
-            </intent-filter>
-
         </activity>
         <activity android:name="com.auth0.samples.MainActivity" />
     </application>

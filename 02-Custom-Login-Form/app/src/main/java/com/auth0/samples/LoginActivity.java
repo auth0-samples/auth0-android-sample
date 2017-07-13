@@ -53,17 +53,8 @@ public class LoginActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        //Check if the result belongs to a pending web authentication
-        if (WebAuthProvider.resume(intent)) {
-            return;
-        }
-        super.onNewIntent(intent);
-    }
-
     private void login(String email, String password) {
-        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
 
@@ -72,7 +63,7 @@ public class LoginActivity extends Activity {
 
         String connectionName = "Username-Password-Authentication";
         client.login(email, password, connectionName)
-                .setAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
+                .setAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(new BaseCallback<Credentials, AuthenticationException>() {
                     @Override
                     public void onSuccess(Credentials payload) {
@@ -96,12 +87,11 @@ public class LoginActivity extends Activity {
     }
 
     private void login() {
-        Auth0 auth0 = new Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain));
+        Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
                 .withConnection("twitter")
-                .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.auth0_domain)))
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(LoginActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull Dialog dialog) {
