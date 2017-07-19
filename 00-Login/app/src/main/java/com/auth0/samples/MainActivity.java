@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
         Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
+                .withScheme("demo")
                 .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(MainActivity.this, new AuthCallback() {
                     @Override

@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 WebAuthProvider.init(auth0)
+                        .withScheme("demo")
                         .withScope("openid profile email")
                         .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                         .start(LoginActivity.this, callback);
