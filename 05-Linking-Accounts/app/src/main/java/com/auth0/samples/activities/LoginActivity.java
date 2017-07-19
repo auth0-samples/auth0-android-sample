@@ -56,6 +56,7 @@ public class LoginActivity extends Activity {
 
     private void doLogin() {
         WebAuthProvider.init(auth0)
+                .withScheme("demo")
                 .withScope("openid profile email")
                 .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(this, callback);
