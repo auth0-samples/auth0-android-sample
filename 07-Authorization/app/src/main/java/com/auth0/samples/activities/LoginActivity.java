@@ -38,6 +38,8 @@ public class LoginActivity extends Activity {
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
                 .withScheme("demo")
+                .withScope("openid email profile")
+                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(LoginActivity.this, new AuthCallback() {
                     @Override
                     public void onFailure(@NonNull final Dialog dialog) {
@@ -62,7 +64,7 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onSuccess(@NonNull final Credentials credentials) {
                         CredentialsManager.saveCredentials(LoginActivity.this, credentials);
-                        final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
