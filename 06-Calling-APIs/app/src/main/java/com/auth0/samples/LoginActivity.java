@@ -64,6 +64,10 @@ public class LoginActivity extends Activity {
                 .get()
                 .url(API_URL);
         if (sendToken) {
+            if (accessToken == null) {
+                Toast.makeText(LoginActivity.this, "Token not found. Log in first.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             reqBuilder.addHeader("Authorization", "Bearer " + accessToken);
         }
 

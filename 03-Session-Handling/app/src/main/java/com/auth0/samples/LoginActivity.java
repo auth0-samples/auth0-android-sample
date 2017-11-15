@@ -12,17 +12,17 @@ import android.widget.Toast;
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
-import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.authentication.storage.CredentialsManager;
+import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.provider.AuthCallback;
 import com.auth0.android.provider.WebAuthProvider;
 import com.auth0.android.result.Credentials;
-import com.auth0.android.result.UserProfile;
-import com.auth0.samples.utils.CredentialsManager;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private Auth0 auth0;
+    private CredentialsManager credentialsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,17 @@ public class LoginActivity extends AppCompatActivity {
 
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
+        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+
+        if (credentialsManager.hasValidCredentials()) {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(LoginActivity.this, "Automatic Login Success", Toast.LENGTH_SHORT).show();
+                }
+            });
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
 
         final Button loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -39,41 +50,6 @@ public class LoginActivity extends AppCompatActivity {
                 doLogin();
             }
         });
-
-
-        String accessToken = CredentialsManager.getCredentials(this).getAccessToken();
-        if (accessToken == null) {
-            return;
-        }
-
-        //If the token exists, try to fetch the associated user info
-        loginButton.setEnabled(false);
-        AuthenticationAPIClient aClient = new AuthenticationAPIClient(auth0);
-        aClient.userInfo(accessToken)
-                .start(new BaseCallback<UserProfile, AuthenticationException>() {
-                    @Override
-                    public void onSuccess(final UserProfile payload) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(LoginActivity.this, "Automatic Login Success", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(AuthenticationException error) {
-                        runOnUiThread(new Runnable() {
-
-                            public void run() {
-                                loginButton.setEnabled(true);
-                                Toast.makeText(LoginActivity.this, "Session Expired, please Log In", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        CredentialsManager.deleteCredentials(LoginActivity.this);
-                    }
-                });
     }
 
     private void doLogin() {
@@ -113,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
                 }
             });
-            CredentialsManager.saveCredentials(LoginActivity.this, credentials);
+            credentialsManager.saveCredentials(credentials);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }

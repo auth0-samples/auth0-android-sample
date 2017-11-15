@@ -12,15 +12,19 @@
         android:layout_marginTop="30dp"
         android:src="@drawable/logo" />
 
-    <Button
-        android:id="@+id/refreshTokenButton"
-        android:layout_width="300dp"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:padding="@dimen/activity_general_margin"
-        android:text="@string/refresh"
-        android:textColor="@color/blue_text" />
+        android:layout_marginTop="10dp"
+        android:text="Your session is still valid:"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/credentials"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/logout"

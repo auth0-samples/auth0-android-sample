@@ -2,6 +2,8 @@ package com.auth0.samples.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,12 +15,16 @@ import android.widget.Toast;
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
+import com.auth0.android.authentication.storage.CredentialsManager;
+import com.auth0.android.authentication.storage.CredentialsManagerException;
+import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.jwt.JWT;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
+import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserProfile;
 import com.auth0.samples.R;
-import com.auth0.samples.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -36,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView userCountryTextView;
     private EditText updateCountryEditText;
 
+    private CredentialsManager credentialsManager;
+    private UsersAPIClient usersClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,30 +53,47 @@ public class MainActivity extends AppCompatActivity {
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
-        // The process to reclaim the User Information is preceded by an Authentication call.
-        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
-        authenticationClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
-                .start(new BaseCallback<UserProfile, AuthenticationException>() {
+        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        credentialsManager.getCredentials(new BaseCallback<Credentials, CredentialsManagerException>() {
 
-                    @Override
-                    public void onSuccess(final UserProfile profile) {
-                        userProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
+            @Override
+            public void onSuccess(Credentials credentials) {
+                String idToken = credentials.getIdToken();
+                usersClient = new UsersAPIClient(auth0, idToken);
+                usersClient.getProfile(getUserId(idToken))
+                        .start(new BaseCallback<UserProfile, ManagementException>() {
+                            @Override
+                            public void onSuccess(UserProfile profile) {
+                                userProfile = profile;
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        refreshScreenInformation();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(ManagementException error) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "User Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
-                    }
+            }
 
-                    @Override
-                    public void onFailure(AuthenticationException error) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(MainActivity.this, "User Profile Request Failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+            @Override
+            public void onFailure(CredentialsManagerException error) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Failed to renew expired credentials. Please, log in again.", Toast.LENGTH_LONG).show();
                     }
                 });
+                loginAgain();
+            }
+        });
+
 
         editProfileButton = (Button) findViewById(R.id.editButton);
         cancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
@@ -114,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String getUserId(String idToken) {
+        return new JWT(idToken).getSubject();
+    }
+
     private void editProfile() {
         if (userProfile == null) {
             return;
@@ -127,32 +157,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateInformation(String countryUpdate) {
-        Map<String, Object> userMetadata = new HashMap<>();
-        userMetadata.put("country", countryUpdate);
-        final UsersAPIClient usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
-        usersClient.updateMetadata(userProfile.getId(), userMetadata)
-                .start(new BaseCallback<UserProfile, ManagementException>() {
-                    @Override
-                    public void onSuccess(final UserProfile profile) {
-                        userProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
+    private void updateInformation(final String countryUpdate) {
+        credentialsManager.getCredentials(new BaseCallback<Credentials, CredentialsManagerException>() {
+            @Override
+            public void onSuccess(Credentials credentials) {
+                Map<String, Object> userMetadata = new HashMap<>();
+                userMetadata.put("country", countryUpdate);
+                UsersAPIClient usersClient = new UsersAPIClient(auth0, credentials.getIdToken());
+                usersClient.updateMetadata(userProfile.getId(), userMetadata)
+                        .start(new BaseCallback<UserProfile, ManagementException>() {
+                            @Override
+                            public void onSuccess(final UserProfile profile) {
+                                userProfile = profile;
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        refreshScreenInformation();
+                                    }
+                                });
                             }
-                        });
-                    }
 
-                    @Override
-                    public void onFailure(ManagementException error) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(MainActivity.this, "Profile Update Failed", Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onFailure(ManagementException error) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Profile Update Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
+            }
+
+            @Override
+            public void onFailure(CredentialsManagerException error) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Failed to renew expired credentials. Please, log in again.", Toast.LENGTH_LONG).show();
                     }
                 });
-
+                loginAgain();
+            }
+        });
     }
 
     private void editModeOn(boolean editModeOn) {
@@ -169,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loginAgain() {
-        CredentialsManager.deleteCredentials(MainActivity.this);
+        credentialsManager.clearCredentials();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

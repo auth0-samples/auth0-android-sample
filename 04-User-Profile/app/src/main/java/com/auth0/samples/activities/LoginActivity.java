@@ -10,15 +10,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.auth0.android.Auth0;
+import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
+import com.auth0.android.authentication.storage.CredentialsManager;
+import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.provider.AuthCallback;
 import com.auth0.android.provider.WebAuthProvider;
 import com.auth0.android.result.Credentials;
 import com.auth0.samples.R;
-import com.auth0.samples.utils.CredentialsManager;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+    private CredentialsManager credentialsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,12 @@ public class LoginActivity extends AppCompatActivity {
 
         final Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
+        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        if (credentialsManager.hasValidCredentials()){
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
 
         final Button loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
                 }
             });
-            CredentialsManager.saveCredentials(LoginActivity.this, credentials);
+            credentialsManager.saveCredentials(credentials);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
