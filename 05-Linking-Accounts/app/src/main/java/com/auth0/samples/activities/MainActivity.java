@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
-import com.auth0.android.authentication.storage.CredentialsManager;
 import com.auth0.android.authentication.storage.CredentialsManagerException;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.jwt.JWT;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView linkedAccountList;
 
     private Auth0 auth0;
-    private CredentialsManager credentialsManager;
+    private SecureCredentialsManager credentialsManager;
     private UsersAPIClient usersClient;
 
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
-        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
 
         userEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
         userPicture = (ImageView) findViewById(R.id.userPicture);

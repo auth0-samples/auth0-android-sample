@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
-import com.auth0.android.authentication.storage.CredentialsManager;
 import com.auth0.android.authentication.storage.CredentialsManagerException;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.jwt.JWT;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Use the same Claim name as defined in the Rule
     private static final String ROLES_CLAIM = "https://access.control/roles";
-    private CredentialsManager credentialsManager;
+    private SecureCredentialsManager credentialsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         final Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
-        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
         credentialsManager.getCredentials(new BaseCallback<Credentials, CredentialsManagerException>() {
             @Override
             public void onSuccess(Credentials credentials) {

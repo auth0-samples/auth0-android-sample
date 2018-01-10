@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
-import com.auth0.android.authentication.storage.CredentialsManager;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.provider.AuthCallback;
 import com.auth0.android.provider.WebAuthProvider;
@@ -65,7 +65,7 @@ public class LoginActivity extends Activity {
 
                     @Override
                     public void onSuccess(@NonNull final Credentials credentials) {
-                        CredentialsManager credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(LoginActivity.this));
+                        SecureCredentialsManager credentialsManager = new SecureCredentialsManager(LoginActivity.this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(LoginActivity.this));
                         credentialsManager.saveCredentials(credentials);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

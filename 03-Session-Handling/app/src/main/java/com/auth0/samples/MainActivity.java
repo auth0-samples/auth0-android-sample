@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
-import com.auth0.android.authentication.storage.CredentialsManager;
 import com.auth0.android.authentication.storage.CredentialsManagerException;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.result.Credentials;
@@ -20,7 +20,7 @@ import com.auth0.android.result.Credentials;
 public class MainActivity extends AppCompatActivity {
 
     private TextView credentialsView;
-    private CredentialsManager credentialsManager;
+    private SecureCredentialsManager credentialsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
-        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
         showToken();
     }
 

@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
-import com.auth0.android.authentication.storage.CredentialsManager;
 import com.auth0.android.authentication.storage.CredentialsManagerException;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.ManagementException;
@@ -33,7 +33,7 @@ public class LoginActivity extends Activity {
     private static final String LOGGING_IN = "logging_in";
 
     private Auth0 auth0;
-    private CredentialsManager credentialsManager;
+    private SecureCredentialsManager credentialsManager;
     private boolean linkSessions;
     private boolean loggingIn;
 
@@ -42,7 +42,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
-        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
 
         linkSessions = getIntent().getExtras() != null && getIntent().getExtras().getBoolean(Constants.LINK_ACCOUNTS, false);
         loggingIn = savedInstanceState != null && savedInstanceState.getBoolean(LOGGING_IN, false);

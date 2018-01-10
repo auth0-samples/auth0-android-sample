@@ -2,8 +2,6 @@ package com.auth0.samples.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +12,8 @@ import android.widget.Toast;
 
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
-import com.auth0.android.authentication.AuthenticationException;
-import com.auth0.android.authentication.storage.CredentialsManager;
 import com.auth0.android.authentication.storage.CredentialsManagerException;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.jwt.JWT;
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView userCountryTextView;
     private EditText updateCountryEditText;
 
-    private CredentialsManager credentialsManager;
+    private SecureCredentialsManager credentialsManager;
     private UsersAPIClient usersClient;
 
     @Override
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
-        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
         credentialsManager.getCredentials(new BaseCallback<Credentials, CredentialsManagerException>() {
 
             @Override

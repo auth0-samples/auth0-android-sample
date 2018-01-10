@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
-import com.auth0.android.authentication.storage.CredentialsManager;
+import com.auth0.android.authentication.storage.SecureCredentialsManager;
 import com.auth0.android.authentication.storage.SharedPreferencesStorage;
 import com.auth0.android.provider.AuthCallback;
 import com.auth0.android.provider.WebAuthProvider;
@@ -22,7 +22,7 @@ import com.auth0.samples.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private CredentialsManager credentialsManager;
+    private SecureCredentialsManager credentialsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
-        credentialsManager = new CredentialsManager(new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
-        if (credentialsManager.hasValidCredentials()){
+        credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
+        if (credentialsManager.hasValidCredentials()) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
             return;
