@@ -6,7 +6,7 @@ A step by step [Quickstart Tutorial](https://auth0.com/docs/quickstart/native/an
 
 ### Requirements
 
-This sample app runs on Android versions 15 and above.
+This sample app runs on Android versions 21 and above.
 
 # Setup
 
