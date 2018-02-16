@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auth0.android.Auth0;
+import com.auth0.android.authentication.AuthenticationAPIClient;
+import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.jwt.JWT;
 import com.auth0.android.management.ManagementException;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView linkedAccountList;
 
     private UsersAPIClient usersClient;
+    private AuthenticationAPIClient authenticationClient;
 
 
     @Override
@@ -97,25 +100,41 @@ public class MainActivity extends AppCompatActivity {
             Auth0 auth0 = new Auth0(MainActivity.this);
             auth0.setOIDCConformant(true);
             usersClient = new UsersAPIClient(auth0, idToken);
+            authenticationClient = new AuthenticationAPIClient(auth0);
         }
-        String userId = new JWT(idToken).getSubject();
-        usersClient.getProfile(userId)
-                .start(new BaseCallback<UserProfile, ManagementException>() {
+
+        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
+        authenticationClient.userInfo(accessToken)
+                .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
-                    public void onSuccess(UserProfile fullProfile) {
-                        userProfile = fullProfile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
+                    public void onSuccess(UserProfile userInfo) {
+                        usersClient.getProfile(userInfo.getId()).start(new BaseCallback<UserProfile, ManagementException>() {
+                            @Override
+                            public void onSuccess(UserProfile payload) {
+                                userProfile = payload;
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        refreshScreenInformation();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(ManagementException error) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
                     }
 
                     @Override
-                    public void onFailure(ManagementException error) {
+                    public void onFailure(AuthenticationException error) {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "UserInfo Request Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
