@@ -133,8 +133,8 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin() {
         WebAuthProvider.init(auth0)
                 .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
-                .withScope("openid profile email offline_access")
+                .withAudience(String.format("https://%s/api/v2/", getString(R.string.com_auth0_domain)))
+                .withScope("openid profile email offline_access read:current_user update:current_user_identities")
                 .start(this, webCallback);
     }
 
@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
     };
 
     private void performLink(final String secondaryIdToken) {
-        UsersAPIClient client = new UsersAPIClient(auth0, getIntent().getExtras().getString(LoginActivity.KEY_ID_TOKEN));
+        UsersAPIClient client = new UsersAPIClient(auth0, getIntent().getExtras().getString(LoginActivity.KEY_ACCESS_TOKEN));
         String primaryUserId = getIntent().getExtras().getString(LoginActivity.KEY_PRIMARY_USER_ID);
         client.link(primaryUserId, secondaryIdToken)
                 .start(new BaseCallback<List<UserIdentity>, ManagementException>() {

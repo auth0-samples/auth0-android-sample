@@ -71,13 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Obtain the token from the Intent's extras
-        String idToken = getIntent().getStringExtra(LoginActivity.KEY_ID_TOKEN);
         String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
 
         Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
+        auth0.setLoggingEnabled(true);
         authenticationAPIClient = new AuthenticationAPIClient(auth0);
-        usersClient = new UsersAPIClient(auth0, idToken);
+        usersClient = new UsersAPIClient(auth0, accessToken);
         getProfile(accessToken);
     }
 

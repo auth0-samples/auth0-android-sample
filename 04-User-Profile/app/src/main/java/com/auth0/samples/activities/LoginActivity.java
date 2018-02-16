@@ -107,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin() {
         WebAuthProvider.init(auth0)
                 .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
-                .withScope("openid profile email offline_access")
+                .withAudience(String.format("https://%s/api/v2/", getString(R.string.com_auth0_domain)))
+                .withScope("openid profile email offline_access read:current_user update:current_user_metadata")
                 .start(this, webCallback);
     }
 

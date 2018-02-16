@@ -95,15 +95,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchProfile() {
-        String idToken = getIntent().getStringExtra(LoginActivity.KEY_ID_TOKEN);
+        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
         if (usersClient == null) {
             Auth0 auth0 = new Auth0(MainActivity.this);
             auth0.setOIDCConformant(true);
-            usersClient = new UsersAPIClient(auth0, idToken);
+            usersClient = new UsersAPIClient(auth0, accessToken);
             authenticationClient = new AuthenticationAPIClient(auth0);
         }
 
-        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
         authenticationClient.userInfo(accessToken)
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
