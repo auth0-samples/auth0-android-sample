@@ -55,6 +55,7 @@ public class LoginActivity extends Activity {
 
     private void login(String email, String password) {
         Auth0 auth0 = new Auth0(this);
+        auth0.setLoggingEnabled(true);
         auth0.setOIDCConformant(true);
         AuthenticationAPIClient client = new AuthenticationAPIClient(auth0);
 
@@ -91,7 +92,7 @@ public class LoginActivity extends Activity {
         auth0.setOIDCConformant(true);
         WebAuthProvider.init(auth0)
                 .withScheme("demo")
-                .withConnection("twitter")
+                .withConnection("twitter")  //Connection must be enabled on the dashboard first
                 .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(LoginActivity.this, new AuthCallback() {
                     @Override
