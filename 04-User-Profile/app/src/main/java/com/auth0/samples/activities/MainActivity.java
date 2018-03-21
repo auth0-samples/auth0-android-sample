@@ -18,7 +18,6 @@ import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserProfile;
 import com.auth0.samples.R;
-import com.auth0.samples.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Auth0 auth0;
     private UserProfile userProfile;
     private Button editProfileButton;
     private Button cancelEditionButton;
@@ -36,38 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView userCountryTextView;
     private EditText updateCountryEditText;
 
+    private AuthenticationAPIClient authenticationAPIClient;
+    private UsersAPIClient usersClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        auth0 = new Auth0(this);
-        auth0.setOIDCConformant(true);
-
-        // The process to reclaim the User Information is preceded by an Authentication call.
-        AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
-        authenticationClient.userInfo(CredentialsManager.getCredentials(this).getAccessToken())
-                .start(new BaseCallback<UserProfile, AuthenticationException>() {
-
-                    @Override
-                    public void onSuccess(final UserProfile profile) {
-                        userProfile = profile;
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                refreshScreenInformation();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(AuthenticationException error) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(MainActivity.this, "User Profile Request Failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
 
         editProfileButton = (Button) findViewById(R.id.editButton);
         cancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
@@ -92,9 +65,20 @@ public class MainActivity extends AppCompatActivity {
         loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginAgain();
+                logout();
             }
         });
+
+
+        //Obtain the token from the Intent's extras
+        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
+
+        Auth0 auth0 = new Auth0(this);
+        auth0.setOIDCConformant(true);
+        auth0.setLoggingEnabled(true);
+        authenticationAPIClient = new AuthenticationAPIClient(auth0);
+        usersClient = new UsersAPIClient(auth0, accessToken);
+        getProfile(accessToken);
     }
 
     private void refreshScreenInformation() {
@@ -114,6 +98,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void getProfile(String accessToken) {
+        authenticationAPIClient.userInfo(accessToken)
+                .start(new BaseCallback<UserProfile, AuthenticationException>() {
+                    @Override
+                    public void onSuccess(UserProfile userinfo) {
+                        usersClient.getProfile(userinfo.getId())
+                                .start(new BaseCallback<UserProfile, ManagementException>() {
+                                    @Override
+                                    public void onSuccess(UserProfile profile) {
+                                        userProfile = profile;
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                refreshScreenInformation();
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(ManagementException error) {
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(MainActivity.this, "User Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onFailure(AuthenticationException error) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "User Info Request Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+    }
+
     private void editProfile() {
         if (userProfile == null) {
             return;
@@ -127,10 +150,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateInformation(String countryUpdate) {
+    private void updateInformation(final String countryUpdate) {
         Map<String, Object> userMetadata = new HashMap<>();
         userMetadata.put("country", countryUpdate);
-        final UsersAPIClient usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
         usersClient.updateMetadata(userProfile.getId(), userMetadata)
                 .start(new BaseCallback<UserProfile, ManagementException>() {
                     @Override
@@ -152,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
-
     }
 
     private void editModeOn(boolean editModeOn) {
@@ -168,9 +189,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loginAgain() {
-        CredentialsManager.deleteCredentials(MainActivity.this);
-        startActivity(new Intent(this, LoginActivity.class));
+    private void logout() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true);
+        startActivity(intent);
         finish();
     }
 }

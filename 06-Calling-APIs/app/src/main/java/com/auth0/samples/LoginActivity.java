@@ -2,7 +2,6 @@ package com.auth0.samples;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,6 +63,10 @@ public class LoginActivity extends Activity {
                 .get()
                 .url(API_URL);
         if (sendToken) {
+            if (accessToken == null) {
+                Toast.makeText(LoginActivity.this, "Token not found. Log in first.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             reqBuilder.addHeader("Authorization", "Bearer " + accessToken);
         }
 

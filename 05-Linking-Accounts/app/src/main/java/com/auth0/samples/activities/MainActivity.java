@@ -18,13 +18,12 @@ import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
+import com.auth0.android.jwt.JWT;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.android.result.UserProfile;
 import com.auth0.samples.R;
-import com.auth0.samples.utils.Constants;
-import com.auth0.samples.utils.CredentialsManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,11 +32,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UsersAPIClient usersClient;
     private TextView userEmailTextView;
     private ImageView userPicture;
     private UserProfile userProfile;
     private ListView linkedAccountList;
+
+    private UsersAPIClient usersClient;
     private AuthenticationAPIClient authenticationClient;
 
 
@@ -45,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Auth0 auth0 = new Auth0(this);
-        auth0.setOIDCConformant(true);
-        authenticationClient = new AuthenticationAPIClient(auth0);
-        usersClient = new UsersAPIClient(auth0, CredentialsManager.getCredentials(MainActivity.this).getIdToken());
 
         userEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
         userPicture = (ImageView) findViewById(R.id.userPicture);
@@ -66,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginAgain();
+                logout();
             }
         });
 
@@ -96,45 +91,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fetchFullProfile();
+        fetchProfile();
     }
 
-    private void fetchFullProfile() {
-        // The process to reclaim User Information is preceded by an Authentication call.
-        authenticationClient.userInfo(CredentialsManager.getCredentials(MainActivity.this).getAccessToken())
+    private void fetchProfile() {
+        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
+        if (usersClient == null) {
+            Auth0 auth0 = new Auth0(MainActivity.this);
+            auth0.setOIDCConformant(true);
+            usersClient = new UsersAPIClient(auth0, accessToken);
+            authenticationClient = new AuthenticationAPIClient(auth0);
+        }
+
+        authenticationClient.userInfo(accessToken)
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
                     public void onSuccess(UserProfile userInfo) {
-                        //The User Info response doesn't contain the identities array we need.
-                        //Use the UsersAPIClient to fetch the full profile given the user id
-                        usersClient.getProfile(userInfo.getId())
-                                .start(new BaseCallback<UserProfile, ManagementException>() {
-                                    @Override
-                                    public void onSuccess(UserProfile fullProfile) {
-                                        userProfile = fullProfile;
-                                        runOnUiThread(new Runnable() {
-                                            public void run() {
-                                                refreshScreenInformation();
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public void onFailure(ManagementException error) {
-                                        runOnUiThread(new Runnable() {
-                                            public void run() {
-                                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                        usersClient.getProfile(userInfo.getId()).start(new BaseCallback<UserProfile, ManagementException>() {
+                            @Override
+                            public void onSuccess(UserProfile payload) {
+                                userProfile = payload;
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        refreshScreenInformation();
                                     }
                                 });
+                            }
+
+                            @Override
+                            public void onFailure(ManagementException error) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
                     }
 
                     @Override
                     public void onFailure(AuthenticationException error) {
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Profile Request Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "UserInfo Request Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -148,12 +147,15 @@ public class MainActivity extends AppCompatActivity {
     private void refreshScreenInformation() {
         userEmailTextView.setText(String.format(getString(R.string.userEmail), userProfile.getEmail()));
         Picasso.with(this).load(userProfile.getPictureURL()).into(userPicture);
-        if (userProfile.getIdentities() == null) {
+        updateIdentities(userProfile.getIdentities());
+    }
+
+    private void updateIdentities(List<UserIdentity> identities) {
+        if (identities == null) {
             return;
         }
-
         List<String> identitiesTypes = new ArrayList<>();
-        for (UserIdentity identity : userProfile.getIdentities()) {
+        for (UserIdentity identity : identities) {
             identitiesTypes.add(identity.getConnection());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, identitiesTypes);
@@ -163,8 +165,9 @@ public class MainActivity extends AppCompatActivity {
     private void linkAccount() {
         Intent linkAccounts = new Intent(this, LoginActivity.class);
         linkAccounts.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        linkAccounts.putExtra(Constants.LINK_ACCOUNTS, true);
-        linkAccounts.putExtra(Constants.PRIMARY_USER_ID, userProfile.getId());
+        linkAccounts.putExtras(getIntent().getExtras());
+        linkAccounts.putExtra(LoginActivity.KEY_LINK_ACCOUNTS, true);
+        linkAccounts.putExtra(LoginActivity.KEY_PRIMARY_USER_ID, userProfile.getId());
         startActivity(linkAccounts);
     }
 
@@ -172,13 +175,13 @@ public class MainActivity extends AppCompatActivity {
         usersClient.unlink(userProfile.getId(), secondaryAccountIdentity.getId(), secondaryAccountIdentity.getProvider())
                 .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
                     @Override
-                    public void onSuccess(List<UserIdentity> payload) {
+                    public void onSuccess(final List<UserIdentity> identities) {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 Toast.makeText(MainActivity.this, "Account unlinked!", Toast.LENGTH_SHORT).show();
+                                updateIdentities(identities);
                             }
                         });
-                        fetchFullProfile();
                     }
 
                     @Override
@@ -192,9 +195,10 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void loginAgain() {
-        CredentialsManager.deleteCredentials(this);
-        startActivity(new Intent(this, LoginActivity.class));
+    private void logout() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true);
+        startActivity(intent);
         finish();
     }
 
