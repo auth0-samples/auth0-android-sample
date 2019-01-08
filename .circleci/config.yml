@@ -28,12 +28,15 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-      - checkout 
+      - checkout:
+          path: ~/auth0-android-sample
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       # - attach_workspace: FOR FUTURE REFERENCES
       #     at: ~/auth0-android-sample
-      # - run:
-      #     name: Chmod permissions 
-      #     command: sudo chmod +x ./gradlew
+      - run:
+          name: Chmod permissions 
+          command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
