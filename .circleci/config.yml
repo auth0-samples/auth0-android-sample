@@ -31,9 +31,9 @@ jobs:
       - checkout 
       # - attach_workspace: FOR FUTURE REFERENCES
       #     at: ~/auth0-android-sample
-      - run:
-          name: Chmod permissions 
-          command: sudo chmod +x ./gradlew
+      # - run:
+      #     name: Chmod permissions 
+      #     command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
