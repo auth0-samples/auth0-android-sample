@@ -22,7 +22,7 @@ jobs:
   #         - project
   #         - script
   android_00:
-    working_directory: ~/auth0-android-sample/00-login
+    working_directory: ~/auth0-android-sample/00-Login
     docker:
       - image: circleci/android:api-27-alpha
     environment:
@@ -31,9 +31,9 @@ jobs:
       - checkout 
       # - attach_workspace: FOR FUTURE REFERENCES
       #     at: ~/auth0-android-sample
-      # - run:
-      #     name: Chmod permissions 
-      #     command: sudo chmod +x .gradlew
+      - run:
+          name: Chmod permissions 
+          command: sudo chmod +x .gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
