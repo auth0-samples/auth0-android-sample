@@ -22,9 +22,9 @@ jobs:
   #         - project
   #         - script
   android_00:
-    working_directory: ~/auth0-android-sample/00-login
+    working_directory: ~/00-login
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-27-alpha
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -32,7 +32,7 @@ jobs:
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       # - attach_workspace: FOR FUTURE REFERENCES
-      #     at: ~/ben-android-sample
+      #     at: ~/auth0-android-sample
       - run:
           name: Chmod permissions 
           command: sudo chmod +x ./gradlew
