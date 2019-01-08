@@ -27,7 +27,7 @@ jobs:
       - image: circleci/android:api-27-alpha
     environment:
       - JVM_OPTS: -Xmx3200m
-      - AUTH0_CONFIG: ~/auth0-android-sample/00-Login/app/src/main/res/values/strings.xml
+      - AUTH0_CONFIG: strings.xml
     steps:
       - checkout:
           path: ~/auth0-android-sample
@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Setup Auth0 environment
           command: |
-            cd 
+            cd ~/auth0-android-sample/00-Login/app/src/main/res/values/
             mv $AUTH0_CONFIG.example $AUTH0_CONFIG
             sed -i 's/{CLIENT_ID}/'$client_id'/g' $AUTH0_CONFIG
             sed -i 's/{DOMAIN}/'$Domain'/g' $AUTH0_CONFIG
