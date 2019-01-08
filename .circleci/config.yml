@@ -36,6 +36,7 @@ jobs:
       - run:
           name: Setup Auth0 environment
           command: |
+            cd 
             mv $AUTH0_CONFIG.example $AUTH0_CONFIG
             sed -i 's/{CLIENT_ID}/'$client_id'/g' $AUTH0_CONFIG
             sed -i 's/{DOMAIN}/'$Domain'/g' $AUTH0_CONFIG
