@@ -27,7 +27,7 @@ jobs:
       - image: circleci/android:api-27-alpha
     environment:
       - JVM_OPTS: -Xmx3200m
-      - AUTH0_CONFIG: ~/auth0-android-sample/00-Login/app/src/main/res/values/strings.xml
+      - AUTH0_CONFIG: 00-Login/app/src/main/res/values/strings.xml
     steps:
       - checkout:
           path: ~/auth0-android-sample
