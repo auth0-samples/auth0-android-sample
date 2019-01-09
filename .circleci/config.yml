@@ -12,7 +12,7 @@ jobs:
       
       - run:
           name: Installing pip dependencies
-          command: npm i -g python
+          command: npm i python
 
       - run: 
           name: Cloning repo
