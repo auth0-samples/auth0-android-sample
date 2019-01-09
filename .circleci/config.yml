@@ -10,14 +10,6 @@ jobs:
           name: Setting up npm server
           command: npm init -y
       
-      - run:
-          name: Installing pip dependencies
-          command: npm i python
-
-      - run: 
-          name: Cloning repo
-          command: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
-
       - persist_to_workspace:
           root: ~/auth0-android-sample 
           paths:
@@ -68,6 +60,14 @@ jobs:
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
               exit 1; 
             fi
+      - run:
+          name: Installing pip dependencies
+          command: npm i python
+
+      - run: 
+          name: Cloning repo
+          command: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
+
       - run:
           name: Installing pip
           command: sudo apt-get install python-pip
