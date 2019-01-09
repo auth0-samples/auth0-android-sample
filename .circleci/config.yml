@@ -17,7 +17,9 @@ jobs:
       - run: 
           name: Cloning repo
           command: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
-      
+      - run:
+          name: Installing python dependencies
+          command: pip install -r requirements.txt
   android_00:
     working_directory: ~/auth0-android-sample/00-Login
     docker:
