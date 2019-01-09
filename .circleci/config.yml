@@ -74,6 +74,9 @@ jobs:
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
               exit 1; 
             fi
+      - run:
+          name: Execute test
+          command: python -m pytest test_app_android.py
       - save_cache:
           paths:
             - ./gradle
