@@ -64,10 +64,10 @@ jobs:
 
       - run:
           name: Installing pip
-          command: sudo apt-get install python-pip
+          command: sudo apt-get install python3-pip
       - run:
           name: Installing python dependencies
-          command: sudo pip install -r scripts/requirements.txt
+          command: sudo pip3 install -r scripts/requirements.txt
       - run:
           name: Execute test
           command: python3 -m pytest scripts/test_app_android.py
