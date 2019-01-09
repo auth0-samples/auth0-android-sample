@@ -19,7 +19,7 @@ jobs:
           command: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
       - run:
           name: Installing pip
-          command: npm i pip
+          command: sudo apt-get install python-pip
       - run:
           name: Installing python dependencies
           command: pip install -r requirements.txt
