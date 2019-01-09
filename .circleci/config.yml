@@ -76,8 +76,9 @@ workflows:
     jobs:
       - node_server
       - android_00:
-          requires:
-            -node_android
           context: Quickstart MOBILE Test
+          requires:
+            - node_android
+          
 
 
