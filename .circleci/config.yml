@@ -67,7 +67,7 @@ jobs:
           command: sudo apt-get install python-pip
       - run:
           name: Installing python dependencies
-          command: pip install -r scripts/requirements.txt
+          command: sudo pip install -r scripts/requirements.txt
       - run:
           name: Execute test
           command: python -m pytest test_app_android.py
