@@ -18,12 +18,6 @@ jobs:
           name: Cloning repo
           command: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
 
-      - run:
-          name: Installing pip
-          command: sudo apt-get install python-pip
-      - run:
-          name: Installing python dependencies
-          command: pip install -r scripts/requirements.txt
       - persist_to_workspace:
           root: ~/auth0-android-sample 
           paths:
@@ -74,6 +68,12 @@ jobs:
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
               exit 1; 
             fi
+      - run:
+          name: Installing pip
+          command: sudo apt-get install python-pip
+      - run:
+          name: Installing python dependencies
+          command: pip install -r scripts/requirements.txt
       - run:
           name: Execute test
           command: python -m pytest test_app_android.py
