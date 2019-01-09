@@ -25,7 +25,7 @@ jobs:
           name: Installing python dependencies
           command: pip install -r scripts/requirements.txt
       - persist_to_workspace:
-          root: ~/ 
+          root: ~/auth0-android-sample 
           paths:
             - project
             - scripts
