@@ -13,14 +13,11 @@ jobs:
       - run:
           name: Installing pip dependencies
           command: npm i -g python
-  test_setup:
-    steps:
-      - run: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
-      - persist_to_workspace:
-        root: ~/
-        path:
-          - project
-          - script
+
+      - run: 
+          name: Cloning repo
+          command: git clone https://github.com/auth0-samples/mobile-quickstarts-tests scripts
+      
   android_00:
     working_directory: ~/auth0-android-sample/00-Login
     docker:
@@ -75,9 +72,6 @@ workflows:
   node_android:
     jobs:
       - node_server
-      - test_setup:
-          requires:
-            - node_server
       - android_00:
           context: Quickstart MOBILE Test
           requires:
