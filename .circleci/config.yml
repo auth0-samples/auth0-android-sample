@@ -24,7 +24,7 @@ jobs:
   android_00:
     working_directory: ~/auth0-android-sample/00-Login
     docker:
-      - image: circleci/android:api-27-alpha
+      - image: circleci/android:api-28-alpha
     environment:
       - JVM_OPTS: -Xmx3200m
       - AUTH0_CONFIG: strings.xml
@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Setup Auth0 environment
           command: |
-            cd ~/auth0-android-sample/00-Login/app/src/main/res/values/
+            cd ~/auth0-android-sample/00-Login/app/src/main/res/values/ 
             mv $AUTH0_CONFIG.example $AUTH0_CONFIG
             sed -i 's/{CLIENT_ID}/'$client_id'/g' $AUTH0_CONFIG
             sed -i 's/{DOMAIN}/'$Domain'/g' $AUTH0_CONFIG
