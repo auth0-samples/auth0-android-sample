@@ -78,7 +78,7 @@ workflows:
       - android_00:
           context: Quickstart MOBILE Test
           requires:
-            - node_android
+            - node_server
           
 
 
