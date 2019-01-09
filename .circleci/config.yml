@@ -54,7 +54,7 @@ jobs:
           name : App upload and Set app id in environment variable.
           command : |
             cd 
-            APP_UPLOAD_RESPONSE=$(curl -u "benjaminlizardo2:2SP8isyH9azrD1sSsiCJ" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@auth0-android-sample/00-Login/app/build/outputs/apk/debug/app-debug.apk" -F "data={'custom_id': 'Auth0'}")
+            APP_UPLOAD_RESPONSE=$(curl -u "benjaminlizardo2:2SP8isyH9azrD1sSsiCJ" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@auth0-android-sample/00-Login/app/build/outputs/apk/debug/app-debug.apk")
             APP_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url")
             if [ $APP_ID != null ]; then
               echo "Apk uploaded to BrowserStack with app id : ",$APP_ID;
