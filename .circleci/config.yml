@@ -56,7 +56,7 @@ jobs:
             fi
       - run:
           name: Installing pip dependencies
-          command: npm i python
+          command: npm i python3
 
       - run: 
           name: Cloning repo
