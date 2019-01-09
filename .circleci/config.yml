@@ -22,7 +22,7 @@ jobs:
           command: sudo apt-get install python-pip
       - run:
           name: Installing python dependencies
-          command: pip install -r requirements.txt
+          command: pip install -r scripts/requirements.txt
   android_00:
     working_directory: ~/auth0-android-sample/00-Login
     docker:
