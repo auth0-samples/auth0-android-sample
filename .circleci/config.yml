@@ -12,7 +12,7 @@ jobs:
   android_00:
     working_directory: ~/auth0-android-sample/00-Login
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: circleci/android:api-27-node8-alpha
     environment:
       - JVM_OPTS: -Xmx3200m
       - AUTH0_CONFIG: strings.xml
