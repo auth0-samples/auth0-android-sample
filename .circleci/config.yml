@@ -38,7 +38,7 @@ jobs:
           command: ./gradlew androidDependencies
       - run:
           name: Compile apk file
-          command: ./gradlew assembleDebug
+          command: ./gradlew assembleDebug  
       - run:
           name : App upload and Set app id in environment variable.
           command : |
