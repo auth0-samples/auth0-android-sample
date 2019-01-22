@@ -75,8 +75,8 @@ jobs:
             mv $BROWSERSTACK_CONFIG.example $BROWSERSTACK_CONFIG
             sed -i 's/{user_name}/'$bs_user'/g' $BROWSERSTACK_CONFIG
             sed -i 's/{access_key}/'$bs_key'/g' $BROWSERSTACK_CONFIG
-            echo -i $BROWSERSTACK_CONFIG
-            
+            echo -i $BROWSERSTACK_CONFIG  
+
       - run:
           name: Execute test
           command: python3 -m pytest scripts/test_app_android.py
