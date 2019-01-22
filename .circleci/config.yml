@@ -16,6 +16,7 @@ jobs:
     environment:
       - JVM_OPTS: -Xmx3200m
       - AUTH0_CONFIG: strings.xml
+      - BROWSERSTACK_CONFIG: scripts/browserstack.py
     steps:
       - checkout:
           path: ~/auth0-android-sample
@@ -42,7 +43,7 @@ jobs:
           name : App upload and Set app id in environment variable.
           command : |
             cd 
-            APP_UPLOAD_RESPONSE=$(curl -u "benjaminlizardo2:2SP8isyH9azrD1sSsiCJ" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@auth0-android-sample/00-Login/app/build/outputs/apk/debug/app-debug.apk" -F 'data={"custom_id": "Auth0"}')
+            APP_UPLOAD_RESPONSE=$(curl -u "$bs_user:$bs_key" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@auth0-android-sample/00-Login/app/build/outputs/apk/debug/app-debug.apk" -F 'data={"custom_id": "Auth0"}')
             APP_ID=$(echo $APP_UPLOAD_RESPONSE | jq -r ".app_url")
             if [ $APP_ID != null ]; then
               echo "Apk uploaded to BrowserStack with app id : ",$APP_ID;
@@ -68,6 +69,13 @@ jobs:
       - run:
           name: Installing python dependencies
           command: sudo pip3 install -r scripts/requirements.txt
+        - run:
+          name: Copying Browserstack credentials
+          command:|
+            mv $BROWSERSTACK_CONFIG.example $BROWSERSTACK_CONFIG
+            sed -i 's/{user_name}/'$bs_user'/g' $BROWSERSTACK_CONFIG
+            sed -i 's/{access_key}/'$bs_key'/g' $BROWSERSTACK_CONFIG
+            echo -i $BROWSERSTACK_CONFIG
       - run:
           name: Execute test
           command: python3 -m pytest scripts/test_app_android.py
