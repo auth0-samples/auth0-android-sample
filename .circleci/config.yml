@@ -69,7 +69,7 @@ jobs:
       - run:
           name: Installing python dependencies
           command: sudo pip3 install -r scripts/requirements.txt
-        - run:
+      - run:
           name: Copying Browserstack credentials
           command:|
             mv $BROWSERSTACK_CONFIG.example $BROWSERSTACK_CONFIG
