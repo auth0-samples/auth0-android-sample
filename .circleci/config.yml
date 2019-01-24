@@ -33,11 +33,11 @@ jobs:
       - run:
           name: Chmod permissions 
           command: sudo chmod +x ./gradlew     
+      - run: yes | sdkmanager --licenses
+      - run: yes | sdkmanager --update || exit 0
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies 
-      - run: sdkmanager --install "ndk-bundle"
-      - run: sdkmanager --licenses
       - run:
           name: Compile apk file
           command: ./gradlew assembleDebug  
