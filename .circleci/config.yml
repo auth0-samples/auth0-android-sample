@@ -32,10 +32,12 @@ jobs:
             echo -i $AUTH0_CONFIG
       - run:
           name: Chmod permissions 
-          command: sudo chmod +x ./gradlew
+          command: sudo chmod +x ./gradlew     
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies
+          command: |
+            yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.0.2"
+            ./gradlew androidDependencies
       - run:
           name: Compile apk file
           command: ./gradlew assembleDebug  
