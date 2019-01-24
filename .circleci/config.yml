@@ -35,7 +35,9 @@ jobs:
           command: sudo chmod +x ./gradlew     
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies --accept-license
+          command: ./gradlew androidDependencies 
+      - run: sdkmanager --install "ndk-bundle"
+      - run: sdkmanager --licenses
       - run:
           name: Compile apk file
           command: ./gradlew assembleDebug  
