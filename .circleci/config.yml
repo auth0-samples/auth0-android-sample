@@ -35,9 +35,7 @@ jobs:
           command: sudo chmod +x ./gradlew     
       - run:
           name: Download Dependencies
-          command: |
-            yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;25.0.2"
-            ./gradlew androidDependencies
+          command: ./gradlew androidDependencies --accept-license
       - run:
           name: Compile apk file
           command: ./gradlew assembleDebug  
