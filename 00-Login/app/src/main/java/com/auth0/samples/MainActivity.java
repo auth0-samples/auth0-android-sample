@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
         });
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
+
     }
 
     private void login() {
