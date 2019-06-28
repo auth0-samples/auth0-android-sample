@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 
     private void login() {
         token.setText("Not logged in");
-        WebAuthProvider.init(auth0)
+        WebAuthProvider.login(auth0)
                 .withScheme("demo")
                 .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(MainActivity.this, new AuthCallback() {
