@@ -18,7 +18,6 @@ import com.auth0.android.Auth0;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.callback.BaseCallback;
-import com.auth0.android.jwt.JWT;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.result.UserIdentity;
