@@ -26,7 +26,7 @@ commands:
     steps:
       - checkout
       - restore_cache:
-          key: 11jars-{{ checksum  "<<parameters.sample>>/app/build.gradle" }}
+          key: jars-{{ checksum  "<<parameters.sample>>/app/build.gradle" }}
       - run:
           name: Setup Auth0 environment
           working_directory: <<parameters.sample>>/app/src/main/res/values/
@@ -39,7 +39,7 @@ commands:
           name: Build APK          
           command: cd <<parameters.sample>> && ./gradlew assembleDebug
       - save_cache:
-          key: 11jars-{{ checksum  "<<parameters.sample>>/app/build.gradle" }}
+          key: jars-{{ checksum  "<<parameters.sample>>/app/build.gradle" }}
           paths:
             - ~/.gradle
       - run:
@@ -61,11 +61,11 @@ commands:
           sudo chown -R circleci:circleci /usr/local/bin
           sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
-          key: 11pip-{{ checksum  "scripts/requirements.txt" }}
+          key: pip-{{ checksum  "scripts/requirements.txt" }}
       - run:
           name: Installing pip dependencies
           command: |
-            sudo pip install -r scripts/requirements.txt
+            sudo pip3 install -r scripts/requirements.txt
       - run:
           name: Setup Browserstack credentials
           working_directory: scripts
@@ -74,7 +74,7 @@ commands:
             sed -i 's/{user_name}/'$BS_USER'/g' browserstack.py
             sed -i 's/{access_key}/'$BS_KEY'/g' browserstack.py
       - save_cache:
-          key: 11pip-{{ checksum  "scripts/requirements.txt" }}
+          key: pip-{{ checksum  "scripts/requirements.txt" }}
           paths:
             - ".venv"
             - "/usr/local/bin"
@@ -105,7 +105,7 @@ commands:
             fi
       - run:
           name: Execute test
-          command: python -m pytest scripts/test_app_android.py
+          command: python3 -m pytest scripts/test_app_android.py
 
 jobs:
   #00-Login
