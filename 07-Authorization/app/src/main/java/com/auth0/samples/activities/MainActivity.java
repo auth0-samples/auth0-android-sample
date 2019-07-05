@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         AuthenticationAPIClient authenticationClient = new AuthenticationAPIClient(auth0);
 
         //Obtain the token from the Intent's extras
-        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
+        String accessToken = getIntent().getStringExtra(LoginActivity.EXTRA_ACCESS_TOKEN);
         authenticationClient.userInfo(accessToken)
                 .start(new BaseCallback<UserProfile, AuthenticationException>() {
                     @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loginAgain() {
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true);
+        intent.putExtra(LoginActivity.EXTRA_CLEAR_CREDENTIALS, true);
         startActivity(intent);
         finish();
     }

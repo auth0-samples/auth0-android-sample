@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.auth0.android.Auth0;
+import com.auth0.android.Auth0Exception;
 import com.auth0.android.authentication.AuthenticationAPIClient;
 import com.auth0.android.authentication.AuthenticationException;
 import com.auth0.android.authentication.storage.CredentialsManagerException;
@@ -19,6 +20,7 @@ import com.auth0.android.callback.BaseCallback;
 import com.auth0.android.management.ManagementException;
 import com.auth0.android.management.UsersAPIClient;
 import com.auth0.android.provider.AuthCallback;
+import com.auth0.android.provider.VoidCallback;
 import com.auth0.android.provider.WebAuthProvider;
 import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserIdentity;
@@ -31,19 +33,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private Auth0 auth0;
     private SecureCredentialsManager credentialsManager;
-    private static final String KEY_LOG_IN_IN_PROGRESS = "com.auth0.LOG_IN_IN_PROGRESS";
+    private static final String EXTRA_LOG_IN_IN_PROGRESS = "com.auth0.LOG_IN_IN_PROGRESS";
 
-    /**
+    /*
      * Required when setting up Local Authentication in the Credential Manager
      * Refer to SecureCredentialsManager#requireAuthentication method for more information.
      */
     @SuppressWarnings("unused")
     private static final int CODE_DEVICE_AUTHENTICATION = 22;
-    public static final String KEY_LINK_ACCOUNTS = "com.auth0.LINK_ACCOUNTS";
-    public static final String KEY_PRIMARY_USER_ID = "com.auth0.PRIMARY_USER_ID";
-    public static final String KEY_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS";
-    public static final String KEY_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN";
-    public static final String KEY_ID_TOKEN = "com.auth0.ID_TOKEN";
+    public static final String EXTRA_LINK_ACCOUNTS = "com.auth0.LINK_ACCOUNTS";
+    public static final String EXTRA_PRIMARY_USER_ID = "com.auth0.PRIMARY_USER_ID";
+    public static final String EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS";
+    public static final String EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN";
+    public static final String EXTRA_ID_TOKEN = "com.auth0.ID_TOKEN";
 
     private boolean linkSessions;
     private boolean loggingIn;
@@ -52,9 +54,18 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Setup the UI
+        setContentView(R.layout.activity_login);
+        Button loginButton = findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doLogin();
+            }
+        });
+
         //Setup CredentialsManager
         auth0 = new Auth0(this);
-        auth0.setLoggingEnabled(true);
         auth0.setOIDCConformant(true);
         credentialsManager = new SecureCredentialsManager(this, new AuthenticationAPIClient(auth0), new SharedPreferencesStorage(this));
 
@@ -62,39 +73,20 @@ public class LoginActivity extends AppCompatActivity {
         //Require device authentication before obtaining the credentials
         //credentialsManager.requireAuthentication(this, CODE_DEVICE_AUTHENTICATION, getString(R.string.request_credentials_title), null);
 
-        // Check if the activity was launched after a logout
-        if (getIntent().getBooleanExtra(KEY_CLEAR_CREDENTIALS, false)) {
-            credentialsManager.clearCredentials();
-        }
-
-        linkSessions = getIntent().getBooleanExtra(KEY_LINK_ACCOUNTS, false);
-        loggingIn = savedInstanceState != null && savedInstanceState.getBoolean(KEY_LOG_IN_IN_PROGRESS, false);
-
-        if (!linkSessions && credentialsManager.hasValidCredentials()) {
-            // Obtain the existing credentials and move to the next activity
-            credentialsManager.getCredentials(new BaseCallback<Credentials, CredentialsManagerException>() {
-                @Override
-                public void onSuccess(final Credentials credentials) {
-                    showNextActivity(credentials);
-                }
-
-                @Override
-                public void onFailure(CredentialsManagerException error) {
-                    //Authentication cancelled by the user. Exit the app
-                    finish();
-                }
-            });
+        //Check if the activity was launched to log the user out
+        if (getIntent().getBooleanExtra(EXTRA_CLEAR_CREDENTIALS, false)) {
+            doLogout();
             return;
         }
 
-        setContentView(R.layout.activity_login);
-        final Button loginButton = (Button) findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doLogin();
-            }
-        });
+        linkSessions = getIntent().getBooleanExtra(EXTRA_LINK_ACCOUNTS, false);
+        loggingIn = savedInstanceState != null && savedInstanceState.getBoolean(EXTRA_LOG_IN_IN_PROGRESS, false);
+
+        if (!linkSessions && credentialsManager.hasValidCredentials()) {
+            // Obtain the existing credentials and move to the next activity
+            showNextActivity();
+            return;
+        }
 
         // Check if an account linking was requested
         if (linkSessions && !loggingIn) {
@@ -106,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(KEY_LOG_IN_IN_PROGRESS, loggingIn);
+        outState.putBoolean(EXTRA_LOG_IN_IN_PROGRESS, loggingIn);
         super.onSaveInstanceState(outState);
     }
 
@@ -122,12 +114,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void showNextActivity(Credentials credentials) {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra(KEY_ACCESS_TOKEN, credentials.getAccessToken());
-        intent.putExtra(KEY_ID_TOKEN, credentials.getIdToken());
-        startActivity(intent);
-        finish();
+    private void showNextActivity() {
+        // Obtain the existing credentials and move to the next activity
+        credentialsManager.getCredentials(new BaseCallback<Credentials, CredentialsManagerException>() {
+            @Override
+            public void onSuccess(final Credentials credentials) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(EXTRA_ACCESS_TOKEN, credentials.getAccessToken());
+                intent.putExtra(EXTRA_ID_TOKEN, credentials.getIdToken());
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(CredentialsManagerException error) {
+                //Authentication cancelled by the user. Exit the app
+                finish();
+            }
+        });
     }
 
     private void doLogin() {
@@ -135,10 +139,16 @@ public class LoginActivity extends AppCompatActivity {
                 .withScheme("demo")
                 .withAudience(String.format("https://%s/api/v2/", getString(R.string.com_auth0_domain)))
                 .withScope("openid profile email offline_access read:current_user update:current_user_identities")
-                .start(this, webCallback);
+                .start(this, loginCallback);
     }
 
-    private final AuthCallback webCallback = new AuthCallback() {
+    private void doLogout() {
+        WebAuthProvider.logout(auth0)
+                .withScheme("demo")
+                .start(this, logoutCallback);
+    }
+
+    private final AuthCallback loginCallback = new AuthCallback() {
         @Override
         public void onFailure(@NonNull final Dialog dialog) {
             runOnUiThread(new Runnable() {
@@ -172,20 +182,27 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(LoginActivity.this, "Log In - Success", Toast.LENGTH_SHORT).show();
-                }
-            });
             credentialsManager.saveCredentials(credentials);
-            showNextActivity(credentials);
+            showNextActivity();
+        }
+    };
+
+    private VoidCallback logoutCallback = new VoidCallback() {
+        @Override
+        public void onSuccess(Void payload) {
+            credentialsManager.clearCredentials();
+        }
+
+        @Override
+        public void onFailure(Auth0Exception error) {
+            //Log out canceled, keep the user logged in
+            showNextActivity();
         }
     };
 
     private void performLink(final String secondaryIdToken) {
-        UsersAPIClient client = new UsersAPIClient(auth0, getIntent().getExtras().getString(LoginActivity.KEY_ACCESS_TOKEN));
-        String primaryUserId = getIntent().getExtras().getString(LoginActivity.KEY_PRIMARY_USER_ID);
+        UsersAPIClient client = new UsersAPIClient(auth0, getIntent().getExtras().getString(LoginActivity.EXTRA_ACCESS_TOKEN));
+        String primaryUserId = getIntent().getExtras().getString(LoginActivity.EXTRA_PRIMARY_USER_ID);
         client.link(primaryUserId, secondaryIdToken)
                 .start(new BaseCallback<List<UserIdentity>, ManagementException>() {
                     @Override

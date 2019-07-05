@@ -29,8 +29,8 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        token = (TextView) findViewById(R.id.token);
-        Button loginButton = (Button) findViewById(R.id.loginButton);
+        token = findViewById(R.id.token);
+        Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
