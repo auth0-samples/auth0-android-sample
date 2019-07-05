@@ -35,9 +35,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        Button callAPIWithTokenButton = (Button) findViewById(R.id.callAPIWithTokenButton);
-        Button callAPIWithoutTokenButton = (Button) findViewById(R.id.callAPIWithoutTokenButton);
-        Button loginWithTokenButton = (Button) findViewById(R.id.loginButton);
+        Button callAPIWithTokenButton = findViewById(R.id.callAPIWithTokenButton);
+        Button callAPIWithoutTokenButton = findViewById(R.id.callAPIWithoutTokenButton);
+        Button loginWithTokenButton = findViewById(R.id.loginButton);
         callAPIWithTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,12 +129,6 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onSuccess(@NonNull final Credentials credentials) {
                         accessToken = credentials.getAccessToken();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(LoginActivity.this, "Log in: Success", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                     }
                 });
     }

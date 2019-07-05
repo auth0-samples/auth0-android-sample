@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
-        userPicture = (ImageView) findViewById(R.id.userPicture);
+        userEmailTextView = findViewById(R.id.userEmailTitle);
+        userPicture = findViewById(R.id.userPicture);
 
-        Button linkAccountButton = (Button) findViewById(R.id.linkAccountButton);
+        Button linkAccountButton = findViewById(R.id.linkAccountButton);
         linkAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button loginAgainButton = (Button) findViewById(R.id.logout);
+        Button loginAgainButton = findViewById(R.id.logout);
         loginAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        linkedAccountList = (ListView) findViewById(R.id.linkedAccountsList);
+        linkedAccountList = findViewById(R.id.linkedAccountsList);
         linkedAccountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchProfile() {
-        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
+        String accessToken = getIntent().getStringExtra(LoginActivity.EXTRA_ACCESS_TOKEN);
         if (usersClient == null) {
             Auth0 auth0 = new Auth0(MainActivity.this);
             auth0.setOIDCConformant(true);
@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
         Intent linkAccounts = new Intent(this, LoginActivity.class);
         linkAccounts.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         linkAccounts.putExtras(getIntent().getExtras());
-        linkAccounts.putExtra(LoginActivity.KEY_LINK_ACCOUNTS, true);
-        linkAccounts.putExtra(LoginActivity.KEY_PRIMARY_USER_ID, userProfile.getId());
+        linkAccounts.putExtra(LoginActivity.EXTRA_LINK_ACCOUNTS, true);
+        linkAccounts.putExtra(LoginActivity.EXTRA_PRIMARY_USER_ID, userProfile.getId());
         startActivity(linkAccounts);
     }
 
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true);
+        intent.putExtra(LoginActivity.EXTRA_CLEAR_CREDENTIALS, true);
         startActivity(intent);
         finish();
     }

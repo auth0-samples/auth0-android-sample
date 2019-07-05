@@ -42,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editProfileButton = (Button) findViewById(R.id.editButton);
-        cancelEditionButton = (Button) findViewById(R.id.cancelEditionButton);
-        userNameTextView = (TextView) findViewById(R.id.userNameTitle);
-        userEmailTextView = (TextView) findViewById(R.id.userEmailTitle);
-        userCountryTextView = (TextView) findViewById(R.id.userCountryTitle);
-        updateCountryEditText = (EditText) findViewById(R.id.updateCountryEdittext);
-        Button loginAgainButton = (Button) findViewById(R.id.login_again);
+        editProfileButton = findViewById(R.id.editButton);
+        cancelEditionButton = findViewById(R.id.cancelEditionButton);
+        userNameTextView = findViewById(R.id.userNameTitle);
+        userEmailTextView = findViewById(R.id.userEmailTitle);
+        userCountryTextView = findViewById(R.id.userCountryTitle);
+        updateCountryEditText = findViewById(R.id.updateCountryEdittext);
+        Button loginAgainButton = findViewById(R.id.login_again);
 
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Obtain the token from the Intent's extras
-        String accessToken = getIntent().getStringExtra(LoginActivity.KEY_ACCESS_TOKEN);
+        String accessToken = getIntent().getStringExtra(LoginActivity.EXTRA_ACCESS_TOKEN);
 
         Auth0 auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
-        auth0.setLoggingEnabled(true);
         authenticationAPIClient = new AuthenticationAPIClient(auth0);
         usersClient = new UsersAPIClient(auth0, accessToken);
         getProfile(accessToken);
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private void refreshScreenInformation() {
         userNameTextView.setText(String.format(getString(R.string.username), userProfile.getName()));
         userEmailTextView.setText(String.format(getString(R.string.useremail), userProfile.getEmail()));
-        ImageView userPicture = (ImageView) findViewById(R.id.userPicture);
+        ImageView userPicture = findViewById(R.id.userPicture);
         if (userProfile.getPictureURL() != null) {
             Picasso.with(this)
                     .load(userProfile.getPictureURL())
@@ -191,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true);
+        intent.putExtra(LoginActivity.EXTRA_CLEAR_CREDENTIALS, true);
         startActivity(intent);
         finish();
     }

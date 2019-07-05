@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView credentialsView = (TextView) findViewById(R.id.credentials);
-        Button logoutButton = (Button) findViewById(R.id.logout);
+        TextView credentialsView = findViewById(R.id.credentials);
+        Button logoutButton = findViewById(R.id.logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true);
+        intent.putExtra(LoginActivity.EXTRA_CLEAR_CREDENTIALS, true);
         startActivity(intent);
         finish();
     }
