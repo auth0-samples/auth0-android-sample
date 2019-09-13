@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:padding="@dimen/activity_general_margin">
+              android:padding="15dp">
 
     <ImageView
             android:layout_width="wrap_content"
@@ -12,29 +12,32 @@
             android:layout_marginTop="30dp"
             android:src="@drawable/logo" />
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Your session is still valid:"
-            android:textAlignment="center"
-            android:textSize="16sp" />
-
-    <TextView
-            android:id="@+id/credentials"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center" />
-
     <Button
-            android:id="@+id/logout"
+            android:id="@+id/loginButton"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/activity_general_margin"
+            android:layout_marginTop="30dp"
             android:background="@android:color/white"
-            android:padding="@dimen/activity_general_margin"
-            android:text="@string/logout"
-            android:textColor="@color/blue_text" />
+            android:padding="15dp"
+            android:text="@string/logout" />
+
+    <Button
+            android:id="@+id/callAPIWithTokenButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:padding="15dp"
+            android:text="@string/callAPIWithToken" />
+
+    <Button
+            android:id="@+id/callAPIWithoutTokenButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            android:padding="15dp"
+            android:text="@string/callAPIWithoutToken" />
 
 </LinearLayout>

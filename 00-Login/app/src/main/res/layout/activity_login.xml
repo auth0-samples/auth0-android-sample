@@ -12,29 +12,14 @@
             android:layout_marginTop="30dp"
             android:src="@drawable/logo" />
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Your session is still valid:"
-            android:textAlignment="center"
-            android:textSize="16sp" />
-
-    <TextView
-            android:id="@+id/credentials"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center" />
-
     <Button
-            android:id="@+id/logout"
+            android:id="@+id/loginButton"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/activity_general_margin"
             android:background="@android:color/white"
             android:padding="@dimen/activity_general_margin"
-            android:text="@string/logout"
+            android:text="@string/login"
             android:textColor="@color/blue_text" />
 
 </LinearLayout>
