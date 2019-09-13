@@ -22,22 +22,4 @@
         android:padding="15dp"
         android:text="@string/login" />
 
-    <Button
-        android:id="@+id/callAPIWithTokenButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:padding="15dp"
-        android:text="@string/callAPIWithToken" />
-
-    <Button
-        android:id="@+id/callAPIWithoutTokenButton"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:padding="15dp"
-        android:text="@string/callAPIWithoutToken" />
-
 </LinearLayout>
