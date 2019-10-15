@@ -6,7 +6,7 @@
     <string name="app_settings">APP SETTINGS</string>
     <string name="settings_message">If you reached this page, means that you\'re an admin.</string>
     <string name="login_again">Log In Again</string>
-    <string name="login">Log In</string>
+    <string name="login">Login</string>
 
     <string name="com_auth0_client_id">{CLIENT_ID}</string>
     <string name="com_auth0_domain">{DOMAIN}</string>
