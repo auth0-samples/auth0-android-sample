@@ -7,7 +7,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="login_again">Login Again</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="request_credentials_title">Authenticate to continue</string>
 
     <string name="com_auth0_client_id">{CLIENT_ID}</string>

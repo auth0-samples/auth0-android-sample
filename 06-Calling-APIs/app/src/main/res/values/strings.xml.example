@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Calling APIs</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="callAPIWithToken">Call API with Token</string>
     <string name="callAPIWithoutToken">Call API without Token</string>
 
