@@ -36,6 +36,8 @@ public class LoginActivity extends Activity {
      */
     @SuppressWarnings("unused")
     private static final int CODE_DEVICE_AUTHENTICATION = 22;
+    private static final String API_IDENTIFIER = "YOUR API IDENTIFIER";
+
     public static final String EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS";
     public static final String EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN";
     public static final String EXTRA_ID_TOKEN = "com.auth0.ID_TOKEN";
@@ -109,7 +111,7 @@ public class LoginActivity extends Activity {
     private void doLogin() {
         WebAuthProvider.login(auth0)
                 .withScheme("demo")
-                .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
+                .withAudience(API_IDENTIFIER)
                 .withScope("openid offline_access")
                 .start(this, loginCallback);
     }
