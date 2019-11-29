@@ -26,7 +26,9 @@ import com.auth0.android.result.Credentials;
 import com.auth0.android.result.UserIdentity;
 import com.auth0.samples.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -135,10 +137,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void doLogin() {
+        Map<String, Object> parameters = new HashMap<>();
+
+        if (linkSessions) {
+            parameters.put("prompt", "login");
+        }
+
         WebAuthProvider.login(auth0)
                 .withScheme("demo")
                 .withAudience(String.format("https://%s/api/v2/", getString(R.string.com_auth0_domain)))
                 .withScope("openid profile email offline_access read:current_user update:current_user_identities")
+                .withParameters(parameters)
                 .start(this, loginCallback);
     }
 

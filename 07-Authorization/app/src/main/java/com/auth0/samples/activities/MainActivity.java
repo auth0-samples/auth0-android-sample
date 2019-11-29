@@ -23,7 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     //Use the same Claim name as defined in the Rule
-    private static final String ROLES_CLAIM = "https://access.control/roles";
+    private static final String ROLES_CLAIM = "https://example.com/roles";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
