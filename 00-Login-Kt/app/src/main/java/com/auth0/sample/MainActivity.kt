@@ -3,8 +3,10 @@ package com.auth0.sample
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.auth0.android.Auth0
+import com.auth0.android.Auth0Exception
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
+import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.sample.databinding.ActivityMainBinding
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.buttonLogin.setOnClickListener { loginWithBrowser() }
+        binding.buttonLogout.setOnClickListener { logout() }
     }
 
     private fun loginWithBrowser() {
@@ -54,6 +57,24 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 }
             })
+    }
+
+    private fun logout() {
+        WebAuthProvider.logout(account)
+                .withScheme(getString(R.string.com_auth0_scheme))
+                .start(this, object: VoidCallback {
+                    override fun onSuccess(payload: Void?) {
+                        // The user has been logged out!
+                    }
+
+                    override fun onFailure(error: Auth0Exception) {
+                        Snackbar.make(
+                                binding.root,
+                                "Failure: ${error.message}",
+                        Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                })
     }
 
 }
