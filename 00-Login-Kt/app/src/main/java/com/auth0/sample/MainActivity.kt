@@ -1,14 +1,16 @@
 package com.auth0.sample
 
-import android.os.Bundle
+import android.os.Bundle    
 import androidx.appcompat.app.AppCompatActivity
 import com.auth0.android.Auth0
 import com.auth0.android.Auth0Exception
+import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
 import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
+import com.auth0.android.result.UserProfile
 import com.auth0.sample.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -55,6 +57,8 @@ class MainActivity : AppCompatActivity() {
                         "Success: ${credentials?.accessToken}",
                         Snackbar.LENGTH_LONG
                     ).show()
+
+                    showUserInfo(payload)
                 }
             })
     }
@@ -75,6 +79,28 @@ class MainActivity : AppCompatActivity() {
                         ).show()
                     }
                 })
+    }
+
+    private fun showUserInfo(credentials: Credentials?) {
+        var client = AuthenticationAPIClient(account)
+
+        credentials?.accessToken?.let {
+            client.userInfo(it)
+                .start(object : Callback<UserProfile, AuthenticationException> {
+                    override fun onFailure(error: AuthenticationException) {
+                        Snackbar.make(
+                            binding.root,
+                            "Failure: ${error.getCode()}",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
+                    override fun onSuccess(payload: UserProfile?) {
+                        binding.userProfile.setText(
+                                "Name: ${payload?.name}\n" +
+                                "Email: ${payload?.email}")
+                    }
+        }) }
     }
 
 }
