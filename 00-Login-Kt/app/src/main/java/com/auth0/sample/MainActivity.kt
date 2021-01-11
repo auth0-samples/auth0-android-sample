@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.LENGTH_LONG
                     ).show()
 
-                    showUserInfo(credentials)
+                    showUserProfile(credentials)
                 }
             })
     }
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
-    private fun showUserInfo(credentials: Credentials?) {
+    private fun showUserProfile(credentials: Credentials?) {
         var client = AuthenticationAPIClient(account)
 
         credentials?.accessToken?.let {
