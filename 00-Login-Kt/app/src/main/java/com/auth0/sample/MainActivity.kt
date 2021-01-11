@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.LENGTH_LONG
                     ).show()
 
-                    showUserInfo(payload)
+                    showUserInfo(credentials)
                 }
             })
     }
@@ -71,10 +71,10 @@ class MainActivity : AppCompatActivity() {
                         // The user has been logged out!
                     }
 
-                    override fun onFailure(error: Auth0Exception) {
+                    override fun onFailure(exception: Auth0Exception) {
                         Snackbar.make(
                                 binding.root,
-                                "Failure: ${error.message}",
+                                "Failure: ${exception.message}",
                         Snackbar.LENGTH_LONG
                         ).show()
                     }
@@ -87,18 +87,18 @@ class MainActivity : AppCompatActivity() {
         credentials?.accessToken?.let {
             client.userInfo(it)
                 .start(object : Callback<UserProfile, AuthenticationException> {
-                    override fun onFailure(error: AuthenticationException) {
+                    override fun onFailure(exception: AuthenticationException) {
                         Snackbar.make(
                             binding.root,
-                            "Failure: ${error.getCode()}",
+                            "Failure: ${exception.getCode()}",
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
 
-                    override fun onSuccess(payload: UserProfile?) {
+                    override fun onSuccess(profile: UserProfile?) {
                         binding.userProfile.setText(
-                                "Name: ${payload?.name}\n" +
-                                "Email: ${payload?.email}")
+                                "Name: ${profile?.name}\n" +
+                                "Email: ${profile?.email}")
                     }
         }) }
     }
