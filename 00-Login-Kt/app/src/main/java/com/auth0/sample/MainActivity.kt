@@ -66,12 +66,12 @@ class MainActivity : AppCompatActivity() {
     private fun logout() {
         WebAuthProvider.logout(account)
                 .withScheme(getString(R.string.com_auth0_scheme))
-                .start(this, object: VoidCallback {
+                .start(this, object: Callback<Void, AuthenticationException> {
                     override fun onSuccess(payload: Void?) {
                         // The user has been logged out!
                     }
 
-                    override fun onFailure(exception: Auth0Exception) {
+                    override fun onFailure(exception: AuthenticationException) {
                         Snackbar.make(
                                 binding.root,
                                 "Failure: ${exception.message}",
