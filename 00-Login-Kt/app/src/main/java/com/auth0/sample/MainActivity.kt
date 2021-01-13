@@ -7,6 +7,8 @@ import com.auth0.android.Auth0Exception
 import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
+import com.auth0.android.management.ManagementException
+import com.auth0.android.management.UsersAPIClient
 import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
@@ -39,10 +41,11 @@ class MainActivity : AppCompatActivity() {
         //3. Setup the WebAuthProvider, using the custom scheme and scope.
         WebAuthProvider.login(account)
             .withScheme(getString(R.string.com_auth0_scheme))
-            .withScope("openid profile email")
-            //4. Launch the authentication passing the callback where the results will be received
-            .start(this, object : Callback<Credentials, AuthenticationException> {
+            .withScope("openid profile email read:current_user update:current_user_metadata")
+            .withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
 
+        //4. Launch the authentication passing the callback where the results will be received
+            .start(this, object : Callback<Credentials, AuthenticationException> {
                 override fun onFailure(exception: AuthenticationException) {
                     Snackbar.make(
                         binding.root,
@@ -82,10 +85,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showUserProfile(credentials: Credentials?) {
-        var client = AuthenticationAPIClient(account)
+        val client = AuthenticationAPIClient(account)
 
-        credentials?.accessToken?.let {
-            client.userInfo(it)
+        // Use the access token to call userInfo endpoint
+        credentials?.accessToken?.let { accessToken ->
+            client.userInfo(accessToken)
                 .start(object : Callback<UserProfile, AuthenticationException> {
                     override fun onFailure(exception: AuthenticationException) {
                         Snackbar.make(
@@ -96,9 +100,31 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onSuccess(profile: UserProfile?) {
-                        binding.userProfile.setText(
-                                "Name: ${profile?.name}\n" +
-                                "Email: ${profile?.email}")
+                        binding.userProfile.text =
+                            "Name: ${profile?.name}\n" +
+                            "Email: ${profile?.email}"
+
+                        // Get the user ID and call the full getUser Management API endpoint, to retrieve the full profile information
+                        profile?.getId()?.let { userId ->
+                            // Create the user API client
+                            val usersClient = UsersAPIClient(account, accessToken)
+
+                            // Get the full user profile
+                            usersClient.getProfile(userId).start(object: Callback<UserProfile, ManagementException> {
+                                override fun onFailure(exception: ManagementException) {
+                                    Snackbar.make(
+                                        binding.root,
+                                        "Failure: ${exception.getCode()}",
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
+
+                                override fun onSuccess(payload: UserProfile?) {
+                                    // Display the "country" field, if one appears in the metadata
+                                    binding.userMeta.text = payload?.getUserMetadata()?.get("country") as String? ?: ""
+                                }
+                            })
+                        }
                     }
         }) }
     }

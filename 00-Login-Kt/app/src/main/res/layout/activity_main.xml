@@ -43,6 +43,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_logout"
-        android:layout_margin="36dp"/>
+        android:layout_margin="18dp"/>
+
+    <TextView
+        android:id="@+id/userMeta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userProfile"
+        android:layout_margin="18dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
