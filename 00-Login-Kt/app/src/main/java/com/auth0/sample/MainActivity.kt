@@ -1,7 +1,10 @@
 package com.auth0.sample
 
-import android.os.Bundle    
+import android.os.Bundle
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.transition.Visibility
 import com.auth0.android.Auth0
 import com.auth0.android.Auth0Exception
 import com.auth0.android.authentication.AuthenticationAPIClient
@@ -20,31 +23,56 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var account: Auth0
     private lateinit var binding: ActivityMainBinding
+    private var cachedCredentials: Credentials? = null
+    private var cachedUserProfile: UserProfile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //1. Set up the account object with the Auth0 application details
+        // Set up the account object with the Auth0 application details
         account = Auth0(
             getString(R.string.com_auth0_client_id),
             getString(R.string.com_auth0_domain)
         )
 
-        //2. Bind the button click with the login action
+        // Bind the button click with the login action
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.buttonLogin.setOnClickListener { loginWithBrowser() }
         binding.buttonLogout.setOnClickListener { logout() }
+        binding.buttonGetMetadata.setOnClickListener { getUserMetadata() }
+        binding.buttonPatchMetadata.setOnClickListener { patchUserMetadata() }
+    }
+
+    private fun updateUI() {
+        if (cachedCredentials != null) {
+            binding.buttonLogout.isEnabled = true
+            binding.metadataPanel.isVisible = true
+            binding.buttonLogin.isEnabled = false
+        } else {
+            binding.buttonLogout.isEnabled = false
+            binding.metadataPanel.isVisible = false
+            binding.buttonLogin.isEnabled = true
+        }
+
+        if (cachedUserProfile != null) {
+            binding.userProfile.text =
+                    "Name: ${cachedUserProfile?.name}\n" +
+                    "Email: ${cachedUserProfile?.email}"
+        } else {
+            binding.userProfile.text = ""
+            binding.inputEditMetadata.setText("")
+        }
     }
 
     private fun loginWithBrowser() {
-        //3. Setup the WebAuthProvider, using the custom scheme and scope.
+        // Setup the WebAuthProvider, using the custom scheme and scope.
         WebAuthProvider.login(account)
             .withScheme(getString(R.string.com_auth0_scheme))
             .withScope("openid profile email read:current_user update:current_user_metadata")
             .withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
 
-        //4. Launch the authentication passing the callback where the results will be received
+            // Launch the authentication passing the callback where the results will be received
             .start(this, object : Callback<Credentials, AuthenticationException> {
                 override fun onFailure(exception: AuthenticationException) {
                     Snackbar.make(
@@ -55,13 +83,16 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(credentials: Credentials?) {
+                    cachedCredentials = credentials!!
+
                     Snackbar.make(
                         binding.root,
                         "Success: ${credentials?.accessToken}",
                         Snackbar.LENGTH_LONG
                     ).show()
 
-                    showUserProfile(credentials)
+                    updateUI()
+                    showUserProfile()
                 }
             })
     }
@@ -72,9 +103,14 @@ class MainActivity : AppCompatActivity() {
                 .start(this, object: Callback<Void, AuthenticationException> {
                     override fun onSuccess(payload: Void?) {
                         // The user has been logged out!
+                        cachedCredentials = null
+                        cachedUserProfile = null
+                        updateUI()
                     }
 
                     override fun onFailure(exception: AuthenticationException) {
+                        updateUI()
+
                         Snackbar.make(
                                 binding.root,
                                 "Failure: ${exception.message}",
@@ -84,11 +120,11 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
-    private fun showUserProfile(credentials: Credentials?) {
+    private fun showUserProfile() {
         val client = AuthenticationAPIClient(account)
 
         // Use the access token to call userInfo endpoint
-        credentials?.accessToken?.let { accessToken ->
+        cachedCredentials?.accessToken?.let { accessToken ->
             client.userInfo(accessToken)
                 .start(object : Callback<UserProfile, AuthenticationException> {
                     override fun onFailure(exception: AuthenticationException) {
@@ -100,33 +136,71 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onSuccess(profile: UserProfile?) {
-                        binding.userProfile.text =
-                            "Name: ${profile?.name}\n" +
-                            "Email: ${profile?.email}"
-
-                        // Get the user ID and call the full getUser Management API endpoint, to retrieve the full profile information
-                        profile?.getId()?.let { userId ->
-                            // Create the user API client
-                            val usersClient = UsersAPIClient(account, accessToken)
-
-                            // Get the full user profile
-                            usersClient.getProfile(userId).start(object: Callback<UserProfile, ManagementException> {
-                                override fun onFailure(exception: ManagementException) {
-                                    Snackbar.make(
-                                        binding.root,
-                                        "Failure: ${exception.getCode()}",
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
-                                }
-
-                                override fun onSuccess(payload: UserProfile?) {
-                                    // Display the "country" field, if one appears in the metadata
-                                    binding.userMeta.text = payload?.getUserMetadata()?.get("country") as String? ?: ""
-                                }
-                            })
-                        }
+                        cachedUserProfile = profile;
+                        updateUI()
                     }
         }) }
     }
 
+    private fun getUserMetadata() {
+        // Get the access token so that we can make calls to the management API
+        cachedCredentials?.accessToken?.let { accessToken ->
+            // Get the user ID and call the full getUser Management API endpoint, to retrieve the full profile information
+            cachedUserProfile?.getId()?.let { userId ->
+                // Create the user API client
+                val usersClient = UsersAPIClient(account, accessToken)
+
+                // Get the full user profile
+                usersClient.getProfile(userId).start(object: Callback<UserProfile, ManagementException> {
+                    override fun onFailure(exception: ManagementException) {
+                        Snackbar.make(
+                                binding.root,
+                                "Failure: ${exception.getCode()}",
+                                Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
+                    override fun onSuccess(userProfile: UserProfile?) {
+                        cachedUserProfile = userProfile;
+                        updateUI()
+                        binding.inputEditMetadata.setText(cachedUserProfile?.getUserMetadata()?.get("country") as String? ?: "")
+                    }
+                })
+            }
+        }
+    }
+
+    private fun patchUserMetadata() {
+        // Get the access token so that we can make calls to the management API
+        cachedCredentials?.accessToken?.let { accessToken ->
+            // Get the user ID and call the full getUser Management API endpoint, to retrieve the full profile information
+            cachedUserProfile?.getId()?.let { userId ->
+                val usersClient = UsersAPIClient(account, accessToken)
+                val metadata = mapOf("country" to binding.inputEditMetadata.getText().toString())
+
+                usersClient
+                        .updateMetadata(userId, metadata)
+                        .start(object: Callback<UserProfile, ManagementException> {
+                            override fun onFailure(exception: ManagementException) {
+                                Snackbar.make(
+                                    binding.root,
+                                    "Failure: ${exception.getCode()}",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+
+                            override fun onSuccess(profile: UserProfile?) {
+                                cachedUserProfile = profile
+                                updateUI()
+
+                                Snackbar.make(
+                                        binding.root,
+                                        "Successful",
+                                        Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                        })
+            }
+        }
+    }
 }
