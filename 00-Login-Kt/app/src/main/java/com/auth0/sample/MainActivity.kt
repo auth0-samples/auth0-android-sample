@@ -69,22 +69,12 @@ class MainActivity : AppCompatActivity() {
             // Launch the authentication passing the callback where the results will be received
             .start(this, object : Callback<Credentials, AuthenticationException> {
                 override fun onFailure(exception: AuthenticationException) {
-                    Snackbar.make(
-                        binding.root,
-                        "Failure: ${exception.getCode()}",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    showSnackBar("Failure: ${exception.getCode()}")
                 }
 
                 override fun onSuccess(credentials: Credentials?) {
                     cachedCredentials = credentials!!
-
-                    Snackbar.make(
-                        binding.root,
-                        "Success: ${credentials?.accessToken}",
-                        Snackbar.LENGTH_LONG
-                    ).show()
-
+                    showSnackBar("Success: ${credentials?.accessToken}")
                     updateUI()
                     showUserProfile()
                 }
@@ -104,12 +94,7 @@ class MainActivity : AppCompatActivity() {
 
                     override fun onFailure(exception: AuthenticationException) {
                         updateUI()
-
-                        Snackbar.make(
-                                binding.root,
-                                "Failure: ${exception.message}",
-                        Snackbar.LENGTH_LONG
-                        ).show()
+                        showSnackBar("Failure: ${exception.getCode()}")
                     }
                 })
     }
@@ -122,11 +107,7 @@ class MainActivity : AppCompatActivity() {
             client.userInfo(accessToken)
                 .start(object : Callback<UserProfile, AuthenticationException> {
                     override fun onFailure(exception: AuthenticationException) {
-                        Snackbar.make(
-                            binding.root,
-                            "Failure: ${exception.getCode()}",
-                            Snackbar.LENGTH_LONG
-                        ).show()
+                        showSnackBar("Failure: ${exception.getCode()}")
                     }
 
                     override fun onSuccess(profile: UserProfile?) {
@@ -147,54 +128,24 @@ class MainActivity : AppCompatActivity() {
                 // Get the full user profile
                 usersClient.getProfile(userId).start(object: Callback<UserProfile, ManagementException> {
                     override fun onFailure(exception: ManagementException) {
-                        Snackbar.make(
-                                binding.root,
-                                "Failure: ${exception.getCode()}",
-                                Snackbar.LENGTH_LONG
-                        ).show()
+                        showSnackBar("Failure: ${exception.getCode()}")
                     }
 
                     override fun onSuccess(userProfile: UserProfile?) {
                         cachedUserProfile = userProfile;
                         updateUI()
-                        binding.inputEditMetadata.setText(cachedUserProfile?.getUserMetadata()?.get("country") as String? ?: "")
+                        showSnackBar("Successful")
                     }
                 })
             }
         }
     }
 
-    private fun patchUserMetadata() {
-        // Get the access token so that we can make calls to the management API
-        cachedCredentials?.accessToken?.let { accessToken ->
-            // Get the user ID and call the full getUser Management API endpoint, to retrieve the full profile information
-            cachedUserProfile?.getId()?.let { userId ->
-                val usersClient = UsersAPIClient(account, accessToken)
-                val metadata = mapOf("country" to binding.inputEditMetadata.getText().toString())
-
-                usersClient
-                        .updateMetadata(userId, metadata)
-                        .start(object: Callback<UserProfile, ManagementException> {
-                            override fun onFailure(exception: ManagementException) {
-                                Snackbar.make(
-                                    binding.root,
-                                    "Failure: ${exception.getCode()}",
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-
-                            override fun onSuccess(profile: UserProfile?) {
-                                cachedUserProfile = profile
-                                updateUI()
-
-                                Snackbar.make(
-                                        binding.root,
-                                        "Successful",
-                                        Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-                        })
-            }
-        }
+    private fun showSnackBar(text: String) {
+        Snackbar.make(
+            binding.root,
+            text,
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }
