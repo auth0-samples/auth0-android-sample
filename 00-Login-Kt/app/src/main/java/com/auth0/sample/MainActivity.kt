@@ -45,22 +45,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        if (cachedCredentials != null) {
-            binding.buttonLogout.isEnabled = true
-            binding.metadataPanel.isVisible = true
-            binding.buttonLogin.isEnabled = false
-        } else {
-            binding.buttonLogout.isEnabled = false
-            binding.metadataPanel.isVisible = false
-            binding.buttonLogin.isEnabled = true
-        }
+        binding.buttonLogout.isEnabled = cachedCredentials != null
+        binding.metadataPanel.isVisible = cachedCredentials != null
+        binding.buttonLogin.isEnabled = cachedCredentials == null
+        binding.userProfile.isVisible = cachedCredentials != null
 
-        if (cachedUserProfile != null) {
-            binding.userProfile.text =
-                    "Name: ${cachedUserProfile?.name}\n" +
-                    "Email: ${cachedUserProfile?.email}"
-        } else {
-            binding.userProfile.text = ""
+        binding.userProfile.text =
+            "Name: ${cachedUserProfile?.name ?: ""}\n" +
+            "Email: ${cachedUserProfile?.email ?: ""}"
+
+        if (cachedUserProfile == null) {
             binding.inputEditMetadata.setText("")
         }
     }
