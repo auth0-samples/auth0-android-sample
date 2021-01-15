@@ -118,27 +118,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserMetadata() {
-        // Get the access token so that we can make calls to the management API
-        cachedCredentials?.accessToken?.let { accessToken ->
-            // Get the user ID and call the full getUser Management API endpoint, to retrieve the full profile information
-            cachedUserProfile?.getId()?.let { userId ->
-                // Create the user API client
-                val usersClient = UsersAPIClient(account, accessToken)
+        // Create the user API client
+        val usersClient = UsersAPIClient(account, cachedCredentials!!.accessToken!!)
 
-                // Get the full user profile
-                usersClient.getProfile(userId).start(object: Callback<UserProfile, ManagementException> {
+        // Get the full user profile
+        usersClient.getProfile(cachedUserProfile!!.getId()!!).start(object: Callback<UserProfile, ManagementException> {
+            override fun onFailure(exception: ManagementException) {
+                showSnackBar("Failure: ${exception.getCode()}")
+            }
+
+            override fun onSuccess(userProfile: UserProfile?) {
+                cachedUserProfile = userProfile;
+                updateUI()
+
+                val country = cachedUserProfile?.getUserMetadata()?.get("country").toString() ?: ""
+                binding.inputEditMetadata.setText(country)
+            }
+        })
+    }
+
+    private fun patchUserMetadata() {
+        val usersClient = UsersAPIClient(account, cachedCredentials!!.accessToken!!)
+        val metadata = mapOf("country" to binding.inputEditMetadata.getText().toString())
+
+        usersClient
+                .updateMetadata(cachedUserProfile!!.getId()!!, metadata)
+                .start(object: Callback<UserProfile, ManagementException> {
                     override fun onFailure(exception: ManagementException) {
                         showSnackBar("Failure: ${exception.getCode()}")
                     }
 
-                    override fun onSuccess(userProfile: UserProfile?) {
-                        cachedUserProfile = userProfile;
+                    override fun onSuccess(profile: UserProfile?) {
+                        cachedUserProfile = profile
                         updateUI()
                         showSnackBar("Successful")
                     }
                 })
-            }
-        }
     }
 
     private fun showSnackBar(text: String) {
