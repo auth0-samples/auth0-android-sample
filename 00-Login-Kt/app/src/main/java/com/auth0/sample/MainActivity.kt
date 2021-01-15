@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(credentials: Credentials?) {
-                    cachedCredentials = credentials!!
+                    cachedCredentials = credentials
                     showSnackBar("Success: ${credentials?.accessToken}")
                     updateUI()
                     showUserProfile()
