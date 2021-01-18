@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 cachedUserProfile = userProfile;
                 updateUI()
 
-                val country = userProfile!!.getUserMetadata()["country"] as String? ?: ""
+                val country = userProfile!!.getUserMetadata()["country"] as String?
                 binding.inputEditMetadata.setText(country)
             }
         })
