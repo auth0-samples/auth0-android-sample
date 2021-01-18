@@ -102,19 +102,19 @@ class MainActivity : AppCompatActivity() {
     private fun showUserProfile() {
         val client = AuthenticationAPIClient(account)
 
-        // Use the access token to call userInfo endpoint
-        cachedCredentials?.accessToken?.let { accessToken ->
-            client.userInfo(accessToken)
-                .start(object : Callback<UserProfile, AuthenticationException> {
-                    override fun onFailure(exception: AuthenticationException) {
-                        showSnackBar("Failure: ${exception.getCode()}")
-                    }
+        // Use the access token to call userInfo endpoint.
+        // In this sample, we can assume cachedCredentials has been initialized by this point.
+        client.userInfo(cachedCredentials!!.accessToken!!)
+            .start(object : Callback<UserProfile, AuthenticationException> {
+                override fun onFailure(exception: AuthenticationException) {
+                    showSnackBar("Failure: ${exception.getCode()}")
+                }
 
-                    override fun onSuccess(profile: UserProfile?) {
-                        cachedUserProfile = profile;
-                        updateUI()
-                    }
-        }) }
+                override fun onSuccess(profile: UserProfile?) {
+                    cachedUserProfile = profile;
+                    updateUI()
+                }
+        })
     }
 
     private fun getUserMetadata() {
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 cachedUserProfile = userProfile;
                 updateUI()
 
-                val country = cachedUserProfile?.getUserMetadata()?.get("country").toString() ?: ""
+                val country = userProfile!!.getUserMetadata()["country"] as String? ?: ""
                 binding.inputEditMetadata.setText(country)
             }
         })
