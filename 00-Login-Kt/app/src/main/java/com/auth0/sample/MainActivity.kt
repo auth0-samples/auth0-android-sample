@@ -1,18 +1,14 @@
 package com.auth0.sample
 
 import android.os.Bundle
-import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.transition.Visibility
 import com.auth0.android.Auth0
-import com.auth0.android.Auth0Exception
 import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
 import com.auth0.android.management.ManagementException
 import com.auth0.android.management.UsersAPIClient
-import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
@@ -52,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.userProfile.text =
             "Name: ${cachedUserProfile?.name ?: ""}\n" +
-            "Email: ${cachedUserProfile?.email ?: ""}"
+                    "Email: ${cachedUserProfile?.email ?: ""}"
 
         if (cachedUserProfile == null) {
             binding.inputEditMetadata.setText("")
@@ -83,20 +79,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun logout() {
         WebAuthProvider.logout(account)
-                .withScheme(getString(R.string.com_auth0_scheme))
-                .start(this, object: Callback<Void, AuthenticationException> {
-                    override fun onSuccess(payload: Void?) {
-                        // The user has been logged out!
-                        cachedCredentials = null
-                        cachedUserProfile = null
-                        updateUI()
-                    }
+            .withScheme(getString(R.string.com_auth0_scheme))
+            .start(this, object : Callback<Void, AuthenticationException> {
+                override fun onSuccess(payload: Void?) {
+                    // The user has been logged out!
+                    cachedCredentials = null
+                    cachedUserProfile = null
+                    updateUI()
+                }
 
-                    override fun onFailure(exception: AuthenticationException) {
-                        updateUI()
-                        showSnackBar("Failure: ${exception.getCode()}")
-                    }
-                })
+                override fun onFailure(exception: AuthenticationException) {
+                    updateUI()
+                    showSnackBar("Failure: ${exception.getCode()}")
+                }
+            })
     }
 
     private fun showUserProfile() {
@@ -114,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     cachedUserProfile = profile;
                     updateUI()
                 }
-        })
+            })
     }
 
     private fun getUserMetadata() {
@@ -122,38 +118,39 @@ class MainActivity : AppCompatActivity() {
         val usersClient = UsersAPIClient(account, cachedCredentials!!.accessToken!!)
 
         // Get the full user profile
-        usersClient.getProfile(cachedUserProfile!!.getId()!!).start(object: Callback<UserProfile, ManagementException> {
-            override fun onFailure(exception: ManagementException) {
-                showSnackBar("Failure: ${exception.getCode()}")
-            }
+        usersClient.getProfile(cachedUserProfile!!.getId()!!)
+            .start(object : Callback<UserProfile, ManagementException> {
+                override fun onFailure(exception: ManagementException) {
+                    showSnackBar("Failure: ${exception.getCode()}")
+                }
 
-            override fun onSuccess(userProfile: UserProfile?) {
-                cachedUserProfile = userProfile;
-                updateUI()
+                override fun onSuccess(userProfile: UserProfile?) {
+                    cachedUserProfile = userProfile;
+                    updateUI()
 
-                val country = userProfile!!.getUserMetadata()["country"] as String?
-                binding.inputEditMetadata.setText(country)
-            }
-        })
+                    val country = userProfile!!.getUserMetadata()["country"] as String?
+                    binding.inputEditMetadata.setText(country)
+                }
+            })
     }
 
     private fun patchUserMetadata() {
         val usersClient = UsersAPIClient(account, cachedCredentials!!.accessToken!!)
-        val metadata = mapOf("country" to binding.inputEditMetadata.getText().toString())
+        val metadata = mapOf("country" to binding.inputEditMetadata.text.toString())
 
         usersClient
-                .updateMetadata(cachedUserProfile!!.getId()!!, metadata)
-                .start(object: Callback<UserProfile, ManagementException> {
-                    override fun onFailure(exception: ManagementException) {
-                        showSnackBar("Failure: ${exception.getCode()}")
-                    }
+            .updateMetadata(cachedUserProfile!!.getId()!!, metadata)
+            .start(object : Callback<UserProfile, ManagementException> {
+                override fun onFailure(exception: ManagementException) {
+                    showSnackBar("Failure: ${exception.getCode()}")
+                }
 
-                    override fun onSuccess(profile: UserProfile?) {
-                        cachedUserProfile = profile
-                        updateUI()
-                        showSnackBar("Successful")
-                    }
-                })
+                override fun onSuccess(profile: UserProfile?) {
+                    cachedUserProfile = profile
+                    updateUI()
+                    showSnackBar("Successful")
+                }
+            })
     }
 
     private fun showSnackBar(text: String) {
