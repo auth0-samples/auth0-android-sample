@@ -68,9 +68,9 @@ class MainActivity : AppCompatActivity() {
                     showSnackBar("Failure: ${exception.getCode()}")
                 }
 
-                override fun onSuccess(credentials: Credentials?) {
+                override fun onSuccess(credentials: Credentials) {
                     cachedCredentials = credentials
-                    showSnackBar("Success: ${credentials?.accessToken}")
+                    showSnackBar("Success: ${credentials.accessToken}")
                     updateUI()
                     showUserProfile()
                 }
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     private fun logout() {
         WebAuthProvider.logout(account)
             .withScheme(getString(R.string.com_auth0_scheme))
-            .start(this, object : Callback<Void, AuthenticationException> {
+            .start(this, object : Callback<Void?, AuthenticationException> {
                 override fun onSuccess(payload: Void?) {
                     // The user has been logged out!
                     cachedCredentials = null
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     showSnackBar("Failure: ${exception.getCode()}")
                 }
 
-                override fun onSuccess(profile: UserProfile?) {
+                override fun onSuccess(profile: UserProfile) {
                     cachedUserProfile = profile;
                     updateUI()
                 }
@@ -124,11 +124,11 @@ class MainActivity : AppCompatActivity() {
                     showSnackBar("Failure: ${exception.getCode()}")
                 }
 
-                override fun onSuccess(userProfile: UserProfile?) {
+                override fun onSuccess(userProfile: UserProfile) {
                     cachedUserProfile = userProfile;
                     updateUI()
 
-                    val country = userProfile!!.getUserMetadata()["country"] as String?
+                    val country = userProfile.getUserMetadata()["country"] as String?
                     binding.inputEditMetadata.setText(country)
                 }
             })
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                     showSnackBar("Failure: ${exception.getCode()}")
                 }
 
-                override fun onSuccess(profile: UserProfile?) {
+                override fun onSuccess(profile: UserProfile) {
                     cachedUserProfile = profile
                     updateUI()
                     showSnackBar("Successful")
