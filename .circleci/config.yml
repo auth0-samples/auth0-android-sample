@@ -9,10 +9,12 @@ version: 2.1
 executors:
   android:
     docker:
-      - image: circleci/android:api-28
+      - image: circleci/android:api-30
     environment:
       - JVM_OPTS: -Xmx3200m
       - AUTH0_CONFIG: strings.xml
+      - GRADLE_OPTS: -Dkotlin.compiler.execution.strategy=in-process
+
   python3:
     docker:
       - image: circleci/python:3.7
@@ -115,6 +117,12 @@ jobs:
     steps:
       - build-sample:
           sample: "00-Login"
+  android_00_kt-build:
+    executor:
+      name: android
+    steps:
+      - build-sample:
+          sample: "00-Login-Kt"
   android_00-integration-tests:
     executor:
       name: python3
@@ -122,47 +130,13 @@ jobs:
       - setup-python-context
       - test-sample:
           sample: "00-Login"
-  
-  #03-Session-Handling
-  android_03-build:
+  android_00_kt-integration-tests:
     executor:
-      name: android
+      name: python3
     steps:
-      - build-sample:
-          sample: "03-Session-Handling"
-
-  #04-User-Profile
-  android_04-build:
-    executor:
-      name: android
-    steps:
-      - build-sample:
-          sample: "04-User-Profile"
-
-  #05-Linking-Accounts
-  android_05-build:
-    executor:
-      name: android
-    steps:
-      - build-sample:
-          sample: "05-Linking-Accounts"
-
-  #06-Calling-APIs
-  android_06-build:
-    executor:
-      name: android
-    steps:
-      - build-sample:
-          sample: "06-Calling-APIs"
-
-  #07-Authorization
-  android_07-build:
-    executor:
-      name: android
-    steps:
-      - build-sample:
-          sample: "07-Authorization"
-    
+      - setup-python-context
+      - test-sample:
+          sample: "00-Login-Kt"
 workflows:
   version: 2
   android_00:
@@ -173,23 +147,11 @@ workflows:
           context: Quickstart MOBILE Test
           requires:
             - android_00-build
-  android_03:
+  android_00_kt:
     jobs:
-      - android_03-build:
+      - android_00_kt-build:
           context: Quickstart MOBILE Test
-  android_04:
-    jobs:
-      - android_04-build:
+      - android_00_kt-integration-tests:
           context: Quickstart MOBILE Test
-  android_05:
-    jobs:
-      - android_05-build:
-          context: Quickstart MOBILE Test
-  android_06:
-    jobs:
-      - android_06-build:
-          context: Quickstart MOBILE Test
-  android_07:
-    jobs:
-      - android_07-build:
-          context: Quickstart MOBILE Test
+          requires:
+            - android_00_kt-build
