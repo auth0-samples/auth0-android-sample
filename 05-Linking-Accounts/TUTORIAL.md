@@ -3,9 +3,9 @@
 ## Before You Start
 
 Before you continue with this tutorial, make sure that you have completed the previous tutorials. This tutorial assumes that:
-* You have integrated [Auth0](https://github.com/auth0/Auth0.Android) as a dependency in your project.
-* You are familiar with the `WebAuthProvider` class. To learn more, see the [Login](../00-Login/TUTORIAL.md) and the [Session Handling](../03-Session-Handling/TUTORIAL.md) tutorials.
-* You are familiar with the concepts of `userId`, `accessToken` and `idToken`. You can find info about them in the [Session Handling](../03-Session-Handling/TUTORIAL.md) and the [User Profile](../04-User-Profile/TUTORIAL.md) tutorials.
+- You have integrated [Auth0](https://github.com/auth0/Auth0.Android) as a dependency in your project.
+- You are familiar with the `WebAuthProvider` class. To learn more, see the [Login](../00-Login/TUTORIAL.md) and the [Session Handling](../03-Session-Handling/TUTORIAL.md) tutorials.
+- You are familiar with the concepts of `userId`, `accessToken` and `idToken`. You can find info about them in the [Session Handling](../03-Session-Handling/TUTORIAL.md) and the [User Profile](../04-User-Profile/TUTORIAL.md) tutorials.
 
 We recommend that you read the [Linking Accounts](https://auth0.com/docs/users/user-account-linking) documentation to understand the process of linking accounts.
 
