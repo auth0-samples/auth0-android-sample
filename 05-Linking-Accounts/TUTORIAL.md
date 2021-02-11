@@ -1,35 +1,20 @@
 # Tutorial - Linking Accounts
 
----
-title: Linking Accounts
-description: This tutorial will show you how to link two different accounts for the same user.
-seo_alias: android
-budicon: 345
-topics:
-  - quickstarts
-  - native
-  - android
-github:
-    path: 05-Linking-Accounts
-contentType: tutorial
-useCase: quickstart
----
-
 ## Before You Start
 
 Before you continue with this tutorial, make sure that you have completed the previous tutorials. This tutorial assumes that:
 * You have integrated [Auth0](https://github.com/auth0/Auth0.Android) as a dependency in your project.
-* You are familiar with the `WebAuthProvider` class. To learn more, see the [Login](/quickstart/native/android/00-login) and the [Session Handling](/quickstart/native/android/03-session-handling) tutorials.
-* You are familiar with the concepts of `userId`, `accessToken` and `idToken`. You can find info about them in the [Session Handling](/quickstart/native/android/03-session-handling) and the [User Profile](/quickstart/native/android/04-user-profile) tutorials.
+* You are familiar with the `WebAuthProvider` class. To learn more, see the [Login](../00-Login/TUTORIAL.md) and the [Session Handling](../03-Session-Handling/TUTORIAL.md) tutorials.
+* You are familiar with the concepts of `userId`, `accessToken` and `idToken`. You can find info about them in the [Session Handling](../03-Session-Handling/TUTORIAL.md) and the [User Profile](../04-User-Profile/TUTORIAL.md) tutorials.
 
-We recommend that you read the [Linking Accounts](/users/concepts/overview-user-account-linking) documentation to understand the process of linking accounts.
+We recommend that you read the [Linking Accounts](https://auth0.com/docs/users/user-account-linking) documentation to understand the process of linking accounts.
 
 ## API scopes on Authentication
 
-As seen previously in the [User Profile](/quickstart/native/android/04-user-profile) tutorial, you need to request the Management API audience and the corresponding scopes to be able to read the full user profile and edit their identities, since they are not part of the OIDC specification. Each identity in the user profile represents details from the authentication provider used to log in. e.g. the user's Facebook account details.
+As seen previously in the [User Profile](../04-User-Profile/TUTORIAL.md) tutorial, you need to request the Management API audience and the corresponding scopes to be able to read the full user profile and edit their identities, since they are not part of the OIDC specification. Each identity in the user profile represents details from the authentication provider used to log in. e.g. the user's Facebook account details.
 
 ```java
-// app/src/main/java/com/auth0/samples/activities/LoginActivity.java
+// app/src/main/java/com/auth0/samples/activities/LoginActivity.java◊
 
 Auth0 auth0 = new Auth0(this);
 auth0.setOIDCConformant(true);
@@ -41,16 +26,13 @@ WebAuthProvider.login(auth0)
         .start(this, callback);
 ```
 
-::: note
-Note that the Management API audience value ends in `/` in contrast to the User Info audience.
-:::
-
+> Note that the Management API audience value ends in `/` in contrast to the User Info audience.
 
 ## Enter Account Credentials
 
 Your users may want to link their other accounts to the account they are logged in to.
 
-To achieve this, you need to store the user ID for the logged user in the Intent, along with the ID Token and Access Token provided by the LoginActivity at launch, which are already available in the intent extras.
+To achieve this, you need to store the user ID for the logged user in the Intent, along with the ID Token and Access Token provided by the `LoginActivity` at launch, which are already available in the intent extras.
 
 ```java
 // app/src/main/java/com/auth0/samples/activities/MainActivity.java
@@ -162,10 +144,7 @@ private final AuthCallback loginCallback = new AuthCallback() {
 };
 ```
 
-::: note
-Make sure to handle the callback's failure calls as well
-:::
-
+> Make sure to handle the callback's failure calls as well.
 
 ## Link the Accounts
 
@@ -217,16 +196,14 @@ private void fetchProfile() {
 }
 ```
 
-::: note
-For more information, check the [UserIdentity.java class documentation](https://github.com/auth0/Auth0.Android/blob/master/auth0/src/main/java/com/auth0/android/result/UserIdentity.java).
-:::
+> For more information, check the [UserIdentity.java class documentation](https://github.com/auth0/Auth0.Android/blob/v1/auth0/src/main/java/com/auth0/android/result/UserIdentity.java).
 
 ## Unlink the Accounts
 
 To unlink the accounts, you need to specify the following:
-* user ID for the main account
-* user ID for the linked account
-* the provider name for the linked account
+- user ID for the main account
+- user ID for the linked account
+- the provider name for the linked account
 
 To instantiate the `UsersAPIClient` client, use the Access Token for the main account like before.
 
