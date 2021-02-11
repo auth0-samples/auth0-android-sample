@@ -1,5 +1,7 @@
 # Tutorial - Session Handling
 
+_This content has been extracted from a previous version of the [Auth0 Android Quickstart](https://auth0.com/docs/quickstart/native/android) and demonstrates how to integrate Auth0 with an Android application using the [Auth0 Android](https://github.com/auth0/Auth0.Android) SDK._
+
 You need the `Credentials` class to handle users' credentials. The class is composed of these elements:
 
 * `accessToken`: Access Tokens used by the Auth0 API. To learn more, see the [Access Tokens](https://auth0.com/docs/tokens/access-tokens).
