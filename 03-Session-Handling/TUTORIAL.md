@@ -14,7 +14,7 @@ Tokens are objects used to prove your identity against the Auth0 APIs. Read more
 
 ## Before You Start
 
-> Before you continue with this tutorial, make sure that you have completed the [Login](/../00-login/TUTORIAL.md) tutorial.
+> Before you continue with this tutorial, make sure that you have completed the [Login](/../00-Login/TUTORIAL.md) tutorial.
 
 You will need a valid Refresh Token in the response. To do that, ask for the `offline_access` scope. Find the snippet in which you are initializing the `WebAuthProvider` class. To that snippet, add the line `withScope("openid offline_access")`.
 
