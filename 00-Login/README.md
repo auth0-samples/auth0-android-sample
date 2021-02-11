@@ -2,7 +2,7 @@
 
 This sample shows how to authenticate users using Auth0 and obtain their tokens. 
 
-A step by step [Quickstart Tutorial](https://auth0.com/docs/quickstart/native/android/00-login) is provided in our site. If you prefer to skip it and run the sample make sure to [setup](#setup) the project first.
+> A step by step [Tutorial](./TUTORIAL.md) is also provided. If you prefer to skip it and run the sample make sure to [setup](#setup) the project first.
 
 ### Requirements
 
