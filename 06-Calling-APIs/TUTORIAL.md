@@ -1,5 +1,7 @@
 # Tutorial - Calling APIs
 
+_This content has been extracted from a previous version of the [Auth0 Android Quickstart](https://auth0.com/docs/quickstart/native/android) and demonstrates how to integrate Auth0 with an Android application using the [Auth0 Android](https://github.com/auth0/Auth0.Android) SDK._
+
 You may want to restrict access to your API resources, so that only authenticated users with sufficient privileges can access them. Auth0 lets you manage access to these resources using [API Authorization](https://auth0.com/docs/authorization).
 
 This tutorial shows you how to access protected resources in your API.
