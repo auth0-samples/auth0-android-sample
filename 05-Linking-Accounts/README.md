@@ -2,7 +2,7 @@
 
 This sample shows how to merge two auth0 users' accounts into a single account.
 
-A step by step [Quickstart Tutorial](https://auth0.com/docs/quickstart/native/android/05-linking-accounts) is provided in our site. If you prefer to skip it and run the sample make sure to [setup](#setup) the project first.
+A step by step [Tutorial](./TUTORIAL.md) is provided in our site. If you prefer to skip it and run the sample make sure to [setup](#setup) the project first.
 
 ### Requirements
 
