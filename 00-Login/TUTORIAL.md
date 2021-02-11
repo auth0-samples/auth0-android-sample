@@ -61,7 +61,7 @@ Add manifest placeholders required by the SDK. The placeholders are used interna
 
 To add the manifest placeholders, add the next line:
 
-```
+```groovy
 // app/build.gradle
 
 apply plugin: 'com.android.application'
