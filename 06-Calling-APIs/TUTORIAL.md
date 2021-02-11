@@ -1,39 +1,32 @@
 # Tutorial - Calling APIs
 
----
-title: Calling APIs
-description: This tutorial will show you how to use Access Tokens to make authenticated API calls.
-seo_alias: android
-budicon: 546
-topics:
-  - quickstarts
-  - native
-  - android
-github:
-    path: 06-Calling-APIs
-contentType: tutorial
-useCase: quickstart
----
-
-You may want to restrict access to your API resources, so that only authenticated users with sufficient privileges can access them. Auth0 lets you manage access to these resources using [API Authorization](/api-auth).
+You may want to restrict access to your API resources, so that only authenticated users with sufficient privileges can access them. Auth0 lets you manage access to these resources using [API Authorization](https://auth0.com/docs/authorization).
 
 This tutorial shows you how to access protected resources in your API.
 
 ## Before You Start
 
 Before you continue with this tutorial, make sure that you have completed the previous tutorials. This tutorial assumes that:
-* You have completed the [Session Handling](/quickstart/native/android/03-session-handling) tutorial and you know how to handle the `Credentials` object.
-* You have set up a backend application as API. To learn how to do it, follow one of the [backend tutorials](/quickstart/backend).
+- You have completed the [Session Handling](../03-Session-Handling/TUTORIAL.md) tutorial and you know how to handle the `Credentials` object.
+- You have set up a backend application as API. To learn how to do it, follow one of the [backend tutorials](https://auth0.com/docs/quickstart/backend).
 
+## Create an Auth0 API
 
-<%= include('../_includes/_calling_api_create_api') %>
+In the APIs section of the Auth0 dashboard, click **Create API**. Provide a name and an identifier for your API.
+You will use the identifier later when you're preparing the Web Authentication.
+For **Signing Algorithm**, select **RS256**.
 
-<%= include('../_includes/_calling_api_create_scope') %>__
+## Add a Scope
 
+By default, the Access Token does not contain any authorization information. To limit access to your resources based on authorization, you must use scopes. Read more about scopes in the [scopes documentation](https://auth0.com/docs/scopes).
+
+In the Auth0 dashboard, in the APIs section, click **Scopes**. Add any scopes you need to limit access to your API resources.
+
+> You can give any names to your scopes. A common pattern is `<action>:<resource>`. The example below uses the name `read:messages` for a scope.
 
 ## Get the User's Access Token
 
-To retrieve an Access Token that is authorized to access your API, you need to specify the API Identifier you created in the Auth0 dashboard before. At the top of the class add the constants for accessing the API: API_URL and API_IDENTIFIER
+To retrieve an Access Token that is authorized to access your API, you need to specify the API Identifier you created in the Auth0 dashboard before. At the top of the class add the constants for accessing the API: `API_UR`L and `API_IDENTIFIER`
 
 ```java
 // app/src/main/java/com/auth0/samples/LoginActivity.java
@@ -67,23 +60,17 @@ private void login() {
 }
 ```
 
-::: note
-For instructions on how to authenticate a user, see the [Login](/quickstart/native/android/00-login) tutorial.
-:::
+> For instructions on how to authenticate a user, see the [Login](../00-Login/TUTORIAL.md) tutorial.
 
 ## Attach the Token
 
 To give the authenticated user access to secured resources in your API, include the user's Access Token in the requests you send to the API.
 
-::: note
-In this example, we use the [OkHttp](https://github.com/square/okhttp) library.
-:::
+> In this example, we use the [OkHttp](https://github.com/square/okhttp) library.
 
 Create an instance of the `OkHttpClient` client and a new `Request`. Use the provided builder to customize the Http method, the URL and the headers in the request. Set the **Authorization** header with the token type and the user's Access Token. In the sample project an `accessToken` field is set upon authentication success with the `credentials.getAccessToken()` value.
 
-::: note
-Depending on the standards in your API, you configure the authorization header differently. The code below is just an example.
-:::
+> Depending on the standards in your API, you configure the authorization header differently. The code below is just an example.
 
 
 ```java
