@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.auth0.androidsample"
+        applicationId "com.auth0.androidssettings"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
