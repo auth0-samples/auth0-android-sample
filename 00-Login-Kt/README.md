@@ -7,7 +7,7 @@ This sample demonstrates the following use cases:
 - Login
 - Logout
 - Showing the user profile
-- Geting the user metadata
+- Getting the user metadata
 - Updating the user metadata
 
 ## Requirements
