@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">01-Auth0LoginDemo</string>
-    <string name="welcome_message">Welcome To Your App</string>
-    <string name="login_again">Log In Again</string>
-
-    <string name="com_auth0_client_id">{CLIENT_ID}</string>
-    <string name="com_auth0_domain">{DOMAIN}</string>
-</resources>
