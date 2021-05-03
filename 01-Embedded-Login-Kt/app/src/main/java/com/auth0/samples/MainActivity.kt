@@ -42,10 +42,10 @@ class MainActivity : AppCompatActivity() {
     private val callback = object : AuthenticationCallback() {
         override fun onError(error: AuthenticationException) {
             Snackbar.make(
-                findViewById(R.id.content),
+                findViewById(R.id.root),
                 "Error: ${error.getDescription()}",
                 Snackbar.LENGTH_LONG
-            )
+            ).show()
         }
 
         override fun onAuthentication(credentials: Credentials) {
