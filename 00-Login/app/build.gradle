@@ -4,7 +4,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     defaultConfig {
-        applicationId "com.auth0.samples"
+        applicationId "com.auth0.androidsample"
         targetSdkVersion 30
         minSdkVersion 21
         versionCode 1
@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.auth0.android:auth0:2.5.1'
+    implementation 'com.auth0.android:auth0:2.7.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
 }
