@@ -7,7 +7,7 @@ This sample demonstrates the following use cases:
 - Login
 - Logout
 - Showing the user profile
-- Geting the user metadata
+- Getting the user metadata
 - Updating the user metadata
 
 ## Project setup
@@ -18,7 +18,7 @@ Android API version 21 or later and Java 8+.
 
 ### Auth0 Credentials
 
-Configure the application with details of the Auth0 domain and client ID of your application. Locate the `/app/src/main/res/values/strings.xml` file and replace the placeholder `{CLIENT_ID}` and `{DOMAIN}` values with your application's client ID and domain.
+Configure the application with details of the Auth0 domain and client ID of your application. Locate the `/app/src/main/res/values/strings.xml.example` file, rename to `strings.xml` and replace the placeholder `{CLIENT_ID}` and `{DOMAIN}` values with your application's client ID and domain.
 
 ```xml
 
