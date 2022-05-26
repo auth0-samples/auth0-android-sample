@@ -1,10 +1,18 @@
 version: 2
 updates:
+
   - package-ecosystem: "gradle" 
     directory: "/00-Login-Kt" 
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+      
   - package-ecosystem: "gradle" 
     directory: "/00-Login" 
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
