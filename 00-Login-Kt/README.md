@@ -35,7 +35,7 @@ Configure the application with details of the Auth0 domain and client ID of your
 
 ### Callback and logout URLs
 
-In the **Settings** tab of your Auth0 application, add the following to your **Allowed Callback URLs** and **Allowed Logout URLs**: `demo://{YOUR-AUTH0-DOMAIN}/android/com.auth0.androidsample/callback`. Be sure to click **Save Changes** before leaving the page.
+In the **Settings** tab of your Auth0 application, add the following to your **Allowed Callback URLs** and **Allowed Logout URLs**: `demo://{YOUR-AUTH0-DOMAIN}/android/com.auth0.samples/callback`. Be sure to click **Save Changes** before leaving the page.
 
 ## Running the app
 

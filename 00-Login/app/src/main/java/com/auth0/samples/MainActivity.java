@@ -1,4 +1,4 @@
-package com.auth0.androidsample;
+package com.auth0.samples;
 
 import android.app.Activity;
 import android.content.Intent;
