@@ -39,7 +39,7 @@ In the **Settings** tab of your Auth0 application, add the following to your **A
 
 ## Running the app
 
-Run the application using Android Studio. You can then login, view information about the user profile and user metadata, update the user metadata, and logout. 
+Run the application using Android Studio. You can then login, view information about the user profile and user metadata, update the user metadata, and logout.
 
 ## What is Auth0?
 
