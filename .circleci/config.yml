@@ -65,7 +65,7 @@ commands:
       - run:
           name: Installing pip dependencies
           command: |
-            sudo pip3 install -r scripts/requirements.txt && sudo pip3 install attrs==19.1.0
+            sudo pip3 install -r scripts/requirements.txt && sudo pip3 install -U pytest && pip install -U selenium
       - run:
           name: Setup Browserstack credentials
           working_directory: scripts
