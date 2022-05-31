@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sample">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.auth0.samples.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
