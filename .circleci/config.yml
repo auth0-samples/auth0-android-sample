@@ -9,7 +9,7 @@ version: 2.1
 executors:
   android:
     docker:
-      - image: circleci/android:api-33
+      - image: circleci/android:2022.12.1
     environment:
       - JVM_OPTS: -Xmx3200m
       - AUTH0_CONFIG: strings.xml
