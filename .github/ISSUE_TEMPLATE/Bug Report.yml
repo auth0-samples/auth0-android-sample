@@ -14,7 +14,7 @@ body:
       options:
         - label: I have looked into the Readme ([Java](https://github.com/auth0-samples/auth0-android-sample/tree/master/00-Login#readme)/[Kotlin](https://github.com/auth0-samples/auth0-android-sample/tree/master/00-Login-Kt#readme)) and have not found a suitable solution or answer.
           required: true
-        - label: I have searched the [issues](https://github.com/auth0-samples/auth0-samples/auth0-android-sample/issues) and have not found a suitable solution or answer.
+        - label: I have searched the [issues](https://github.com/auth0-samples/auth0-android-sample/issues) and have not found a suitable solution or answer.
           required: true
         - label: I have searched the [Auth0 Community](https://community.auth0.com) forums and have not found a suitable solution or answer.
           required: true
