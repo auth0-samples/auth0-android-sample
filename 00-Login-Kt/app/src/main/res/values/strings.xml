@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Auth0 WebAuth KT</string>
+
+    <string name="com_auth0_client_id">40VLgGZDLPWKndnY6SjRN2wvO0EWp151</string>
+    <string name="com_auth0_domain">poovamraj.eu.auth0.com</string>
+    <string name="com_auth0_scheme">demo</string>
+</resources>

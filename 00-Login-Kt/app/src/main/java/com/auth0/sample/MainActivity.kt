@@ -1,6 +1,8 @@
 package com.auth0.sample
 
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.auth0.android.Auth0
@@ -13,7 +15,15 @@ import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import com.auth0.sample.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.integrity.IntegrityManagerFactory
+import com.google.android.play.core.integrity.IntegrityTokenRequest
+import com.google.android.play.core.integrity.IntegrityTokenResponse
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.security.SecureRandom
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,25 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginWithBrowser() {
-        // Setup the WebAuthProvider, using the custom scheme and scope.
-        WebAuthProvider.login(account)
-            .withScheme(getString(R.string.com_auth0_scheme))
-            .withScope("openid profile email read:current_user update:current_user_metadata")
-            .withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
-
-            // Launch the authentication passing the callback where the results will be received
-            .start(this, object : Callback<Credentials, AuthenticationException> {
-                override fun onFailure(exception: AuthenticationException) {
-                    showSnackBar("Failure: ${exception.getCode()}")
-                }
-
-                override fun onSuccess(credentials: Credentials) {
-                    cachedCredentials = credentials
-                    showSnackBar("Success: ${credentials.accessToken}")
-                    updateUI()
-                    showUserProfile()
-                }
-            })
+        GlobalScope.launch { generateIntegrityToken(generateNonce()) }
     }
 
     private fun logout() {
@@ -159,5 +151,67 @@ class MainActivity : AppCompatActivity() {
             text,
             Snackbar.LENGTH_LONG
         ).show()
+    }
+
+    /**
+     * The value set in the nonce field must be correctly formatted:
+     *  String
+     *  URL-safe
+     *  Encoded as Base64 and non-wrapping
+     *  Minimum of 16 characters
+     *  Maximum of 500 characters
+     * https://developer.android.com/google/play/integrity/verdict#nonce
+     */
+    private fun generateNonce(): String {
+        val random = SecureRandom()
+        val bytes = ByteArray(256)
+        random.nextBytes(bytes)
+        val encoded = Base64.encode(
+            bytes, Base64.URL_SAFE or Base64.NO_WRAP
+        )
+        return String(encoded)
+    }
+
+    private suspend fun generateIntegrityToken(nonceString: String) {
+        // Create an instance of an IntegrityManager
+        val integrityManager = IntegrityManagerFactory.create(this)
+
+        // Use the nonce to configure a request for an integrity token
+        try {
+            val integrityTokenResponse: Task<IntegrityTokenResponse> =
+                integrityManager.requestIntegrityToken(
+                    IntegrityTokenRequest.builder()
+                        .setNonce(nonceString)
+                        .setCloudProjectNumber(866524548202) //This need not be set when the app is distributed through Play Store -
+                        .build()
+                )
+            // Wait for the integrity token to be generated
+            integrityTokenResponse.await()
+            if (integrityTokenResponse.isSuccessful && integrityTokenResponse.result != null) {
+                try {
+                    val credentials = WebAuthProvider.login(account)
+                        .withScheme(getString(R.string.com_auth0_scheme))
+                        .withScope("openid profile email read:current_user update:current_user_metadata")
+                        .withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
+                        .withParameters(mapOf(
+                            "integrity_token" to integrityTokenResponse.result.token(),
+                            "nonce" to nonceString
+                        ))
+                        .await(this)
+                    cachedCredentials = credentials
+                    showSnackBar("Success: ${credentials.accessToken}")
+                    runOnUiThread { updateUI() }
+                } catch (exception: AuthenticationException) {
+                    exception.printStackTrace()
+                    showSnackBar("Failure: ${exception.getDescription()}")
+                }
+            } else {
+                Log.d("Integrity Check", "requestIntegrityToken failed: " +
+                        integrityTokenResponse.result.toString())
+            }
+        } catch (t: Throwable) {
+            Log.d("Integrity Check", "requestIntegrityToken exception " + t.message)
+        }
+
     }
 }
