@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Auth0 WebAuth KT</string>
+
+    <string name="com_auth0_client_id">F7UGQiAcKYeCQBTqZDTcC8UpWXK4cfAD</string>
+    <string name="com_auth0_domain">dev-o71do0xkhvtl1uzv.us.auth0.com</string>
+    <string name="com_auth0_scheme">demo</string>
+</resources>
