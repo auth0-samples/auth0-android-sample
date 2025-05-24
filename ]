@@ -1,0 +1,15 @@
+// Import the parts needed by the SDK
+import com.auth0.android.Auth0
+import com.auth0.android.provider.WebAuthProvider
+
+class MainActivity : AppCompatActivity() {
+
+  private lateinit var account: Auth0
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+
+      // Set up the account object with the Auth0 application details
+      account = Auth0(
+          "qarzCp2v30xnewyZF8Fd4RiutCirP78G",
+          "genai-3486899614857104.au.auth0.
