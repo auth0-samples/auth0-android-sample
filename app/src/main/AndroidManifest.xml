@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- highlight-start internet-permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- highlight-end internet-permission -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
