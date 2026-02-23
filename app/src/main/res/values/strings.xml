@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">auth0-android-sample</string>
+    <!-- highlight-start configure -->
+    <string name="com_auth0_domain">%AUTH0_DOMAIN%</string>
+    <string name="com_auth0_client_id">%AUTH0_CLIENT_ID%</string>
+    <string name="com_auth0_scheme">%AUTH0_SCHEME%</string>
+    <!-- highlight-end configure -->
 </resources>
