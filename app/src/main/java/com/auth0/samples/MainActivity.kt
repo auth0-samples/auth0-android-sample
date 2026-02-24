@@ -1,106 +1,123 @@
 package com.auth0.samples
 
 import android.os.Bundle
-import android.util.Base64
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.activity.*
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.*
 import com.auth0.android.Auth0
-import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.authentication.*
+import com.auth0.android.authentication.storage.*
 import com.auth0.android.callback.Callback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
-import com.auth0.samples.ui.theme.Auth0androidsampleTheme
-import org.json.JSONObject
 
 class MainActivity : ComponentActivity() {
+    /* highlight-start account-setup */
+    // Initialized lazily because getString() requires Activity context
+    private val account: Auth0 by lazy {
+        Auth0.getInstance(
+            getString(R.string.com_auth0_client_id),
+            getString(R.string.com_auth0_domain)
+        )
+    }
+    private val manager: CredentialsManager by lazy {
+        CredentialsManager(AuthenticationAPIClient(account), SharedPreferencesStorage(this))
+    }
 
-    // highlight-start account-setup
-    private lateinit var account: Auth0
-    // highlight-end account-setup
-
+    // Compose re-renders the UI when these change
     private var credentials by mutableStateOf<Credentials?>(null)
+    private var isLoading by mutableStateOf(true)
+    /* highlight-end account-setup */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // highlight-start account-setup
-        val clientId = getString(R.string.com_auth0_client_id)
-        val domain = getString(R.string.com_auth0_domain)
-        account = Auth0.getInstance(clientId, domain)
-        // highlight-end account-setup
-
-        setContent {
-            Auth0androidsampleTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding)) {
-                        // highlight-start app
-                        if (credentials == null) {
-                            Button(onClick = { login("signup") }) {
-                                Text("Sign Up")
-                            }
-                            Button(onClick = { login() }) {
-                                Text("Log In")
-                            }
-                        } else {
-                            Text("Logged in as ${credentials?.user?.email}")
-                            Text(credentials?.let {
-                                JSONObject(String(Base64.decode(it.idToken.split(".")[1], Base64.URL_SAFE))).toString(2)
-                            } ?: "{}")
-                            Button(onClick = { logout() }) {
-                                Text("Log Out")
-                            }
-                        }
-                        // highlight-end app
-                    }
-                }
-            }
-        }
-    }
-
-    // highlight-start login
-    private fun login(screenHint: String? = null) {
-        val builder = WebAuthProvider.login(account)
-            .withScheme(getString(R.string.com_auth0_scheme))
-            .withScope("openid profile email offline_access")
-        if (screenHint != null) {
-            builder.withParameters(mapOf("screen_hint" to screenHint))
-        }
-        builder.start(this, object : Callback<Credentials, AuthenticationException> {
+        /* highlight-start credentials-manager */
+        // Restore session from disk; refreshes the access token if expired
+        manager.getCredentials(object : Callback<Credentials, CredentialsManagerException> {
             override fun onSuccess(result: Credentials) {
                 credentials = result
+                isLoading = false
             }
-            override fun onFailure(error: AuthenticationException) {
-                Toast.makeText(this@MainActivity, error.message, Toast.LENGTH_SHORT).show()
+
+            override fun onFailure(error: CredentialsManagerException) {
+                isLoading = false
             }
         })
-    }
-    // highlight-end login
+        /* highlight-end credentials-manager */
 
-    // highlight-start logout
+        setContent {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                /* highlight-start app */
+                if (isLoading) {
+                    Text("Loading...")
+                } else if (credentials == null) {
+                    Button(onClick = { login("signup") }) { Text("Sign Up") }
+                    Button(onClick = { login() }) { Text("Log In") }
+                } else {
+                    Text("Logged in as ${credentials?.user?.email}", fontSize = 18.sp)
+                    Column {
+                        Text("sub: ${credentials?.user?.getId()}")
+                        Text("name: ${credentials?.user?.name}")
+                        Text("email: ${credentials?.user?.email}")
+                        Text("email_verified: ${credentials?.user?.isEmailVerified}")
+                        Text("nickname: ${credentials?.user?.nickname}")
+                        Text("picture: ${credentials?.user?.pictureURL}")
+                    }
+                    Button(onClick = { logout() }) { Text("Log Out") }
+                }
+                /* highlight-end app */
+            }
+        }
+    }
+
+    /* highlight-start login */
+    private fun login(screenHint: String? = null) {
+        WebAuthProvider.login(account)
+            .withScheme(getString(R.string.com_auth0_scheme))
+            // offline_access: requests a refresh token for session persistence
+            .withScope("openid profile email offline_access")
+            .withParameters(buildMap { screenHint?.let { put("screen_hint", it) } })
+            .start(this, object : Callback<Credentials, AuthenticationException> {
+                override fun onSuccess(result: Credentials) {
+                    credentials = result
+                    manager.saveCredentials(result)
+                }
+
+                override fun onFailure(error: AuthenticationException) {
+                    Toast.makeText(this@MainActivity, error.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+    /* highlight-end login */
+
+    /* highlight-start logout */
     private fun logout() {
         WebAuthProvider.logout(account)
             .withScheme(getString(R.string.com_auth0_scheme))
             .start(this, object : Callback<Void?, AuthenticationException> {
                 override fun onSuccess(result: Void?) {
                     credentials = null
+                    manager.clearCredentials()
                 }
+
                 override fun onFailure(error: AuthenticationException) {
                     Toast.makeText(this@MainActivity, error.message, Toast.LENGTH_SHORT).show()
                 }
             })
     }
-    // highlight-end logout
+    /* highlight-end logout */
 }
+

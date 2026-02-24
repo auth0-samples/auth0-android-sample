@@ -20,10 +20,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // highlight-start manifest-placeholders
+        /* highlight-start manifest-placeholders */
         manifestPlaceholders["auth0Domain"] = "@string/com_auth0_domain"
         manifestPlaceholders["auth0Scheme"] = "@string/com_auth0_scheme"
-        // highlight-end manifest-placeholders
+        /* highlight-end manifest-placeholders */
     }
 
     buildTypes {
@@ -45,6 +45,9 @@ android {
 }
 
 dependencies {
+    /* highlight-start install-sdk */
+    implementation("com.auth0.android:auth0:3.+")
+    /* highlight-end install-sdk */
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,7 +63,4 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    // highlight-start install-sdk
-    implementation("com.auth0.android:auth0:3.+")
-    // highlight-end install-sdk
 }
