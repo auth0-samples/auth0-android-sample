@@ -12,7 +12,10 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.auth0.samples"
+        /* highlight-start application-id */
+        // Used in the callback URL to match back to this app
+        applicationId = "%APPLICATION_ID%"
+        /* highlight-end application-id */
         minSdk = 31
         targetSdk = 36
         versionCode = 1
