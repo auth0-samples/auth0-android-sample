@@ -5,28 +5,26 @@ plugins {
 
 android {
     namespace = "com.auth0.samples"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 35
 
     defaultConfig {
         /* highlight-start application-id */
         // Used in the callback URL to match back to this app
-        applicationId = "%APPLICATION_ID%"
+        applicationId = "com.auth0.samples"
         /* highlight-end application-id */
-        minSdk = 31
-        targetSdk = 36
+
+        /* highlight-start manifest-placeholders */
+        // Configure the SDK
+        manifestPlaceholders["auth0Domain"] = "@string/com_auth0_domain"
+        manifestPlaceholders["auth0Scheme"] = "@string/com_auth0_scheme"
+        /* highlight-end manifest-placeholders */
+
+        minSdk = 24
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        /* highlight-start manifest-placeholders */
-        manifestPlaceholders["auth0Domain"] = "@string/com_auth0_domain"
-        manifestPlaceholders["auth0Scheme"] = "@string/com_auth0_scheme"
-        /* highlight-end manifest-placeholders */
     }
 
     buildTypes {
