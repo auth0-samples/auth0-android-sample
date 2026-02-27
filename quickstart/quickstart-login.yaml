@@ -1,0 +1,119 @@
+appType: "native"
+technology: "android"
+technologyLabel: "Android"
+sdkVersion: &sdkVersion "3.+"
+outputFolderName: &outputFolderName "auth0-android-sample"
+
+# Native: origin is the Auth0 tenant domain, not localhost.
+# Callback URL: {scheme}://{domain}/android/{applicationId}/callback
+defaultAppOrigin:
+  scheme: "https"
+  domain:
+    inputKey: "auth0Domain"
+callbackPath: "/android/%APPLICATION_ID%/callback"
+logoutPath: "/android/%APPLICATION_ID%/callback"
+
+inputs:
+  auth0Domain:
+  auth0ClientId:
+  auth0Scheme:
+    default: "https"
+  applicationId:
+    default: "com.auth0.samples"
+
+placeholders:
+  "%GIT_REMOTE%":       { environmentKey: "gitRemote" }
+  "%GIT_BRANCH%":       { environmentKey: "gitBranch" }
+  "%DOWNLOAD_URL%":     { environmentKey: "downloadUrl" }
+  "%FOLDER_NAME%":      *outputFolderName
+  "%AUTH0_DOMAIN%":     { inputKey: "auth0Domain" }
+  "%AUTH0_CLIENT_ID%":  { inputKey: "auth0ClientId" }
+  "%AUTH0_SCHEME%":     { inputKey: "auth0Scheme" }
+  "%APPLICATION_ID%":   { inputKey: "applicationId" }
+  "%SDK_VERSION%":      *sdkVersion
+
+snippets:
+  get-app: &getApp
+    source: "quickstart/scripts/get-app.sh"
+    language: "bash"
+  configure: &configure
+    source: "quickstart/scripts/configure.sh"
+    language: "bash"
+  build-gradle: &buildGradle
+    source: "app/build.gradle.kts"
+    language: "kotlin"
+  strings-xml: &stringsXml
+    source: "app/src/main/res/values/strings.xml"
+    language: "xml"
+  manifest-xml: &manifestXml
+    source: "app/src/main/AndroidManifest.xml"
+    language: "xml"
+  main-activity: &mainActivity
+    source: "app/src/main/java/com/auth0/samples/MainActivity.kt"
+    language: "kotlin"
+  build-and-run: &buildAndRun
+    source: "quickstart/scripts/build-and-run.sh"
+    language: "bash"
+
+tryOutStep: &tryOutStep
+  - title: "Try it out"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/try-steps.md"
+
+download:
+  - title: "Clone or download the sample app"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/git-clone.md"
+      - type: terminal
+        <<: *getApp
+      - type: markdown
+        source: "quickstart/markdown/get-app.md"
+  - title: "Configure your Auth0 credentials"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/configure.md"
+      - type: terminal
+        <<: *configure
+  - title: "Build and run"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/build-and-run.md"
+      - type: terminal
+        <<: *buildAndRun
+  - <<: *tryOutStep
+
+steps:
+  - title: "Add the Auth0 Android SDK"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/install-sdk.md"
+      - type: snippet
+        <<: *buildGradle
+  - title: "Configure your Auth0 credentials"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/strings-config.md"
+      - type: snippet
+        <<: *stringsXml
+  - title: "Configure the Android manifest"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/manifest-config.md"
+      - type: snippet
+        <<: *manifestXml
+  - title: "Add login and logout"
+    contentBlocks:
+      - type: markdown
+        source: "quickstart/markdown/add-login-logout.md"
+      - type: snippet
+        <<: *mainActivity
+  - <<: *tryOutStep
+
+nextSteps:
+  links:
+    - label: "Auth0 Android SDK"
+      url: "https://github.com/auth0/Auth0.Android"
+    - label: "SDK Usage Examples"
+      url: "https://github.com/auth0/auth0.android/blob/main/EXAMPLES.md"
