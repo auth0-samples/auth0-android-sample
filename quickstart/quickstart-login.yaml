@@ -20,6 +20,7 @@ inputs:
     default: "https"
   applicationId:
     default: "com.auth0.samples"
+  androidSha256Fingerprint:
 
 placeholders:
   "%GIT_REMOTE%":       { environmentKey: "gitRemote" }
