@@ -1,1 +1,1 @@
-Use `WebAuthProvider` to open Auth0 Universal Login in a Chrome Custom Tab. After login, the user's profile is available from the ID token — no additional network call is needed.
+Use `WebAuthProvider` to open Auth0 Universal Login in a Chrome Custom Tab. After login, the user's profile is available from the ID token — no additional network call is needed. `SecureCredentialsManager` encrypts the user's credentials (access token, ID token, refresh token) using the Android Keystore and restores them automatically on app restart, so users stay logged in between sessions.

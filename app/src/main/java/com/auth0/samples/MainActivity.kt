@@ -1,6 +1,7 @@
 package com.auth0.samples
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.*
 import androidx.activity.compose.setContent
@@ -25,8 +26,8 @@ class MainActivity : ComponentActivity() {
             getString(R.string.com_auth0_domain)
         )
     }
-    private val manager: CredentialsManager by lazy {
-        CredentialsManager(AuthenticationAPIClient(account), SharedPreferencesStorage(this))
+    private val manager: SecureCredentialsManager by lazy {
+        SecureCredentialsManager(this, account, SharedPreferencesStorage(this))
     }
 
     // Compose re-renders the UI when these change
@@ -47,6 +48,7 @@ class MainActivity : ComponentActivity() {
             }
 
             override fun onFailure(error: CredentialsManagerException) {
+                Log.e(MainActivity::class.java.simpleName, "Failed to restore credentials", error)
                 isLoading = false
             }
         })
@@ -97,6 +99,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 override fun onFailure(error: AuthenticationException) {
+                    Log.e(MainActivity::class.java.simpleName, "Login failed", error)
                     Toast.makeText(this@MainActivity, error.message, Toast.LENGTH_SHORT).show()
                 }
             })
@@ -114,6 +117,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 override fun onFailure(error: AuthenticationException) {
+                    Log.e(MainActivity::class.java.simpleName, "Logout failed", error)
                     Toast.makeText(this@MainActivity, error.message, Toast.LENGTH_SHORT).show()
                 }
             })
