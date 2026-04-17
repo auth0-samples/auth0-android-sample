@@ -55,9 +55,6 @@ snippets:
   build-and-run: &buildAndRun
     source: "quickstart/scripts/build-and-run.sh"
     language: "bash"
-  signing-report: &signingReport
-    source: "quickstart/scripts/signing-report.sh"
-    language: "bash"
 
 tryOutStep: &tryOutStep
   - title: "Try it out"
@@ -74,16 +71,6 @@ download:
         <<: *getApp
       - type: markdown
         source: "quickstart/markdown/get-app.md"
-  # HACK: the SHA-256 fingerprint input is shown above all steps, but the user
-  # can't get the value until after they've cloned. Ideally the input would only
-  # appear once the user reaches this step, but that's not supported yet. For now
-  # we surface the Gradle task here so the user can go back and fill in the field.
-  - title: "Get your app's SHA-256 certificate fingerprint"
-    contentBlocks:
-      - type: markdown
-        source: "quickstart/markdown/signing-report.md"
-      - type: terminal
-        <<: *signingReport
   - title: "Configure your Auth0 credentials"
     contentBlocks:
       - type: markdown
